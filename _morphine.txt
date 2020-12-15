@@ -1,0 +1,71 @@
+***************************************************************************************
+                   MARS: Molecular Assembling and Representation Suite                 
+                                      Hsuan Hao Hsu                                    
+                                    Chen Hsuan Huang                                   
+                            Shiang Tai Lin (stlin@ntu.edu.tw)                          
+                      Computational Molecular Engineering Laboratory                   
+      Department of Chemical Engineering, National Taiwan University, Taipei, Taiwan   
+                                   Copyright (c) 2019                                  
+                                   All rights Reserved                                 
+***************************************************************************************
+C
+C(-C)
+natom 2
+Mindex 1 1 
+Pindex 0 1 
+Cindex 1 2 
+Rindex -1 1 
+Cyindex 0 0 
+if_circle 0
+
+C(-C(-C))
+C(-C(-C(=C)))
+C(-C(-C(=C(-C))))
+C(-C(-C(=C(-C(-C)))))
+r1
+C1(-C(-C(=C(-C(-C1)))))
+C1(-C(-C(=C(-C(-C1(-O))))))
+C1(-C(-C(=C(-C(-C1(-O))))))(-C)
+C1(-C(-C(=C(-C(-C1(-O))))))(-C(=C))
+C1(-C(-C(=C(-C(-C1(-O))))))(-C(=C)(-C))
+r2
+C1(-C(-C(=C(-C(-C1(-O2))))))(-C(=C)(-C2))
+C1(-C(-C(=C(-C(-C1(-O2))))))(-C(=C)(-C2(=C)))
+C1(-C(-C(=C(-C(-C1(-O2))))))(-C(=C)(-C2(=C(-C))))
+C1(-C(-C(=C(-C(-C1(-O2))))))(-C(=C)(-C2(=C(-C(=C)))))
+r3
+C1(-C(-C(=C(-C(-C1(-O2))))))(-C(=C3)(-C2(=C(-C(=C3)))))
+C1(-C(-C(=C(-C(-C1(-O2))))))(-C(=C3(-C))(-C2(=C(-C(=C3)))))
+C1(-C(-C(=C(-C(-C1(-O2))))))(-C(=C3(-C(-C)))(-C2(=C(-C(=C3)))))
+r4
+C1(-C4(-C(=C(-C(-C1(-O2))))))(-C(=C3(-C(-C4)))(-C2(=C(-C(=C3)))))
+C1(-C4(-C(=C(-C(-C1(-O2))))))(-C(=C3(-C(-C4(-N))))(-C2(=C(-C(=C3)))))
+natom 16
+Mindex 1 1 2 2 1 1 5 2 2 2 2 2 2 1 1 7 
+Pindex 0 1 2 3 4 5 6 1 8 8 10 11 12 9 14 15 
+Cindex 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+Rindex -1 1 1 2 1 1 1 1 2 1 2 1 2 1 1 1 
+Cyindex 1 4 0 0 0 1 2 0 3 2 0 0 3 0 4 0 
+if_circle 4
+
+C1(-C4(-C(=C(-C(-C1(-O2))))))(-C(=C3(-C(-C4(-N))))(-C2(=C(-C(=C3)))))(-C)
+natom 17
+Mindex 1 1 2 2 1 1 5 2 2 2 2 2 2 1 1 7 1 
+Pindex 0 1 2 3 4 5 6 1 8 8 10 11 12 9 14 15 1 
+Cindex 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 
+Rindex -1 1 1 2 1 1 1 1 2 1 2 1 2 1 1 1 1 
+Cyindex 1 4 0 0 0 1 2 0 3 2 0 0 3 0 4 0 0 
+if_circle 4
+
+r5
+C1(-C4(-C(=C(-C(-C1(-O2))))))(-C(=C3(-C(-C4(-N5))))(-C2(=C(-C(=C3)))))(-C5)
+C1(-C4(-C(=C(-C(-C1(-O2))))))(-C(=C3(-C(-C4(-N5(-C)))))(-C2(=C(-C(=C3)))))(-C5)
+C1(-C4(-C(=C(-C(-C1(-O2))(-O)))))(-C(=C3(-C(-C4(-N5(-C)))))(-C2(=C(-C(=C3)))))(-C5)
+natom 19
+Mindex 1 1 2 2 1 1 5 2 2 2 2 2 2 1 1 7 1 1 5 
+Pindex 0 1 2 3 4 5 6 1 8 8 10 11 12 9 14 15 1 16 5 
+Cindex 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 
+Rindex -1 1 1 2 1 1 1 1 2 1 2 1 2 1 1 1 1 1 1 
+Cyindex 1 4 0 0 0 1 2 0 3 2 0 0 3 0 4 5 5 0 0 
+if_circle 5
+

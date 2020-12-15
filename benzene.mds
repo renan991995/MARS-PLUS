@@ -1,0 +1,7 @@
+natom 6
+Mindex 2 2 2 2 2 2 
+Pindex 0 1 2 3 4 5 
+Cindex 1 2 3 4 5 6 
+Rindex -1 2 1 2 1 2 
+Cyindex 1 0 0 0 0 1 
+if_circle 1

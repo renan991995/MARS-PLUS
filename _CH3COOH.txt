@@ -1,0 +1,6 @@
+C
+C(-C(=O)(-O))
+C(-C(=O)(-O))C
+C(-C(=O)(-O))CC
+C(-C(=O)(-O))CCC
+C(-C(=O)(-O))C(-C)CC

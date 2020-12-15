@@ -1,0 +1,68 @@
+***************************************************************************************
+                   MARS: Molecular Assembling and Representation Suite                 
+                                      Hsuan Hao Hsu                                    
+                                    Chen Hsuan Huang                                   
+                            Shiang Tai Lin (stlin@ntu.edu.tw)                          
+                      Computational Molecular Engineering Laboratory                   
+      Department of Chemical Engineering, National Taiwan University, Taipei, Taiwan   
+                                   Copyright (c) 2019                                  
+                                   All rights Reserved                                 
+***************************************************************************************
+main chain
+C(-C(-C(-C(-C(-C(-C(-C(-C(-C)))))))))
+ring
+C1(-C(-C1(-C(-C(-C(-C(-C(-C(-C)))))))))
+C1(-C(-C(-C1(-C(-C(-C(-C(-C(-C)))))))))
+C1(-C(-C(-C(-C1(-C(-C(-C(-C(-C)))))))))
+C1(-C(-C(-C(-C(-C1(-C(-C(-C(-C)))))))))
+C1(-C(-C(-C(-C(-C(-C1(-C(-C(-C)))))))))
+C1(-C(-C(-C(-C(-C(-C(-C1(-C(-C)))))))))
+C1(-C(-C(-C(-C(-C(-C(-C(-C1(-C)))))))))
+C1(-C(-C(-C(-C(-C(-C(-C(-C(-C1)))))))))
+C(-C1(-C(-C1(-C(-C(-C(-C(-C(-C)))))))))
+C(-C1(-C(-C(-C1(-C(-C(-C(-C(-C)))))))))
+C(-C1(-C(-C(-C(-C1(-C(-C(-C(-C)))))))))
+C(-C1(-C(-C(-C(-C(-C1(-C(-C(-C)))))))))
+C(-C1(-C(-C(-C(-C(-C(-C1(-C(-C)))))))))
+C(-C1(-C(-C(-C(-C(-C(-C(-C1(-C)))))))))
+C(-C1(-C(-C(-C(-C(-C(-C(-C(-C1)))))))))
+C(-C(-C1(-C(-C1(-C(-C(-C(-C(-C)))))))))
+C(-C(-C1(-C(-C(-C1(-C(-C(-C(-C)))))))))
+C(-C(-C1(-C(-C(-C(-C1(-C(-C(-C)))))))))
+C(-C(-C1(-C(-C(-C(-C(-C1(-C(-C)))))))))
+C(-C(-C1(-C(-C(-C(-C(-C(-C1(-C)))))))))
+C(-C(-C1(-C(-C(-C(-C(-C(-C(-C1)))))))))
+C(-C(-C(-C1(-C(-C1(-C(-C(-C(-C)))))))))
+C(-C(-C(-C1(-C(-C(-C1(-C(-C(-C)))))))))
+C(-C(-C(-C1(-C(-C(-C(-C1(-C(-C)))))))))
+C(-C(-C(-C1(-C(-C(-C(-C(-C1(-C)))))))))
+C(-C(-C(-C1(-C(-C(-C(-C(-C(-C1)))))))))
+C(-C(-C(-C(-C1(-C(-C1(-C(-C(-C)))))))))
+C(-C(-C(-C(-C1(-C(-C(-C1(-C(-C)))))))))
+C(-C(-C(-C(-C1(-C(-C(-C(-C1(-C)))))))))
+C(-C(-C(-C(-C1(-C(-C(-C(-C(-C1)))))))))
+exchange, 1 pi
+C(=C(-C(-C(-C(-C(-C(-C(-C(-C)))))))))
+C(-C(=C(-C(-C(-C(-C(-C(-C(-C)))))))))
+C(-C(-C(=C(-C(-C(-C(-C(-C(-C)))))))))
+C(-C(-C(-C(=C(-C(-C(-C(-C(-C)))))))))
+C(-C(-C(-C(-C(=C(-C(-C(-C(-C)))))))))
+conjugated pi
+C(=C(-C(-C(-C(-C(-C(-C(-C(-C)))))))))
+C(=C(-C(=C(-C(-C(-C(-C(-C(-C)))))))))
+C(=C(-C(=C(-C(=C(-C(-C(-C(-C)))))))))
+C(=C(-C(=C(-C(=C(-C(=C(-C(-C)))))))))
+C(=C(-C(=C(-C(=C(-C(=C(-C(=C)))))))))
+C(-C(-C(=C(-C(=C(-C(=C(-C(=C)))))))))
+C(-C(-C(-C(-C(=C(-C(=C(-C(=C)))))))))
+C(-C(-C(-C(-C(-C(-C(=C(-C(=C)))))))))
+C(-C(-C(-C(-C(-C(-C(-C(-C(=C)))))))))
+C(-C(-C(-C(-C(-C(-C(-C(-C(-C)))))))))
+conjugated to benzoid
+C1(=C(-C(=C(-C(=C1(-C(=C(-C(=C)))))))))
+exchange, three bond
+C(#C(-C(-C(-C(-C(-C(-C(-C(-C)))))))))
+C(-C(#C(-C(-C(-C(-C(-C(-C(-C)))))))))
+C(-C(-C(#C(-C(-C(-C(-C(-C(-C)))))))))
+C(-C(-C(-C(#C(-C(-C(-C(-C(-C)))))))))
+C(-C(-C(-C(-C(#C(-C(-C(-C(-C)))))))))
