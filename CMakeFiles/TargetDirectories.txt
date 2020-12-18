@@ -1,3 +1,0 @@
-/home/tom61212/share/MARS-20201211/CMakeFiles/rebuild_cache.dir
-/home/tom61212/share/MARS-20201211/CMakeFiles/edit_cache.dir
-/home/tom61212/share/MARS-20201211/CMakeFiles/MARS.dir
