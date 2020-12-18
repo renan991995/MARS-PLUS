@@ -11,7 +11,8 @@ using namespace std;
 class OPT {
 	public :
 		OPT (){
-			data.set_up();
+			//data.set_up();
+			data=NULL;
 			Etot=0.0;
 			act=0;
 			tot=0;
@@ -19,6 +20,13 @@ class OPT {
 			id=NULL;
 			table=NULL;
 		}
+		~OPT() {
+			delete data;
+			data=NULL;
+			delete [] id;
+			id=NULL;
+			
+		} 
 		int optimize();
 		int bnd(int, int);  // energy of bond
 		int ang(int , int ,int); // energy of angle
@@ -27,7 +35,7 @@ class OPT {
 		double Etot;
 		int act,tot;
 		Matrix x0,f,df;
-		POOL data;
+		POOL *data;
 		int **table, *id, num,count;
 };
 #endif

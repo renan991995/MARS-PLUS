@@ -1,0 +1,10 @@
+***************************************************************************************
+               Molecular Data Structure for Computer-aided Molecular Design            
+                                      Hsuan Hao Hsu                                    
+                                    Chen Hsuan Huang                                   
+                            Shiang Tai Lin (stlin@ntu.edu.tw)                          
+                      Computational Molecular Engineering Laboratory                   
+      Department of Chemical Engineering, National Taiwan University, Taipei, Taiwan   
+                                   Copyright (c) 2019                                  
+                                   All rights Reserved                                 
+***************************************************************************************

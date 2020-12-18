@@ -1,5 +1,21 @@
 #ifndef ATOM_h
 #define ATOM_h
+#include <openbabel/obconversion.h>
+#include <openbabel/mol.h>
+#include <openbabel/atom.h>
+#include <openbabel/data.h>
+#include <openbabel/data_utilities.h>
+#include <openbabel/obiter.h>
+#include <openbabel/chiral.h>
+#include <openbabel/stereo/stereo.h>
+#include <openbabel/stereo/cistrans.h>
+#include <openbabel/stereo/squareplanar.h>
+#include <openbabel/stereo/tetranonplanar.h>
+#include <openbabel/stereo/tetraplanar.h>
+#include <openbabel/stereo/tetrahedral.h>
+#include <openbabel/builder.h>
+#include <openbabel/typer.h>
+#include <openbabel/tokenst.h>
 #include <sys/types.h>
 #include <dirent.h>
 #include <cerrno>
@@ -17,64 +33,99 @@
 #include <sstream>
 #include "MATRIX.h"
 using namespace std;
+
 class ATOM
 {
 	public:
 		ATOM() {
 			order.resize(0);
+			//order=NULL;
+			name=atm="";
+			index=2;
+			nh=0;
+			chg=0;
+			probability=0;
+			bd[0]=bd[1]=bd[2]=0;
+			norder=nbond=4;
+			rb=0;
+			type=1;
+			id=0;
+			ang0=0;
+			probability=0;
 		}
 		~ATOM() {
-			vector<int>().swap(order);
+			order.clear();
+			//vector<int>().swap(order);
 		}
 		int id;
-		string name,atm;
+		string name;
+		string atm;
 		vector<int> order;
+		//int *order;
 		int nh;
 		int bd[3];
 		int type;
 		int index;
 		double rb;
+		double probability;
 		double ang0;
-		int norder;		// how many bonds the atom has, i.e. in the braket
-		int chg;			// charge
-		int nbond; // how many char of the name
+		int norder;
+		int chg;
+		int nbond; // how many char for name
 };
 
 class DEATOM {
 	public :
 		DEATOM() {
+			//x[0]=x[1]=x[2]=0;
+			name="";
+			r_bnd=0;
+			nbnd=0;
+			chg=0;
+			nH=0;
+			chirality=0;
+			cistrans[0]=cistrans[1]="";
+			//cistrans="";
 		}
 		~DEATOM() {}
 		string name;
 		double r_bnd;
 		int nbnd;
-		double x[3];
+		int nH;
+		int chirality;
+		//string cistrans;
+		string cistrans[2];
+		//double x[3];
 		void find_r();
+		int chg; //20200211
 }; 
 
 class POOL
 {
 	public:
-		POOL(){ 
+		POOL(){
+			a.resize(0); 
 			//a=NULL;
-			a.resize(0);
-			if (0) set_up();
+			num=0;
 		}
 		~POOL(){ 
-			if (0) {
-				/*
-				if(a!=NULL) {
-					delete [] a;
-					a=NULL;
-				}
-				*/
-				//a.clear();
-				vector<ATOM>().swap(a);
-			}
+            //a.clear();
+            if(a.size()) {
+                for (int r1=0;r1<num;r1++) {
+                    if(a.at(r1).order.size()) {
+                        a.at(r1).order.clear();
+                        //vector<int>().swap(a.at(r1).order);
+                    }
+                }
+                a.clear();
+                //vector<ATOM>().swap(a);
+            }
+
+            vector<ATOM>().swap(a);
 		}
 		int num;
 		//ATOM *a; //  types of atoms
-		vector<ATOM> a;
+		vector<ATOM> a;		
 		void set_up();
 
 	private:

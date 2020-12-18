@@ -1,0 +1,9 @@
+natom 12   
+Mindex 1    1    2    1    16   1    2    7    2    11   2    8    
+Pindex 0    1    2    3    3    4    5    5    7    8    8    11   
+Cindex 1    2    3    4    5    6    7    8    9    10   11   12   
+Rindex -1   1    1    1    2    1    1    1    2    1    1    2    
+Cyindex 0    0    0    0    0    1    0    0    12   0    2    0    
+ctsisomer_start N/A  N/A  /    N/A  N/A  N/A  /    N/A  N/A  N/A  N/A  N/A  
+ctsisomer_end N/A  N/A  N/A  N/A  /    N/A  N/A  N/A  /    N/A  N/A  N/A  
+if_circle 2   

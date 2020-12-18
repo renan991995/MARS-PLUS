@@ -1,0 +1,2 @@
+CC[C@@](F)(Br)CCCC[n+]1ccccc1   P(OCC[C@](Cl)(O)CCCCC)(OCC[C@@](I)(S)CCCCC)(=O)[O-]
+Cn1cc[n+](c1C)C    [B-](C#N)(C#N)(C#N)(C#N)

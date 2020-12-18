@@ -1,0 +1,61 @@
+###########################################################################################################
+#                           MARS: Molecular Assembling and Representation Suite                           #
+#                                               Hsuan-Hao Hsu                                             #
+#                                             Chen-Hsuan Huang                                            #
+#                                     Shiang-Tai Lin (stlin@ntu.edu.tw)                                   #
+#                               Computational Molecular Engineering Laboratory                            #
+#             Department of Chemical Engineering, National Taiwan University, Taipei, Taiwan              #
+#                                            Copyright (c) 2019                                           #
+#                                            All rights Reserved                                          #
+###########################################################################################################
+############################################## input format ###############################################
+###########################################################################################################
+#
+#  ION:				  				appearance of ion.
+#													  
+#  CHEMICAL_INPULIST:				Use initial gauss or not
+#  					  				"none" or list route 
+#					  				(SMILES of desired molecules as initial guess are listed in a file)
+#
+#  PROTECT:							1: protection of ring and charded atom / 0: none
+#
+#  OBABEL_ROUTE:					Route of OBabel Executable file (.exe)
+#
+#  EXHAUSTIVE_OPERATIONS:			
+#
+#  OUTFILE:
+#
+#  To start a design, use command line instructions:   							  
+#  	1.  Check the parameters in "6set_memredu.in"
+#  	2.  Check "job.sh"
+#   3.  qsub job.sh											  
+#  													  
+###########################################################################################################
+
+
+#Directory (absolute route)        Default is OK. You can left it blank.
+  #SMIDIR				
+  #OUTFILE
+
+
+#Appearance of ions
+  #ION					0
+  ION					1
+
+
+#Proctection
+  PROTECT				0
+  #PROTECT				1
+
+
+#Initial guess molecules/ILs
+  #CHEMICAL_IUPUTLIST					MARIL.txt
+  #CHEMICAL_IUPUTLIST                   MARIL1.txt
+  #CHEMICAL_IUPUTLIST                   MARIL2.txt
+  #CHEMICAL_IUPUTLIST                   MARIL3.txt
+  CHEMICAL_IUPUTLIST                   MARIL4.txt
+  #CHEMICAL_IUPUTLIST                   MARIL5.txt
+
+
+#Route of Obabel executable file
+  OBABEL_ROUTE							/home/software/programs/openbabel-openbabel-2-4-1/build/bin/obabel

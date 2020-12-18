@@ -77,7 +77,7 @@ int OPT::optimize() {
 
 int OPT::ang(int l,int m,int n) {
 	int i,j,k;
-	double ang0=data.a[id[m]].ang0;
+	double ang0=data->a[id[m]].ang0;
 	double dot=0.0,deg;
 	double r1[3],r2[3],R1=0.0,R2=0.0,C=120.0,f1[3],f2[3];
 	for (i=0;i<3;i++) {
@@ -114,7 +114,7 @@ int OPT::ang(int l,int m,int n) {
 
 int OPT::bnd(int n, int m) {
 	int i,j,k;
-	double r[3],R=0.0,r0=(data.a[id[n]].rb+data.a[id[m]].rb)*1.00,C=500.0;
+	double r[3],R=0.0,r0=(data->a[id[n]].rb+data->a[id[m]].rb)*1.00,C=500.0;
 	for (i=0;i<3;i++) r[i]=x0[m+i*num][0]-x0[n+i*num][0];
 	for (i=0;i<3;i++) R+=r[i]*r[i];
 	R=sqrt(R);
@@ -147,7 +147,7 @@ int OPT::validate() {
 	}
 	for (i=0;i<num;i++) {
 		for (j=i+1;j<num;j++) {
-			r0=(data.a[id[i]].rb+data.a[id[j]].rb)*1.15;
+			r0=(data->a[id[i]].rb+data->a[id[j]].rb)*1.15;
 			r=0.0;
 			for (k=0;k<3;k++) r+=(x0[i+k*num][0]-x0[j+k*num][0])*(x0[i+k*num][0]-x0[j+k*num][0]);
 			r=sqrt(r);
@@ -179,6 +179,6 @@ int OPT::validate() {
 	
 void OPT::output(ostream &out) {
 	int i;
-	for (i=0;i<num;i++) out<<data.a[id[i]].atm<<" "<<x0[i][0]<<" "<<x0[i+num][0]<<" "<<x0[i+2*num][0]<<endl;
+	for (i=0;i<num;i++) out<<data->a[id[i]].atm<<" "<<x0[i][0]<<" "<<x0[i+num][0]<<" "<<x0[i+2*num][0]<<endl;
 	return;
 }

@@ -1,2594 +1,5350 @@
 #include "MOLECULE.h"
-#include <cstdlib>
 #define p_circle 0.2
-// PARAMETER par;
+using namespace std;
+using namespace OpenBabel;
+
+
+extern PARAMETER para;
+
 
 double MOLECULE::prob() {
-  double p;
-  p = (double)rand() / RAND_MAX;
-  return p;
+	double p=(double)rand()/(double)RAND_MAX;
+	return p;
 }
 
-int MOLECULE::crossover(MOLECULE &aaa, int pp, int jj) {
-  int n;
-  int m;
-  int k = 0;
-  int a;
-  int b;
-  int y;
-  int x;
-  int c;
-  int ref;
-  int delta;
-  int pos_i;
-  int pos_j;
-  vector<int> t, f;
-  vector<int> ci_ref, mi_ref, pi_ref, ri_ref, cyi, pri;
-  vector<int> cj_ref, mj_ref, pj_ref, rj_ref, cyj, prj;
-  k = 0;
-  if (aaa.Rindex.at(jj) == Rindex.at(pp)) {
-    k = 1;
-    m = jj;
-    n = pp;
-    b = aaa.Pindex[m];
-    a = Pindex[n];
-    y = aaa.Cindex[m];
-    x = Cindex[n];
-    ri_ref.push_back(Rindex[n]);
-    rj_ref.push_back(aaa.Rindex[m]);
-    ci_ref.push_back(x);
-    cj_ref.push_back(y);
-    pi_ref.push_back(a);
-    pj_ref.push_back(b);
-    mi_ref.push_back(Mindex[n]);
-    cyi.push_back(Cyindex.at(n));
-    cyj.push_back(aaa.Cyindex.at(m));
-    mj_ref.push_back(aaa.Mindex[m]);
-  }
 
-  if (k == 0) return 0;
-  if (k == 1) {
-    for (n = 1; n < Cindex.size(); n++) {
-      if (Cindex[n] > ci_ref[0]) {
-        ref = ci_ref.size();
-        for (m = 0; m < ref; m++) {
-          if (Pindex[n] == ci_ref[m]) {
-            ci_ref.push_back(Cindex.at(n));
-            mi_ref.push_back(Mindex.at(n));
-            pi_ref.push_back(Pindex.at(n));
-            ri_ref.push_back(Rindex.at(n));
-            cyi.push_back(Cyindex.at(n));
-          }
-        }
-      }
-    }
-    for (m = 1; m < aaa.Cindex.size(); m++) {
-      if (aaa.Cindex[m] > cj_ref[0]) {
-        ref = cj_ref.size();
-        for (n = 0; n < ref; n++) {
-          if (aaa.Pindex[m] == cj_ref[n]) {
-            cj_ref.push_back(aaa.Cindex.at(m));
-            mj_ref.push_back(aaa.Mindex.at(m));
-            pj_ref.push_back(aaa.Pindex.at(m));
-            rj_ref.push_back(aaa.Rindex.at(m));
-            cyj.push_back(aaa.Cyindex.at(m));
-          }
-        }
-      }
-    }
-    for (n = 0; n < pri.size(); n++)
-      if (pri.at(n)) return 0;
-    for (n = 0; n < prj.size(); n++)
-      if (prj.at(n)) return 0;
-    a = 0;
-    for (n = 0; n < cyi.size(); n++) {
-      if (cyi.at(n)) {
-        cyi[n] += if_circle;
-        a++;
-      }
-    }
-    if (a % 2 && if_circle) {
-      for (n = 0; n < cyi.size(); n++)
-        if (cyi.at(n)) cyi.at(n) = if_circle;
-    } else if (a % 2) {
-      for (n = 0; n < cyi.size(); n++) cyi.at(n) = 0;
-    }
-    a = 0;
-    for (n = 0; n < cyj.size(); n++) {
-      if (cyj.at(n)) {
-        cyj[n] += aaa.if_circle;
-        a++;
-      }
-    }
-    if (a % 2 && aaa.if_circle) {
-      for (n = 0; n < cyj.size(); n++)
-        if (cyj.at(n)) cyj.at(n) = aaa.if_circle;
-    }
-    if (a % 2) {
-      for (n = 0; n < cyj.size(); n++) cyj.at(n) = 0;
-    }
+int MOLECULE::replace(MOLECULE &mol) {
+	if (mol.Cindex.size()==0) {
+		cout<<"Error: It cannot be replaced by an empty molecule. smiles = " << mol.smiles << " | molesmi = " << mol.molesmi << endl;
+		return 0;
+		//exit(1);
+	}
+	else {
+		int i=0,j=0;
+		empty();
+		//clean();
+		clear();
 
-    x = ci_ref[0];
-    y = cj_ref[0];
-    a = pi_ref[0];
-    b = pj_ref[0];
-    for (n = 0; n < ci_ref.size(); n++) {
-      for (m = 0; m < Cindex.size(); m++) {
-        if (Cindex[m] == ci_ref[n]) {
-          Mindex.erase(Mindex.begin() + m);
-          Cindex.erase(Cindex.begin() + m);
-          Pindex.erase(Pindex.begin() + m);
-          Rindex.erase(Rindex.begin() + m);
-          Cyindex.erase(Cyindex.begin() + m);
-        }
-      }
-    }
-    for (m = 0; m < cj_ref.size(); m++) {
-      for (n = 0; n < aaa.Cindex.size(); n++) {
-        if (aaa.Cindex[n] == cj_ref[m]) {
-          aaa.Mindex.erase(aaa.Mindex.begin() + n);
-          aaa.Cindex.erase(aaa.Cindex.begin() + n);
-          aaa.Pindex.erase(aaa.Pindex.begin() + n);
-          aaa.Rindex.erase(aaa.Rindex.begin() + n);
-          aaa.Cyindex.erase(aaa.Cyindex.begin() + n);
-        }
-      }
-    }
-    t.clear();
-    for (n = 1; n < ci_ref.size(); n++) {
-      for (m = 0; m < ci_ref.size(); m++) {
-        if (pi_ref[n] == ci_ref[m]) {
-          t.push_back(m);
-        }
-      }
-    }
-    f.clear();
-    for (n = 1; n < cj_ref.size(); n++) {
-      for (m = 0; m < cj_ref.size(); m++) {
-        if (pj_ref[n] == cj_ref[m]) {
-          f.push_back(m);
-        }
-      }
-    }
-    pi_ref[0] = b;
-    pj_ref[0] = a;
-    ci_ref[0] = y;
-    cj_ref[0] = x;
+		ctsisomer.resize(2,vector<string>(0));
+		for (i=0;i<mol.Cindex.size();i++) {
+			Cindex.push_back(mol.Cindex.at(i));
+			Pindex.push_back(mol.Pindex.at(i));
+			Rindex.push_back(mol.Rindex.at(i));
+			Cyindex.push_back(mol.Cyindex.at(i));
+			Mindex.push_back(mol.Mindex.at(i));
+			if (para.protect) protect.push_back(mol.protect.at(i));
+            //ctsisomer.push_back(mol.ctsisomer.at(i));
+            ctsisomer.at(0).push_back(mol.ctsisomer.at(0).at(i));
+            ctsisomer.at(1).push_back(mol.ctsisomer.at(1).at(i));
+		}
+		if_circle=mol.if_circle;
 
-    for (n = 1; n < ci_ref.size(); n++) {
-      ci_ref[n] = ci_ref[n - 1] + 1;
-      pi_ref[n] = ci_ref[t[n - 1]];
-    }
-    for (n = 1; n < cj_ref.size(); n++) {
-      cj_ref[n] = cj_ref[n - 1] + 1;
-      pj_ref[n] = cj_ref[f[n - 1]];
-    }
+		lnKow=mol.lnKow;
+		Henry=mol.Henry;
 
-    t.clear();
-    f.clear();
-    for (n = 1; n < Cindex.size(); n++) {
-      for (m = 0; m < Cindex.size(); m++) {
-        if (Pindex[n] == Cindex[m]) {
-          t.push_back(m);
-        }
-      }
-    }
-    ref = -1;
-    for (n = 1; n < Cindex.size(); n++) {
-      if (Cindex[n] != Cindex[n - 1] + 1) {
-        ref = n;
-        Cindex[ref] = Cindex[ref - 1] + cj_ref.size() + 1;
-        break;
-      }
-    }
-    if (ref != -1) {
-      for (n = ref + 1; n < Cindex.size(); n++) {
-        Cindex[n] = Cindex[n - 1] + 1;
-      }
+		HOMO=mol.HOMO;
+		LUMO=mol.LUMO;
+		Egap=mol.Egap;
 
-      for (n = 1; n < Cindex.size(); n++) {
-        Pindex[n] = Cindex[t[n - 1]];
-      }
-    }
-    t.clear();
-    f.clear();
-    for (n = 1; n < aaa.Cindex.size(); n++) {
-      for (m = 0; m < aaa.Cindex.size(); m++) {
-        if (aaa.Pindex[n] == aaa.Cindex[m]) {
-          t.push_back(m);
-        }
-      }
-    }
-    ref = -1;
-    for (n = 1; n < aaa.Cindex.size(); n++) {
-      if (aaa.Cindex[n] != aaa.Cindex[n - 1] + 1) {
-        ref = n;
-        aaa.Cindex[ref] = aaa.Cindex[ref - 1] + ci_ref.size() + 1;
-        break;
-      }
-    }
-    if (ref != -1) {
-      for (n = ref + 1; n < aaa.Cindex.size(); n++) {
-        aaa.Cindex[n] = aaa.Cindex[n - 1] + 1;
-      }
+		IP=mol.IP;
+		EA=mol.EA;
+		hardness=mol.hardness;
+		ephilic=mol.ephilic;
 
-      for (n = 1; n < aaa.Cindex.size(); n++) {
-        aaa.Pindex[n] = aaa.Cindex[t[n - 1]];
-      }
-    }
-  }
-  n = 0;
-  ref = 1;
-  while (n < cj_ref.size()) {
-    for (m = 0; m < Cindex.size(); m++) {
-      if (Cindex[m] > cj_ref[n] && Cindex[m - 1] < cj_ref[n]) {
-        Cindex.insert(Cindex.begin() + m, cj_ref[n]);
-        Pindex.insert(Pindex.begin() + m, pj_ref[n]);
-        Mindex.insert(Mindex.begin() + m, mj_ref[n]);
-        Rindex.insert(Rindex.begin() + m, rj_ref[n]);
-        Cyindex.insert(Cyindex.begin() + m, cyj.at(n));
-        n++;
-        break;
-      } else if (Cindex[Cindex.size() - 1] < cj_ref[n]) {
-        Cindex.push_back(cj_ref[n]);
-        Pindex.push_back(pj_ref[n]);
-        Mindex.push_back(mj_ref[n]);
-        Rindex.push_back(rj_ref[n]);
-        Cyindex.push_back(cyj.at(n));
-        n++;
-        break;
-      }
-    }
-  }
-  m = 0;
-  ref = 1;
-  while (m < ci_ref.size()) {
-    for (n = 0; n < aaa.Cindex.size(); n++) {
-      if (aaa.Cindex[n] > ci_ref[m] && aaa.Cindex[n - 1] < ci_ref[m]) {
-        ref = n;
-        aaa.Cindex.insert(aaa.Cindex.begin() + ref, ci_ref[m]);
-        aaa.Pindex.insert(aaa.Pindex.begin() + ref, pi_ref[m]);
-        aaa.Mindex.insert(aaa.Mindex.begin() + ref, mi_ref[m]);
-        aaa.Rindex.insert(aaa.Rindex.begin() + ref, ri_ref[m]);
-        aaa.Cyindex.insert(aaa.Cyindex.begin() + ref, cyi.at(m));
-        m++;
-        break;
-      } else if (aaa.Cindex[aaa.Cindex.size() - 1] < ci_ref[m]) {
-        ref = n;
-        aaa.Cindex.push_back(ci_ref[m]);
-        aaa.Pindex.push_back(pi_ref[m]);
-        aaa.Mindex.push_back(mi_ref[m]);
-        aaa.Rindex.push_back(ri_ref[m]);
-        aaa.Cyindex.push_back(cyi.at(m));
-        m++;
-        break;
-      }
-    }
-  }
-  reset();
-  aaa.reset();
-  vector<int>().swap(t);
-  vector<int>().swap(f);
-  vector<int>().swap(ci_ref);
-  vector<int>().swap(mi_ref);
-  vector<int>().swap(ri_ref);
-  vector<int>().swap(cj_ref);
-  vector<int>().swap(mj_ref);
-  vector<int>().swap(rj_ref);
-  vector<int>().swap(prj);
-  vector<int>().swap(pri);
-  return 1;
+		fitness=mol.fitness;
+		p_sel=mol.p_sel;
+		front=mol.front;
+		crowdist=mol.crowdist;
+		natom=mol.natom;
+		smiles=mol.smiles;
+		molesmi=mol.molesmi;
+		nsubcomp=1;
+		comp_id=mol.comp_id;
+		frac=mol.frac;
+		chg=mol.chg;
+		multiplicity=mol.multiplicity;
+		
+		data=mol.data;
+
+		//reset();
+		mds2smi();
+	}
+	return 1;
 }
+
+int MOLECULE::crossover(MOLECULE &aaa,int pp, int jj) {
+	if (para.protect) {
+		if (protect.at(pp)) return 0; //20200625
+		if (aaa.protect.at(jj)) return 0; //20200625
+	}
+	int n;
+	int m;
+	int k=0;
+	int a;
+	int b;
+	int y;
+	int x;
+	int c;
+	int ref;
+	int delta;
+	int pos_i;
+	int pos_j;
+	vector<int> t,f;
+	vector<int> ci_ref, mi_ref,pi_ref,ri_ref,cyi,pri;
+	vector<int> cj_ref, mj_ref,pj_ref,rj_ref,cyj,prj;
+	//vector<string> cti_ref,ctj_ref;
+	vector< vector<string> > cti_ref,ctj_ref;
+	
+	vector<bool> ifchg(4,0);
+	if (para.ion) {
+	for (int k1=0;k1<Cindex.size();k1++) {
+		if (Cindex.at(k1)<=Cindex.at(pp) && data->a[Mindex.at(k1)].chg) {
+			ifchg.at(0)=1;
+			break;
+		}
+	}
+	for (int k1=0;k1<Cindex.size();k1++) {
+		if (Cindex.at(k1)>=Cindex.at(pp) && data->a[Mindex.at(k1)].chg) {
+			ifchg.at(1)=1;
+			break;
+		}
+	}
+	for (int k1=0;k1<aaa.Cindex.size();k1++) {
+		if (aaa.Cindex.at(k1)<=aaa.Cindex.at(jj) && data->a[aaa.Mindex.at(k1)].chg) {
+			ifchg.at(2)=1;
+			break;
+		}
+	}
+	for (int k1=0;k1<aaa.Cindex.size();k1++) {
+		if (aaa.Cindex.at(k1)>=aaa.Cindex.at(jj) && data->a[aaa.Mindex.at(k1)].chg) {
+			ifchg.at(3)=1;
+			break;
+		}
+	}
+	bool no1=0;
+	//cout << "cros_chg " << ifchg.at(0) << " " << ifchg.at(1) << " " << ifchg.at(2) << " " << ifchg.at(3) << endl;
+	if (0) {
+		if (ifchg.at(0)==1 && ifchg.at(2)==1 && ifchg.at(1)==0 && ifchg.at(3)==0) no1=1;
+		if (ifchg.at(1)==1 && ifchg.at(3)==1 && ifchg.at(0)==0 && ifchg.at(2)==0) no1=1;
+	}
+	if (0) {
+		if (ifchg.at(0)==1 && ifchg.at(3)==1 && ifchg.at(1)==0 && ifchg.at(2)==0) no1=1;
+		if (ifchg.at(1)==1 && ifchg.at(2)==1 && ifchg.at(0)==0 && ifchg.at(3)==0) no1=1;
+	}
+	if (1) {
+		if (ifchg.at(0)==1 && ifchg.at(3)==1) no1=1;
+		if (ifchg.at(1)==0 && ifchg.at(2)==0) no1=1;
+		if (ifchg.at(1)==1 && ifchg.at(2)==1) no1=1;
+		if (ifchg.at(0)==0 && ifchg.at(3)==0) no1=1;
+	}
+	if (no1) {
+		/*
+		cout << "pp: " << pp << " | " 
+			<< "jj: " << jj << " | "
+			<< "cros_chg: fail cros " << ifchg.at(0) << " " << ifchg.at(1) << " " << ifchg.at(2) << " " << ifchg.at(3) << endl;
+		*/
+		return 0;
+	}
+	}
+
+    vector<bool> ifcyc(4,0);
+    if (para.protect && if_circle) {
+        for (int k1=0;k1<Cindex.size();k1++) {
+            if (Cindex.at(k1)<=Cindex.at(pp) && Cyindex.at(k1)) {
+                ifcyc.at(0)=1;
+                break;
+            }
+        }
+        for (int k1=0;k1<Cindex.size();k1++) {
+            if (Cindex.at(k1)>=Cindex.at(pp) && Cyindex.at(k1)) {
+                ifcyc.at(1)=1;
+                break;
+            }
+        }
+        for (int k1=0;k1<aaa.Cindex.size();k1++) {
+            if (aaa.Cindex.at(k1)<=aaa.Cindex.at(jj) && aaa.Cyindex.at(k1)) {
+                ifcyc.at(2)=1;
+                break;
+            }
+        }
+        for (int k1=0;k1<aaa.Cindex.size();k1++) {
+            if (aaa.Cindex.at(k1)>=aaa.Cindex.at(jj) && aaa.Cyindex.at(k1)) {
+                ifcyc.at(3)=1;
+                break;
+            }
+        }
+    }
+	bool no2=0;
+    if (1) {
+        if (ifcyc.at(0)==1 && ifcyc.at(1)==1) no2=1;
+        if (ifcyc.at(2)==1 && ifcyc.at(3)==1) no2=1;
+    }
+    if (no2) {
+		/*
+        cout << "pp: " << pp << " | "
+            << "jj: " << jj << " | "
+            << "cros_cyc: fail cros " << ifcyc.at(0) << " " << ifcyc.at(1) << " " << ifcyc.at(2) << " " << ifcyc.at(3) << endl;
+		*/
+        return 0;
+    }
+
+	//double time1=time(NULL);
+
+	k=0;
+	if (aaa.Rindex.at(jj)==Rindex.at(pp)) {
+		k=1;
+		m=jj;
+		n=pp;
+		//b=aaa.Pindex.at(m);
+		//a=Pindex.at(n);
+		//y=aaa.Cindex.at(m);
+		//x=Cindex.at(n);
+		ri_ref.push_back(Rindex.at(n));
+		rj_ref.push_back(aaa.Rindex.at(m));
+		ci_ref.push_back(Cindex.at(n));
+		cj_ref.push_back(aaa.Cindex.at(m));
+		pi_ref.push_back(Pindex.at(n));
+		pj_ref.push_back(aaa.Pindex.at(m));
+		mi_ref.push_back(Mindex.at(n));
+		mj_ref.push_back(aaa.Mindex.at(m));
+        //cti_ref.push_back(ctsisomer.at(n));
+
+        cti_ref.resize(2,vector<string>(0));
+        cti_ref.at(0).push_back(ctsisomer.at(0).at(n));
+        cti_ref.at(1).push_back(ctsisomer.at(1).at(n));
+
+        //ctj_ref.push_back(aaa.ctsisomer.at(m));
+
+        ctj_ref.resize(2,vector<string>(0));
+        ctj_ref.at(0).push_back(aaa.ctsisomer.at(0).at(m));
+        ctj_ref.at(1).push_back(aaa.ctsisomer.at(1).at(m));
+
+		cyi.push_back(Cyindex.at(n));
+		cyj.push_back(aaa.Cyindex.at(m));
+		if (para.protect) pri.push_back(protect.at(n));
+		if (para.protect) prj.push_back(aaa.protect.at(m));
+	}
+
+	if (k==0) return 0;
+	if (k==1) {
+		for (n=1;n<Cindex.size();n++) {
+			if (Cindex.at(n) > ci_ref.at(0)) {
+				ref = ci_ref.size();
+				for (m=0;m<ref;m++) {
+					if (Pindex.at(n) == ci_ref.at(m)) {
+						ci_ref.push_back(Cindex.at(n));
+						mi_ref.push_back(Mindex.at(n));
+						pi_ref.push_back(Pindex.at(n));
+						ri_ref.push_back(Rindex.at(n));
+                        //cti_ref.push_back(ctsisomer.at(n));
+                        cti_ref.at(0).push_back(ctsisomer.at(0).at(n));
+                        cti_ref.at(1).push_back(ctsisomer.at(1).at(n));
+						cyi.push_back(Cyindex.at(n));
+						
+						if (para.protect) pri.push_back(protect.at(n));
+					}
+				}
+			}
+		}
+		for (m=1;m<aaa.Cindex.size();m++) {
+			if (aaa.Cindex.at(m) > cj_ref.at(0) ) {
+				ref = cj_ref.size();
+				for (n=0;n<ref;n++) {
+					if (aaa.Pindex.at(m) == cj_ref.at(n)) {
+						cj_ref.push_back(aaa.Cindex.at(m));
+						mj_ref.push_back(aaa.Mindex.at(m));
+						pj_ref.push_back(aaa.Pindex.at(m));
+						rj_ref.push_back(aaa.Rindex.at(m));
+                        //ctj_ref.push_back(aaa.ctsisomer.at(m));
+                        ctj_ref.at(0).push_back(aaa.ctsisomer.at(0).at(m));
+                        ctj_ref.at(1).push_back(aaa.ctsisomer.at(1).at(m));
+						cyj.push_back(aaa.Cyindex.at(m));
+						
+						if (para.protect) prj.push_back(aaa.protect.at(m));
+					}
+				}
+			}
+		}
+		for (n=0;n<pri.size();n++) if (pri.at(n)) return 0;
+		for (n=0;n<prj.size();n++) if (prj.at(n)) return 0;
+		a=0;
+		for (n=0;n<cyi.size();n++) {
+			if (cyi.at(n)) {
+				cyi.at(n)+=if_circle;
+				a++;
+			}
+		}
+		if (a%2 && if_circle) {
+			for (n=0;n<cyi.size();n++) if (cyi.at(n)) cyi.at(n)=if_circle;
+		}
+		else if (a%2) {
+			for (n=0;n<cyi.size();n++) cyi.at(n)=0;
+		}
+		a=0;
+		for (n=0;n<cyj.size();n++) {
+			if (cyj.at(n)) {
+				cyj.at(n)+=aaa.if_circle;
+				a++;
+			}
+		}
+		if (a%2 && aaa.if_circle) {
+			for (n=0;n<cyj.size();n++) if (cyj.at(n)) cyj.at(n)=aaa.if_circle;
+		}
+		if (a%2) {
+			for (n=0;n<cyj.size();n++) cyj.at(n)=0;
+		}
+		x=ci_ref.at(0);
+		y=cj_ref.at(0);
+		a=pi_ref.at(0);
+		b=pj_ref.at(0);
+		for (n=0;n<ci_ref.size();n++) {
+			for (m=0;m<Cindex.size();m++) {
+				if (Cindex.at(m) == ci_ref.at(n)) {
+					Mindex.erase(Mindex.begin()+m);
+					Cindex.erase(Cindex.begin()+m);
+					Pindex.erase(Pindex.begin()+m);
+					Rindex.erase(Rindex.begin()+m);
+					Cyindex.erase(Cyindex.begin()+m);
+                    //ctsisomer.erase(ctsisomer.begin()+m);
+                    ctsisomer.at(0).erase(ctsisomer.at(0).begin()+m);
+                    ctsisomer.at(1).erase(ctsisomer.at(1).begin()+m);
+					if (para.protect) protect.erase(protect.begin()+m);
+				}
+			}
+		}
+		for (m=0;m<cj_ref.size();m++) {
+			for (n=0;n<aaa.Cindex.size();n++) {
+				if (aaa.Cindex.at(n) == cj_ref.at(m)) {
+					aaa.Mindex.erase(aaa.Mindex.begin()+n);
+					aaa.Cindex.erase(aaa.Cindex.begin()+n);
+					aaa.Pindex.erase(aaa.Pindex.begin()+n);
+					aaa.Rindex.erase(aaa.Rindex.begin()+n);
+					aaa.Cyindex.erase(aaa.Cyindex.begin()+n);
+                    //aaa.ctsisomer.erase(aaa.ctsisomer.begin()+n);
+                    aaa.ctsisomer.at(0).erase(aaa.ctsisomer.at(0).begin()+n);
+                    aaa.ctsisomer.at(1).erase(aaa.ctsisomer.at(1).begin()+n);
+					if (para.protect) aaa.protect.erase(aaa.protect.begin()+n);
+				}
+			}
+		}
+		t.clear();
+		for (n=1;n<ci_ref.size();n++) {
+			for (m=0;m<ci_ref.size();m++) {
+				if (pi_ref.at(n) == ci_ref.at(m)) {
+					t.push_back(m);
+				}
+			}
+		}
+		f.clear();
+		for (n=1;n<cj_ref.size();n++) {
+			for (m=0;m<cj_ref.size();m++) {
+				if (pj_ref.at(n) == cj_ref.at(m)) {
+					f.push_back(m);
+				}
+			}
+		}
+		pi_ref.at(0) = b;
+		pj_ref.at(0) = a;
+		ci_ref.at(0) = y;
+		cj_ref.at(0) = x;
+
+		for (n=1;n<ci_ref.size();n++) {
+			ci_ref.at(n) = ci_ref.at(n-1) + 1;
+			pi_ref.at(n) = ci_ref.at(t.at(n-1));
+		}
+		for (n=1;n<cj_ref.size();n++) {
+			cj_ref.at(n) = cj_ref.at(n-1) + 1;
+			pj_ref.at(n) = cj_ref.at(f.at(n-1));
+		}
+
+		t.clear();
+		f.clear();
+		for (n=1;n<Cindex.size();n++) {
+			for (m=0;m<Cindex.size();m++) {
+				if (Pindex.at(n) == Cindex.at(m)) {
+					t.push_back(m);
+				}
+			}
+		}
+		ref=-1;
+		for (n=1;n<Cindex.size();n++) {
+			if (Cindex.at(n) != Cindex.at(n-1)+1) {
+				ref=n;
+				Cindex.at(ref) = Cindex.at(ref-1) + cj_ref.size() + 1;
+				break;
+			}
+		}
+		if (ref!=-1) {
+			for (n=ref+1;n<Cindex.size();n++) {
+				Cindex.at(n) = Cindex.at(n-1) + 1;
+			}
+
+			for (n=1;n<Cindex.size();n++) {
+				Pindex.at(n) = Cindex.at(t.at(n-1));
+			}
+		}
+		t.clear();
+		f.clear();
+		for (n=1;n<aaa.Cindex.size();n++) {
+			for (m=0;m<aaa.Cindex.size();m++) {
+				if (aaa.Pindex.at(n) == aaa.Cindex.at(m)) {
+					t.push_back(m);
+				}
+			}
+		}
+		ref=-1;
+		for (n=1;n<aaa.Cindex.size();n++) {
+			if (aaa.Cindex.at(n) != aaa.Cindex.at(n-1)+1) {
+				ref = n;
+				aaa.Cindex.at(ref) = aaa.Cindex.at(ref-1) + ci_ref.size() + 1;
+				break;
+			}
+		}
+		if (ref!=-1) {
+			for (n=ref+1;n<aaa.Cindex.size();n++) {
+				aaa.Cindex.at(n) = aaa.Cindex.at(n-1) + 1;
+			}
+
+			for (n=1;n<aaa.Cindex.size();n++) {
+				aaa.Pindex.at(n) = aaa.Cindex.at(t.at(n-1));
+			}
+		}
+	}
+	n=0;
+	ref=1;
+	while(n<cj_ref.size()) {
+		for (m=0;m<Cindex.size();m++) {
+			if (Cindex.at(m) > cj_ref.at(n)) { // Cindex[m] > cj_ref[n] && Cindex[m-1] < cj_ref[n]  orig // 20191130
+				if (Cindex.at(m-1) < cj_ref.at(n) && m >= 1) {
+					Cindex.insert(Cindex.begin() + m, cj_ref.at(n));
+					Pindex.insert(Pindex.begin() + m, pj_ref.at(n));
+					Mindex.insert(Mindex.begin() + m, mj_ref.at(n));
+					Rindex.insert(Rindex.begin() + m, rj_ref.at(n));
+					Cyindex.insert(Cyindex.begin() + m, cyj.at(n));
+                    //ctsisomer.insert(ctsisomer.begin() + m, ctj_ref.at(n));
+                    ctsisomer.at(0).insert(ctsisomer.at(0).begin() + m, ctj_ref.at(0).at(n));
+                    ctsisomer.at(1).insert(ctsisomer.at(1).begin() + m, ctj_ref.at(1).at(n));
+					if (para.protect) protect.insert(protect.begin() + m, prj.at(n));
+					n++;
+					break;
+				}
+			} 
+			else if (Cindex.at(Cindex.size()-1) < cj_ref.at(n)) {
+				Cindex.push_back(cj_ref.at(n));
+				Pindex.push_back(pj_ref.at(n));
+				Mindex.push_back(mj_ref.at(n));
+				Rindex.push_back(rj_ref.at(n));
+				Cyindex.push_back(cyj.at(n));
+                //ctsisomer.push_back(ctj_ref.at(n));
+                ctsisomer.at(0).push_back(ctj_ref.at(0).at(n));
+                ctsisomer.at(1).push_back(ctj_ref.at(1).at(n));
+				if (para.protect) protect.push_back(prj.at(n));
+				n++;
+				break;
+			}
+		}
+	}
+	m=0;
+	ref=1;
+	while (m<ci_ref.size()) {
+		for (n=0;n<aaa.Cindex.size();n++) {
+			if (aaa.Cindex.at(n) > ci_ref.at(m)) { // aaa.Cindex[n] > ci_ref[m] && aaa.Cindex[n-1] < ci_ref[m]  orig  //20191130
+				if (aaa.Cindex.at(n-1) < ci_ref.at(m) && n >= 1) {
+					ref=n;
+					aaa.Cindex.insert(aaa.Cindex.begin() + ref, ci_ref.at(m));
+					aaa.Pindex.insert(aaa.Pindex.begin() + ref, pi_ref.at(m));
+					aaa.Mindex.insert(aaa.Mindex.begin() + ref, mi_ref.at(m));
+					aaa.Rindex.insert(aaa.Rindex.begin() + ref, ri_ref.at(m));
+					aaa.Cyindex.insert(aaa.Cyindex.begin() + ref, cyi.at(m));
+                    //aaa.ctsisomer.insert(aaa.ctsisomer.begin() + ref, cti_ref.at(m));
+                    aaa.ctsisomer.at(0).insert(aaa.ctsisomer.at(0).begin() + ref, cti_ref.at(0).at(m));
+                    aaa.ctsisomer.at(1).insert(aaa.ctsisomer.at(1).begin() + ref, cti_ref.at(1).at(m));
+					if (para.protect) aaa.protect.insert(aaa.protect.begin() + ref, pri.at(m));
+					m++;
+					break;
+				}
+			} 
+			else if (aaa.Cindex.at(aaa.Cindex.size()-1) < ci_ref.at(m)) {
+				ref=n;
+				aaa.Cindex.push_back(ci_ref.at(m));
+				aaa.Pindex.push_back(pi_ref.at(m));
+				aaa.Mindex.push_back(mi_ref.at(m));
+				aaa.Rindex.push_back(ri_ref.at(m));
+				aaa.Cyindex.push_back(cyi.at(m));
+                //aaa.ctsisomer.push_back(cti_ref.at(m));
+                aaa.ctsisomer.at(0).push_back(cti_ref.at(0).at(m));
+                aaa.ctsisomer.at(1).push_back(cti_ref.at(1).at(m));
+				if (para.protect) aaa.protect.push_back(pri.at(m));
+				m++;
+				break;
+			}
+		}
+	}
+
+    vector<int>().swap(t);
+    vector<int>().swap(f);
+    vector<int>().swap(ci_ref);
+    vector<int>().swap(mi_ref);
+    vector<int>().swap(ri_ref);
+    vector<int>().swap(cj_ref);
+    vector<int>().swap(mj_ref);
+    vector<int>().swap(rj_ref);
+    vector<int>().swap(prj);
+    vector<int>().swap(pri);
+
+
+	//if (1) ring_no_chk(-1);
+	
+	del_unpaired_ring_no();
+	aaa.del_unpaired_ring_no();
+	decyc_small_ring(5);
+	aaa.decyc_small_ring(5);
+
+	//reset();
+	//chk_cistrans(); //20200806
+	mds2smi();
+
+	//aaa.reset();
+	//aaa.chk_cistrans(); //20200806
+	aaa.mds2smi();
+
+	//time1=time(NULL)-time1;
+	//cout << "CROSSOVER FINISHED: " << setprecision(10) << setw(15) << time1 << endl;
+
+	return 1;
+}
+
 
 void MOLECULE::read(string a) {
-  ifstream inf((a + ".mds").c_str());
-  string b;
-  int i, j, k;
-  while (!inf.eof()) {
-    b = "";
-    inf >> b >> ws;
-    if (b == "natom")
-      inf >> j >> ws;
-    else if (b == "Pindex") {
-      for (i = 0; i < j; i++) {
-        inf >> k >> ws;
-        Pindex.push_back(k);
-      }
-    } else if (b == "Cindex") {
-      for (i = 0; i < j; i++) {
-        inf >> k >> ws;
-        Cindex.push_back(k);
-      }
-    } else if (b == "Cyindex") {
-      for (i = 0; i < j; i++) {
-        inf >> k >> ws;
-        Cyindex.push_back(k);
-      }
-    } else if (b == "Rindex") {
-      for (i = 0; i < j; i++) {
-        inf >> k >> ws;
-        Rindex.push_back(k);
-      }
-    } else if (b == "if_circle") {
-      inf >> k >> ws;
-      if_circle = k;
-    } else if (b == "Mindex") {
-      for (i = 0; i < j; i++) {
-        inf >> k >> ws;
-        Mindex.push_back(k);
-      }
-    } else if (b == "Protect") {
-      for (i = 0; i < j; i++) {
-        inf >> k >> ws;
-      }
-    }
-  }
-  return;
+	for (int i=0;i<a.length();i++) {
+		if (a[i]=='/') a[i]='u';
+		if (a[i]=='\\') a[i]='d';
+	}
+	
+	ifstream inf((a+".mds").c_str());
+	string b,b1;
+	int i,j,k;
+	inf >> ws;
+	
+	ctsisomer.resize(0,vector<string>(0));
+	ctsisomer.resize(2,vector<string>(0));
+
+	while (!inf.eof()) {
+		b="";
+		inf>>b>>ws;
+		if (b=="natom") inf>>j>>ws;
+		else if (b=="Pindex") {
+			for (i=0;i<j;i++) {
+				inf>>k>>ws;
+				Pindex.push_back(k);
+			}
+		}
+		else if (b=="Cindex") {
+			for (i=0;i<j;i++) {
+				inf>>k>>ws;
+				Cindex.push_back(k);
+			}
+		}
+		else if (b=="Cyindex") {
+			for (i=0;i<j;i++) {
+				inf>>k>>ws;
+				Cyindex.push_back(k);
+			}
+		}
+		else if (b=="Rindex") {
+			for (i=0;i<j;i++) {
+				inf>>k>>ws;
+				Rindex.push_back(k);
+			}
+		}
+		else if (b=="if_circle") {
+			inf>>k>>ws;
+			if_circle=k;
+		}
+		else if (b=="Mindex") {
+			for (i=0;i<j;i++) {
+				inf>>k>>ws;
+				Mindex.push_back(k);
+			}
+		}
+        else if (b=="ctsisomer_start") {
+        	for (i=0;i<j;i++) {
+            	b1="";
+        		inf>>b1>>ws;
+        		if (b1=="N/A") ctsisomer.at(0).push_back("");
+        		else ctsisomer.at(0).push_back(b1);
+        	}
+        }
+        else if (b=="ctsisomer_end") {
+            for (i=0;i<j;i++) {
+                b1="";
+                inf>>b1>>ws;
+                if (b1=="N/A") ctsisomer.at(1).push_back("");
+                else ctsisomer.at(1).push_back(b1);
+            }
+        }
+		else if (para.protect && b=="protection") {
+			for (i=0;i<j;i++) {
+				inf>>k>>ws;
+				protect.push_back(k);
+			}
+		}
+	}
+	inf.close();
+	return;
 }
 
-int MOLECULE::ring(int pt1, int pt2) {
-  reset();
-  int i, j, k, n = 0, m = 0, x, y;
-  int b_pos[2][2];
-  int b_circle;
-  k = 1;
-  for (i = 0; i < data.a.at(Mindex.at(pt1)).norder; i++) {
-    if (Bindex[pt1][i] == 1) k = 0;
-  }
-  if (k) return 0;
-  k = 1;
-  for (i = 0; i < data.a.at(Mindex.at(pt2)).norder; i++) {
-    if (Bindex[pt2][i] == 1) k = 0;
-  }
-  if (k) return 0;
-  i = pt1;
-  j = pt2;
-  if ((Pindex[i] != Pindex[j]) && (i != j) && Pindex[i] != Cindex[j] &&
-      Pindex[j] != Cindex[i] && Cyindex[i] == 0 && Cyindex[j] == 0) {
-    for (x = 0; x < data.a[Mindex[i]].norder; x++) {
-      if (Bindex[i][x] == 1) {
-        for (y = 0; y < data.a[Mindex[j]].norder; y++) {
-          if (Bindex[i][x] == Bindex[j][y]) {
-            b_pos[0][0] = x;
-            b_pos[0][1] = y;
-            b_pos[1][0] = i;
-            b_pos[1][1] = j;
-            b_circle = Bindex[i][x];
-            Bindex[i][x] = Bindex[j][y] = 0;
-            Cyindex[i] = Cyindex[j] = if_circle + 1;
-            m = 1;
-            if_circle++;
+
+int MOLECULE::ring(int pt1,int pt2) {
+	if (if_circle>=9) return 0; //20200510
+	if (pt1==pt2) return 0;
+	//if (Cyindex.at(pt1)) return 0;
+	//if (Cyindex.at(pt2)) return 0;
+	if (para.protect && protect.at(pt1)) return 0;
+	if (para.protect && protect.at(pt2)) return 0;
+
+	//int i,j,k,n=0,m=0,x,y;
+	//int b_pos[2][2];
+
+	//long double time1=time(NULL);
+	
+	
+	if (1) {
+	    vector<int> C_ringmember(0);
+		
+	    int rep_quota=1;
+	    
+		int compa=Cindex.at(pt1);
+	    int cont=0;
+	    while (compa>=1 && cont<=Cyindex.size()) {
+	        C_ringmember.push_back(compa);
+	
+	        if (compa>=1) {
+	            if (Pindex.at(compa-1)>=1) compa=Cindex.at(Pindex.at(compa-1)-1);
+	            else break;
+	            cont++;
+	        }
+	        else break;
+	    }
+		
+		compa=Cindex.at(pt2);
+		cont=0;
+		while (compa>=1 && cont<=Cyindex.size()) {
+	    	C_ringmember.push_back(compa);
+	
+	    	if (compa>=1) {
+	        	if (Pindex.at(compa-1)>=1) compa=Cindex.at(Pindex.at(compa-1)-1);
+	        	else break;
+	        	cont++;
+	    	}
+	    	else break;
+		}
+	
+		
+	    if (C_ringmember.size()>0) {
+	        for (int k2=0;k2<C_ringmember.size()-1;k2++) {
+	            for (int k3=k2+1;k3<C_ringmember.size();k3++) {
+					if (C_ringmember.at(k2)!=-1 && C_ringmember.at(k3)!=-1) {
+	                	if (C_ringmember.at(k2)==C_ringmember.at(k3) && rep_quota<=0) {
+	                    	C_ringmember.at(k2)=C_ringmember.at(k3)=-1;
+	                	}
+	                	else if (C_ringmember.at(k2)==C_ringmember.at(k3) && rep_quota>0) {
+							C_ringmember.at(k3)=-1;
+							rep_quota--;
+						}
+					}
+	            }
+	        }
+	    }
+		int num_rmember=0;
+		if (C_ringmember.size()>0) {
+	    	for (int k2=0;k2<C_ringmember.size();k2++) {
+	        	if (C_ringmember.at(k2)!=-1) num_rmember++;
+	    	}
+		}
+		vector<int>().swap(C_ringmember);
+		if (num_rmember<5) return 0;		
+	}
+	
+	// Ensure the bonds of atom P(n) are OK if M(n) is changed to atom(id) and use a $bnd2par bond to connect P(n)
+	if (1) {
+        bool totbndchk=0;
+        bool bndchk=0;
+
+	    int bndsum=0; // max available # of bonds of element(id) (calc. from pool)
+		vector<int> ordcount(6,0);
+		if (Rindex.at(pt1)>=1) {
+			bndsum+=Rindex.at(pt1);
+			ordcount.at(Rindex.at(pt1)-1)+=1;
+		}
+		if (Cyindex.at(pt1)) {
+			int yi=(int)log10(Cyindex.at(pt1))+1;
+			bndsum+=yi;
+			ordcount.at(0)+=yi;
+		}
+    	for (int k1=0;k1<Cyindex.size();k1++) {
+        	if (Pindex.at(k1)==Cindex.at(pt1)) {
+				bndsum+=Rindex.at(k1);
+				ordcount.at(Rindex.at(k1)-1)+=1;
+			}
+		}
+		bndsum+=1;
+		ordcount.at(0)+=1;
+
+        int maxbnd=0; // max available # of bonds for atom C(n) (calc. from pool)
+        for (int k2=0;k2<6;k2++) {
+            maxbnd+=data->a[Mindex.at(pt1)].order.at(k2);
+        }
+		/*
+        if (id_bndsum<=id_maxbnd) totbndchk=1;
+        else {
+			totbndchk=0;
+			return 0;
+		}
+		*/
+
+        for (int k2=0;k2<3;k2++) {  // chk if "the bond orders of k1 after connecting with k" match the definition of atom k1 in pool
+            if (ordcount.at(k2)>data->a[Mindex.at(pt1)].bd[k2]) { // orig ordcount.at(k2)>data.a[Mindex.at(k1)].order.at(k2)
+                bndchk=0;
+				return 0;
+            }
+            else if (k2>=2 && ordcount.at(k2)<=data->a[Mindex.at(pt1)].bd[k2]) { // orig k2>=5 && ordcount.at(k2)<=data.a[Mindex.at(k1)].order.at(k2)
+                bndchk=1;
+            }
+        }
+
+	}
+	
+	if (1) {
+        bool totbndchk=0;
+        bool bndchk=0;
+
+	    int bndsum=0; // max available # of bonds of element(id) (calc. from pool)
+		vector<int> ordcount(6,0);
+		if (Rindex.at(pt2)>=1) {
+			bndsum+=Rindex.at(pt2);
+			ordcount.at(Rindex.at(pt2)-1)+=1;
+		}
+		if (Cyindex.at(pt2)) {
+			int yi=(int)log10(Cyindex.at(pt2))+1;
+			bndsum+=yi;
+			ordcount.at(0)+=yi;
+		}
+    	for (int k1=0;k1<Cyindex.size();k1++) {
+        	if (Pindex.at(k1)==Cindex.at(pt2)) {
+				bndsum+=Rindex.at(k1);
+				ordcount.at(Rindex.at(k1)-1)+=1;
+			}
+		}
+		bndsum+=1;
+		ordcount.at(0)+=1;
+
+        int maxbnd=0; // max available # of bonds for atom C(n) (calc. from pool)
+        for (int k2=0;k2<6;k2++) {
+            maxbnd+=data->a[Mindex.at(pt2)].order.at(k2);
+        }
+		/*
+        if (id_bndsum<=id_maxbnd) totbndchk=1;
+        else {
+			totbndchk=0;
+			return 0;
+		}
+		*/
+
+        for (int k2=0;k2<3;k2++) {  // chk if "the bond orders of k1 after connecting with k" match the definition of atom k1 in pool
+            if (ordcount.at(k2)>data->a[Mindex.at(pt2)].bd[k2]) { // orig ordcount.at(k2)>data.a[Mindex.at(k1)].order.at(k2)
+                bndchk=0;
+				return 0;
+            }
+            else if (k2>=2 && ordcount.at(k2)<=data->a[Mindex.at(pt2)].bd[k2]) { // orig k2>=5 && ordcount.at(k2)<=data.a[Mindex.at(k1)].order.at(k2)
+                bndchk=1;
+            }
+        }
+	}
+	
+
+	if_circle++;
+	Cyindex.at(pt1)=10*Cyindex.at(pt1)+if_circle;
+	Cyindex.at(pt2)=10*Cyindex.at(pt2)+if_circle;
+
+	//cout << "K1 " << endl;
+	//print();
+
+    del_unpaired_ring_no();
+    decyc_small_ring(5);
+
+	//cout << "K2 " << endl;
+	//print();
+
+	//reset();
+	//chk_cistrans(); //20200806
+	mds2smi();
+
+	//time1=time(NULL)-time1;
+    //cout << "CYCLIZATION FINISHED: " << setprecision(10) << setw(15) << time1 << endl;
+
+	return 1;
+}
+
+void MOLECULE::mds2smi(bool ct_on)
+{
+
+	if (!ct_on) chk_cistrans(0,Cindex.size()-1);
+	reset();
+
+	//print();
+	int totalleng=0;
+	//for (int i=0;i<Cindex.size();i++) totalleng+=data->a[Mindex.at(i)].name.length(); //20191011
+	for (int i=0;i<atomsmi.size();i++) totalleng+=atomsmi.at(i).size();
+	
+	
+	if (if_circle) totalleng+=2*if_circle;
+	//for (int i=0;i<ctsisomer.size();i++) {
+	//	if (ctsisomer.at(i)!="") {
+	//		string name=ctsisomer.at(i);
+	//		totalleng+=name.length();
+	//	}
+	//}
+	for (int j=0;j<2;j++) {
+    	for (int i=0;i<ctsisomer.at(j).size();i++) {
+    		if (ctsisomer.at(j).at(i)!="") {
+    			string name=ctsisomer.at(j).at(i);
+    			totalleng+=name.length();
+    		}
+    	}
+	}
+	totalleng+=10;
+	//string x(totalleng,' ');
+	//string x="";
+	//for (int i=0;i<totalleng;i++) x+=" ";
+	char *x=new char [totalleng];
+	for (int i=0;i<totalleng;i++) x[i]=' ';
+	
+	vector<int> sdelay(Cindex.size(),0);
+	
+	bool cts=0;
+	for (int i=0;i<ctsisomer.at(0).size();i++) {
+		if (ctsisomer.at(0).at(i)!="")  {
+			cts=1;
+			break;
+		}
+	}
+	if (cts) {
+		vector<int> pos,m;
+		vector<string> sgn;
+		for (int i=0;i<ctsisomer.at(0).size();i++) { 
+			if (ctsisomer.at(0).at(i)!="") {
+				string n2=ctsisomer.at(0).at(i);
+				for (int j=0;j<n2.length();j++) {
+					m.push_back(i);
+					pos.push_back(atomsmi.at(i).at(0));
+					sdelay.at(i)+=1;
+					//sgn.push_back(string(1,n2.at(j)));
+					sgn.push_back(string(1,n2.at(n2.length()-j-1)));
+				}		
+			}
+		}
+		pos.reserve(pos.size());
+		m.reserve(m.size());
+		sgn.reserve(sgn.size());
+		
+		for (int i=0;i<pos.size();i++) {
+			for (int j=i+1;j<pos.size();j++) {
+				if (pos.at(i)>pos.at(j)) {  //at
+					swap(pos.at(i),pos.at(j)); //at
+					swap(m.at(i),m.at(j)); //at
+					swap(sgn.at(i),sgn.at(j)); //at
+				}
+			}
+		}
+		
+		for (int i=0;i<m.size();i++) {
+			int posi=0,len=1;
+			string sg=sgn.at(i);
+			len=sg.length();
+
+			posi=atomsmi.at(m.at(i)).at(0); //at
+			for (int k=0;k<len;k++) {
+				atomsmi.at(m.at(i)).insert(atomsmi.at(m.at(i)).begin(),-9);
+			}
+			
+			for (int j=0;j<Cindex.size();j++) {
+				for (int k=0;k<atomsmi.at(j).size();k++) {
+					if (atomsmi.at(j).at(k)>=posi) atomsmi.at(j).at(k)+=len;
+				}
+			}
+			
+			for (int j=0;j<atomsmi.at(m.at(i)).size();j++) {
+				if (atomsmi.at(m.at(i)).at(j)==-9) {
+					//int g=data->a.at(Mindex.at(m.at(i))).index-1+sdelay.at(m.at(i));
+					int g=atomsmi.at(m.at(i)).size();
+					if (j>0) {
+						for (int k1=1;k1<=g;k1++) { // atomsmi[m.at(i)].size()
+							int left=-2;
+							if (j-k1>=0) left=atomsmi.at(m.at(i)).at(j-k1);
+							if (left!=-2 && left!=-9) {
+								for (int k2=(j-k1);k2<=g;k2++) { //orig k2<atomsmi[m.at(i)].size()
+									if (k2+1<g) { // orig k2+1<atomsmi[m.at(i)].size()
+										if (atomsmi.at(m.at(i)).at(k2+1)==-9) atomsmi.at(m.at(i)).at(k2+1)=atomsmi.at(m.at(i)).at(k2)+1;
+									}
+								}
+								break;
+							}						
+						}						
+					}
+					else if (j==0) {
+						for (int k1=1;k1<=g;k1++) {
+							int right=-1;
+							if (j+k1<atomsmi.at(m.at(i)).size()) right=atomsmi.at(m.at(i)).at(j+k1);								
+							if (right!=-1 && right!=-9) {
+								for (int k2=(j+k1);k2>=0;k2--) {
+									if (k2-1>=0) {
+										if (atomsmi.at(m.at(i)).at(k2-1)==-9) atomsmi.at(m.at(i)).at(k2-1)=atomsmi.at(m.at(i)).at(k2)-1;
+									}
+								}
+								break;
+							}
+						}						
+					}
+					
+					//for (int k=0;k<len;k++) x.insert(atomsmi[m.at(i)].at(j),string(1,sg[len-k-1]));
+					for (int k=totalleng-1;k-len>=atomsmi.at(m.at(i)).at(j);k--) {
+						x[k]=x[k-len];
+						x[k-len]=' ';
+					}
+					for (int k=0;k<len;k++) {
+						x[atomsmi.at(m.at(i)).at(j)+k]=sg[k];
+					}
+						
+					break;
+				}
+			}
+
+		}
+		pos.clear();
+		m.clear();
+		sgn.clear();
+		vector<int>().swap(pos);
+		vector<int>().swap(m);
+		vector<string>().swap(sgn); 
+	}
+
+    vector<int> edelay(Cindex.size(),0);
+    for (int i=0;i<ctsisomer.at(1).size();i++) {
+        if (ctsisomer.at(1).at(i)!="")  {
+            cts=1;
             break;
-          }
         }
-        if (m == 1) break;
-      }
     }
-  } else {
-    // cout << "P " << Pindex[i] << " " << Pindex[j] << endl;
-    // cout << "C " << Cindex[i] << " " << Cindex[j] << endl;
-    // cout << "Cy " << Cyindex[i] << " " << Cyindex[j] << endl;
-    // cout << "M " << Mindex[i] << " " << Mindex[j] << endl;
-  //  exit(0);
-    ofstream log("molecule.log", ios::app);
-    log << "Warning : this molecule " << smiles
-        << " cannot be cyclized at point " << pt1 << " and " << pt2 << "."
-        << endl;
-    log.close();
-    return 0;
-  }
-  reset();
-  return 1;
-}
-
-void MOLECULE::mds2smi() {
-  int j, q, n, w, i = Pindex.size(), t, tt, M;
-  molesmi = "";
-  t = 0;
-  for (q = 0; q < i; q++) {
-    j = Mindex.at(q);
-    //j = data.a[j].nbond; //20191112
-    j = data.a[j].name.length();
-    t += j;
-  }
-  t+=150;  //20191120
-  if (if_circle) t += 2 * if_circle;
-	char *x=NULL;
-	x=new char [t];
-	for (q=0;q<t;q++) x[q]=' ';
-	int xsize=t;
-  //vector<char> x(t, ' ');
-
-  if (if_circle) {
-    n = 0;
-    vector<int> pos, m, num;
-    char tmp[10];
-    for (q = 0; q < i; q++) {
-      if (Cyindex.at(q) != 0) {
-        m.push_back(q);
-        pos.push_back(atomsmi[q][0]);
-        num.push_back(Cyindex.at(q));
-      }
-    }
-    for (q = 0; q < pos.size(); q++) {
-      if (q == (pos.size() - 1)) break;
-      for (j = 0; j < (pos.size() - q); j++) {
-        if (j == (pos.size() - 1)) break;
-        if (pos[j] > pos[j + 1]) {
-          swap(pos[j], pos[j + 1]);
-          swap(m[j], m[j + 1]);
-          swap(num[j], num[j + 1]);
-        }
-      }
-    }
-    for (w = 0; w < m.size(); w++) {
-      if (data.a[Mindex[m[w]]].chg) {
-        if (num[w] > 10) {
-          t = atomsmi[m[w]][5] + 1;
-          tt = 2;
-          sprintf(tmp, "%d%d", num[w]);
-          x[atomsmi[m[w]][5] + 1] = tmp[0];
-          x[atomsmi[m[w]][5] + 2] = tmp[1];
-        } else {
-          tt = 1;
-          t = atomsmi[m[w]][5] + 1;
-          sprintf(tmp, "%d", num[w]);
-          x[atomsmi[m[w]][5] + 1] = tmp[0];
-        }
-      } else {
-        if (num[w] > 10) {
-          t = atomsmi[m[w]][0] + 1;
-          tt = 2;
-          sprintf(tmp, "%d%d", num[w]);
-          x[atomsmi[m[w]][0] + 1] = tmp[0];
-          x[atomsmi[m[w]][0] + 2] = tmp[1];
-        } else {
-          tt = 1;
-          t = atomsmi[m[w]][0] + 1;
-          sprintf(tmp, "%d", num[w]);
-          x[atomsmi[m[w]][0] + 1] = tmp[0];
-        }
-      }
-      for (q = 0; q < i; q++) {
-        j = Mindex.at(q);
-        j = data.a[j].nbond;
-        for (n = 0; n < j; n++) {
-          if (atomsmi[q][n] >= t) atomsmi[q][n] = atomsmi[q][n] + tt;
-        }
-      }
-    }
-    pos.clear();
-    m.clear();
-    num.clear();
-    vector<int>().swap(pos);
-    vector<int>().swap(m);
-    vector<int>().swap(num);
-  }
-  n = 0;
-  chg = 0;
-  for (q = 0; q < Cindex.size(); q++) chg += data.a[Mindex.at(q)].chg;
-  t = 0;
-  int tmp = 0,ch=0;
-  for (q = 0; q < i; q++) {
-    j = Mindex.at(q);
-    M = Mindex.at(q);
-    //j = data.a[j].nbond; //1121
-    j = data.a[j].name.length();
-    t = t + j;
-    tmp = 0;
-    if (data.a[M].chg && data.a[j].name.length()<=data.a[j].nbond) {  // data.a[M].chg  //20191112
-      for (tt = 0; tt < data.a[M].norder; tt++) {
-        tmp += Bindex[q][tt];
-      }
-      if (tmp == 1)
-        data.a[M].name[3] = '1';
-      else if (tmp == 2)
-        data.a[M].name[3] = '2';
-      else if (tmp == 3)
-        data.a[M].name[3] = '3';
-      else if (tmp == 4)
-        data.a[M].name[3] = '4';
-      else if (tmp == 5)
-        data.a[M].name[3] = '5';
-    }
-    tmp = data.a[Mindex[q]].index + 1;
-    for (w = 0; w < data.a[Mindex.at(q)].nbond; w++) {  // w < j originally // 20191121
-      n = atomsmi[q][w];
-      if (((w-tmp)%3)==0 && w>data.a[Mindex.at(q)].index && data.a[Mindex.at(q)].index) { //((w - tmp) % 3) == 0 && w > data.a[Mindex[q]].index
-        if (atomsmi[q][w - 2] == (n - 2) && atomsmi[q][w - 1] == (n - 1)) {
-          x[n+ch] = ' ';
-          x[n - 1+ch] = ' ';
-          x[n - 2+ch] = ' ';
-        } else {
-          x[n+ch] = data.a[Mindex[q]].name[w];
-        }
-      } else {
-		x[n+ch] = data.a[Mindex[q]].name[w];
-      }
-
-    }
-        if (1) { // 20191121
-            string kk=data.a[Mindex[q]].name;   //20191002
-            int v=kk.length()-data.a[Mindex.at(q)].nbond,count=0;
-            if (v>0) {
-                while (count<v) {
-                    x[n+count+1+ch]=kk[data.a[Mindex.at(q)].nbond+count];  // 4 blanks
-                    count++;
+    if (cts) {
+        vector<int> pos,m;
+        vector<string> sgn;
+        for (int i=0;i<ctsisomer.at(1).size();i++) {
+            if (ctsisomer.at(1).at(i)!="") {
+                string n2=ctsisomer.at(1).at(i);
+                for (int j=0;j<n2.length();j++) {
+                    m.push_back(i);
+                    pos.push_back(atomsmi.at(i).at(0));
+                    edelay.at(i)+=1;
+                    //sgn.push_back(string(1,n2.at(j)));
+                    sgn.push_back(string(1,n2.at(n2.length()-j-1)));
                 }
             }
-			if(data.a[Mindex.at(q)].nbond<kk.length() && q>0) x[n+count+1+ch]=')';
-			ch+=count;
+        }
+        pos.reserve(pos.size());
+        m.reserve(m.size());
+        sgn.reserve(sgn.size());
+
+        for (int i=0;i<pos.size();i++) {
+            for (int j=i+1;j<pos.size();j++) {
+                if (pos.at(i)>pos.at(j)) {  //at
+                    swap(pos.at(i),pos.at(j)); //at
+                    swap(m.at(i),m.at(j)); //at
+                    swap(sgn.at(i),sgn.at(j)); //at
+                }
+            }
         }
 
-  }
-  if (if_circle) t = t + 2 * if_circle;
-  w = 0;
-  for (j = 0; j < xsize; j++) {
-    if (x[j] != ' ') {
-      molesmi.push_back(x[j]);
+        for (int i=0;i<m.size();i++) {
+            int posi=0,len=1;
+            string sg=sgn.at(i);
+            len=sg.length();
+
+            bool siz=0;
+
+            if (atomsmi.at(m.at(i)).size()>data->a.at(Mindex.at(m.at(i))).index-1+sdelay.at(m.at(i))) siz=0;
+            else siz=1;  //20200910
+
+            if (!siz) posi=atomsmi.at(m.at(i)).at(data->a.at(Mindex.at(m.at(i))).index-1+sdelay.at(m.at(i)));
+            else posi=atomsmi.at(m.at(i)).at(data->a.at(Mindex.at(m.at(i))).index-2+sdelay.at(m.at(i)));
+
+            for (int k=0;k<len;k++) {
+                if (!siz) atomsmi.at(m.at(i)).insert(atomsmi.at(m.at(i)).begin()+data->a.at(Mindex.at(m.at(i))).index-1+sdelay.at(m.at(i)),-9);
+                else atomsmi.at(m.at(i)).push_back(-9);  //20200910
+            }
+
+            for (int j=0;j<Cindex.size();j++) {
+                for (int k=0;k<atomsmi.at(j).size();k++) {
+                    if (!siz) {
+                        if (atomsmi.at(j).at(k)>=posi) atomsmi.at(j).at(k)+=len;
+                    }
+                    else { //20200910
+                        if (atomsmi.at(j).at(k)>posi) atomsmi.at(j).at(k)+=len;
+                    }
+                }
+            }
+
+            for (int j=0;j<atomsmi.at(m.at(i)).size();j++) {
+                if (atomsmi.at(m.at(i)).at(j)==-9) {
+                    //int g=data->a.at(Mindex.at(m.at(i))).index-1+sdelay.at(m.at(i))+ringdelay.at(m.at(i));
+                    int g=atomsmi.at(m.at(i)).size();
+                    if (j>0) {
+                        for (int k1=1;k1<=g;k1++) { //orig k1<atomsmi[m.at(i)].size()
+                            int left=-2;
+                            if (j-k1>=0) left=atomsmi.at(m.at(i)).at(j-k1);
+                            if (left!=-2 && left!=-9) {
+                                for (int k2=(j-k1);k2<=g;k2++) { //orig k2<atomsmi[m.at(i)].size()
+                                    if (k2+1<atomsmi.at(m.at(i)).size()) {
+                                        if (atomsmi.at(m.at(i)).at(k2+1)==-9) atomsmi.at(m.at(i)).at(k2+1)=atomsmi.at(m.at(i)).at(k2)+1;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    else if (j==0) {
+                        for (int k1=1;k1<=g;k1++) { // orig k1<atomsmi[m.at(i)].size()
+                            int right=-1;
+                            if (j+k1<atomsmi.at(m.at(i)).size()) right=atomsmi.at(m.at(i)).at(j+k1);
+
+                            if (right!=-1 && right!=-9) {
+                                for (int k2=(j+k1);k2>=0;k2--) {
+                                    if (k2-1>=0) {
+                                        if (atomsmi.at(m.at(i)).at(k2-1)==-9) atomsmi.at(m.at(i)).at(k2-1)=atomsmi.at(m.at(i)).at(k2)-1;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    //for (int k=0;k<len;k++) x.insert(atomsmi[m.at(i)].at(j),string(1,sg[len-k-1]));
+                    for (int k=totalleng-1;k-len>=atomsmi.at(m.at(i)).at(j);k--) {
+                        x[k]=x[k-len];
+                        x[k-len]=' ';
+                    }
+                    for (int k=0;k<len;k++) {
+                        x[atomsmi.at(m.at(i)).at(j)+k]=sg[k];
+                    }
+
+                    break;
+                }
+            }
+
+        }
+        pos.clear();
+        m.clear();
+		sgn.clear();
+        vector<int>().swap(pos);
+        vector<int>().swap(m);
+        vector<string>().swap(sgn);
+
+	}
+
+	vector<int> ringdelay(Cindex.size(),0);
+	
+	if (if_circle) {
+		vector<int> pos,m,num;
+		for (int i=0;i<Cindex.size();i++) { 
+			if (Cyindex.at(i)) {
+				m.push_back(i);
+				//pos.push_back(atomsmi.at(i).at(0)+data->a.at(Mindex.at(i)).index-1+sdelay.at(i));
+				pos.push_back(atomsmi.at(i).at(0));  //20200910
+				num.push_back(Cyindex.at(i));
+				int digits=(int)log10(Cyindex.at(i))+1;
+				ringdelay.at(i)+=digits;
+			}
+		}
+		pos.reserve(pos.size());
+		m.reserve(m.size());
+		num.reserve(num.size());
+		
+		for (int i=0;i<pos.size();i++) {
+			for (int j=i+1;j<pos.size();j++) {
+				if (pos.at(i)>pos.at(j)) {  //at
+					swap(pos.at(i),pos.at(j)); //at
+					swap(m.at(i),m.at(j)); //at
+					swap(num.at(i),num.at(j)); //at
+				}
+			}
+		}
+		
+		for (int i=0;i<m.size();i++) {
+			int posi=0;
+			int digits=(int)log10(num.at(i))+1;
+			stringstream nn("");
+
+			bool siz=0;
+
+			if (atomsmi.at(m.at(i)).size()>data->a.at(Mindex.at(m.at(i))).index-1+sdelay.at(m.at(i))) siz=0;
+			else siz=1;  //20200910
+			
+			if (!siz) posi=atomsmi.at(m.at(i)).at(data->a.at(Mindex.at(m.at(i))).index-1+sdelay.at(m.at(i)));
+			else posi=atomsmi.at(m.at(i)).at(data->a.at(Mindex.at(m.at(i))).index-2+sdelay.at(m.at(i)));
+
+			nn << num.at(i);
+			for (int k=0;k<digits;k++) {
+				if (!siz) atomsmi.at(m.at(i)).insert(atomsmi.at(m.at(i)).begin()+data->a.at(Mindex.at(m.at(i))).index-1+sdelay.at(m.at(i)),-9);
+				else atomsmi.at(m.at(i)).push_back(-9);  //20200910
+			}
+			
+			for (int j=0;j<Cindex.size();j++) {
+				for (int k=0;k<atomsmi.at(j).size();k++) {
+					if (!siz) {
+						if (atomsmi.at(j).at(k)>=posi) atomsmi.at(j).at(k)+=digits;
+					}
+					else { //20200910
+						if (atomsmi.at(j).at(k)>posi) atomsmi.at(j).at(k)+=digits;
+					}	
+				}
+			}
+
+			for (int j=0;j<atomsmi.at(m.at(i)).size();j++) {
+				if (atomsmi.at(m.at(i)).at(j)==-9) {
+					//int g=data->a.at(Mindex.at(m.at(i))).index-1+sdelay.at(m.at(i))+ringdelay.at(m.at(i));
+					int g=atomsmi.at(m.at(i)).size();
+					if (j>0) {
+						for (int k1=1;k1<=g;k1++) { //orig k1<atomsmi[m.at(i)].size()
+							int left=-2;
+							if (j-k1>=0) left=atomsmi.at(m.at(i)).at(j-k1);
+							if (left!=-2 && left!=-9) {
+								for (int k2=(j-k1);k2<=g;k2++) { //orig k2<atomsmi[m.at(i)].size()
+									if (k2+1<atomsmi.at(m.at(i)).size()) {
+										if (atomsmi.at(m.at(i)).at(k2+1)==-9) atomsmi.at(m.at(i)).at(k2+1)=atomsmi.at(m.at(i)).at(k2)+1;
+									}
+								}
+								break;
+							}						
+						}						
+					}
+					else if (j==0) {
+						for (int k1=1;k1<=g;k1++) { // orig k1<atomsmi[m.at(i)].size()
+							int right=-1;
+							if (j+k1<atomsmi.at(m.at(i)).size()) right=atomsmi.at(m.at(i)).at(j+k1);
+													
+							if (right!=-1 && right!=-9) {
+								for (int k2=(j+k1);k2>=0;k2--) {
+									if (k2-1>=0) {
+										if (atomsmi.at(m.at(i)).at(k2-1)==-9) atomsmi.at(m.at(i)).at(k2-1)=atomsmi.at(m.at(i)).at(k2)-1;
+									}
+								}
+								break;
+							}
+						}						
+					}
+					
+					string fp=nn.str();
+					//for (int k2=0;k2<digits;k2++) x.insert(atomsmi[m.at(i)].at(j),string(1,fp[digits-k2-1]));
+                    for (int k=totalleng-1;k-digits>=atomsmi.at(m.at(i)).at(j);k--) {
+                        x[k]=x[k-digits];
+                        x[k-digits]=' ';
+                    }
+                    for (int k=0;k<digits;k++) {
+                        x[atomsmi.at(m.at(i)).at(j)+k]=fp[k];
+                    }
+
+
+					break;
+				}
+			}
+
+		}
+		pos.clear();
+		m.clear();
+		num.clear();
+		vector<int>().swap(pos);
+		vector<int>().swap(m);
+		vector<int>().swap(num);
+	}
+
+
+	vector<int>().swap(sdelay);
+	vector<int>().swap(ringdelay);
+
+	chg=0;
+	for (int i=0;i<Cindex.size();i++) chg+=data->a.at(Mindex.at(i)).chg;
+
+	for (int i=0;i<Cindex.size();i++) {
+		int M = Mindex.at(i);
+		int R = Rindex.at(i);
+		string kk=data->a.at(M).name; //20191011
+
+		bool explicit_H=0;
+		if (data->a.at(M).chg && kk.length()<=data->a.at(M).nbond && data->a.at(M).index!=data->a.at(M).nbond) explicit_H=1;
+		if (M==67 || M==68) explicit_H=1;
+
+		if (explicit_H) { // data.a[M].chg && kk.length()<=data.a[M].nbond && data.a[M].name[0]=='['
+			int tmp=0;
+			for (int j=0;j<data->a.at(M).norder;j++) {
+				tmp+=Bindex.at(i).at(j);
+			}
+			if (1) {
+				if (tmp>0 && tmp<10) kk[3]=char(tmp+48); //data->a[M].name[3]=char(tmp+48);
+			}
+		}
+
+
+        int num_3blanks=0;
+        if (1 && data->a.at(M).norder>0) { //delete "(-)" , "(=)" , "(#)" and "-" of "....(-...."
+            int P_quota=1;
+            for (int j=0;j<data->a.at(M).norder;j++) {
+                if (Bindex.at(i).at(j)) {
+                    int pos=data->a.at(M).index+3*j;
+                    kk[pos-1]=kk[pos]=kk[pos+1]=' ';
+                    num_3blanks++;
+                }
+                else if (!Bindex.at(i).at(j) && data->a.at(M).order.at(j)==R && P_quota>0) {
+                    int pos=data->a.at(M).index+3*j;
+                    kk[pos-1]=kk[pos]=kk[pos+1]=' ';
+                    P_quota--;
+                    num_3blanks++;
+                }
+            }
+            for (int j=0;j<kk.length();j++) {
+            	if (kk[j]==' ') {
+					kk.erase(kk.begin()+j);
+					j--;
+				}
+            }
+        }
+        if (1 && Cyindex.at(i)) { //delete "(-)" of cyclic flag"
+            int P_quota=1;
+            int Cy_quota=0;
+			int ct=0;
+            if (Cyindex.at(i)) Cy_quota=(int)log10(Cyindex.at(i));
+            for (int j=0;j<data->a.at(M).norder;j++) {
+                if (Bindex.at(i).at(j)) ;
+                else if (!Bindex.at(i).at(j) && data->a.at(M).order.at(j)==R && P_quota>0) P_quota--;
+				else {
+                	if (!Bindex.at(i).at(j) && data->a.at(M).order.at(j)==1 && Cy_quota>0) {
+                    	int pos=data->a.at(M).index+3*ct;
+                    	kk[pos-1]=kk[pos]=kk[pos+1]=' ';
+                    	Cy_quota--;
+                    	num_3blanks++;
+                	}
+					ct++;
+				}
+            }
+            for (int j=0;j<kk.length();j++) {
+                if (kk[j]==' ') {
+                    kk.erase(kk.begin()+j);
+                    j--;
+                }
+            }
+        }
+
+
+		int num_1blank=0;
+		if (1 && data->a.at(M).norder) { // //delete "-" of "....(-...."
+            int P_quota=1;
+            int ct=0;
+            for (int j=0;j<data->a.at(M).norder;j++) {
+                if (Bindex.at(i).at(j)) ;
+                else if (!Bindex.at(i).at(j) && data->a.at(M).order.at(j)==R && P_quota>0) P_quota--;
+                else {
+					if (data->a.at(M).order.at(j)==1) {
+                    	int pos=data->a.at(M).index+3*ct;
+						kk[pos]=' ';
+						num_1blank++;
+					}
+					ct++;
+                }
+            }
+            for (int j=0;j<kk.length();j++) {
+                if (kk[j]==' ') {
+                    kk.erase(kk.begin()+j);
+                    j--;
+                }
+            }
+
+		}
+		
+		int ct=0;
+		for (int j=0;j<atomsmi.at(i).size();j++) { // orig data->a[M].name.length() // data.a[M].nbond  //w<j  //data->a[M].name.length()
+			int n=atomsmi.at(i).at(j);
+
+			if (x[n]==' ') {
+				//string nu=string(1,kk[ct]); //string(1,data->a[Mindex.at(i)].name[ct]);
+				x[n]=kk[ct] ;//nu[0]; //data->a[Mindex.at(i)].name[j];
+				if (ct<data->a.at(M).nbond-3*num_3blanks-num_1blank) { // j<data->a[M].nbond
+					//if (((ct-tmp)%3)==0 && ct>data->a[Mindex.at(i)].index && data->a[Mindex.at(i)].index<data->a[Mindex.at(i)].nbond) { 
+						//x[n]=nu[0]; //data->a[Mindex.at(i)].name[j];
+						bool bnd=0;
+						if (n>=2) {
+							if (x[n-1]=='-' || x[n-1]=='=' || x[n-1]=='#') bnd=1;
+							if (x[n]==')' && x[n-2]=='(' && bnd) x[n-2]=x[n-1]=x[n]=' ';
+						}
+					//}
+					//else {
+					//	x[n]=nu[0]; //data->a[Mindex.at(i)].name[j];
+					//}
+				}
+				//else if (ct>=data->a[M].nbond && ct<data->a[M].name.length()) { // orig j>=data->a[M].nbond && j<data->a[M].name.length()
+					//x[n]=nu[0]; //data->a[Mindex.at(i)].name[j];
+				//}
+				ct++;
+
+			}
+
+		}
+		
+		//adata->a[M].name=kk;  //20191201
+		//if (M==67 || M==68) Mindex.at(i)=1;  //20200822
+	}
+
+    atomsmi.resize(0);
+    atomsmi.shrink_to_fit();
+    Bindex.resize(0);
+    Bindex.shrink_to_fit();
+
+	//molesmi="";
+	molesmi.clear();
+	for (int i=0;i<totalleng;i++) {
+		if (x[i]!=' ') {
+			molesmi.push_back(x[i]);
+		}
+	}
+    delete [] x;
+    x=NULL;
+
+	smiles=molesmi;
+
+	/*
+    if (cts) {
+        ofstream chkct("./chkct",ios::app);
+        chkct << molesmi << " " << para.nowgen << "-" << filenum << endl;
+        chkct.close();
     }
-  }
-  return;
+	*/
+
+	return;
 }
+
 
 void MOLECULE::clear() {
-  int n;
-  molesmi.clear();
-  for (n = 0; n < 1024; n++) {
-    Bindex[n].clear();
-    atomsmi[n].clear();
-  }
-  return;
+	int n;
+	molesmi.clear();
+	Bindex.clear();
+	atomsmi.clear();
+	//ctsisomer.clear();
+
+	return;
 }
+
+void MOLECULE::chk_cistrans(int sposi, int lposi) {
+	//vector<bool> posi(Cindex.size(),0);
+
+	if (1) {
+		if (ctsisomer.size()==2) {
+			if (ctsisomer.at(0).size()==ctsisomer.at(1).size() && ctsisomer.at(0).size()==Cindex.size()) return;
+		}
+	}
+
+    if (1) {
+        //ctsisomer.clear();
+        //ctsisomer.resize(Cindex.size(),"");
+		ctsisomer.resize(0,vector<string> (0));
+		ctsisomer.resize(2,vector<string>(Cindex.size(),""));
+        //for (int i=0;i<posi.size();i++) posi.at(i)=1;
+    }
+	/*
+	if (0) {
+		if (ctsisomer.size()==Cindex.size()) {
+			for (int i=0;i<ctsisomer.size();i++) {
+				if (ctsisomer.at(i)!="/" && ctsisomer.at(i)!="\\" && ctsisomer.at(i)!="") ctsisomer.at(i)="";
+			}
+			for (int i=0;i<ctsisomer.size();i++) { //int i=Cindex.size()-1;i>=0;i-- //int i=0;i<ctsisomer.size();i++
+				if (Rindex.at(i)==2 && Mindex.at(i)==2) {
+					int P=Pindex.at(i);
+					if (P>0) {
+						if (Mindex.at(P-1)==2 && Cindex.at(P-1)>0) {
+							vector<string> buf(0);
+							
+							if (Pindex.at(P-1)>0) {
+								buf.push_back(ctsisomer.at(Pindex.at(P-1)-1));
+								posi.at(Pindex.at(P-1)-1)=1;
+							}
+
+							for (int k1=0;k1<Cindex.size();k1++) {
+								if (Cindex.at(P-1)==Pindex.at(k1) && Cindex.at(k1)!=Cindex.at(i)) {
+									buf.push_back(ctsisomer.at(k1));
+									posi.at(k1)=1;
+									break;
+								}
+							}
+
+							if (buf.size()==2) {
+                            	if (buf.at(0)=="/" && buf.at(1)=="/") {
+									if (Pindex.at(P-1)>0) ctsisomer.at(Pindex.at(P-1)-1)="\\";
+                            	}
+                            	if (buf.at(0)=="\\" && buf.at(1)=="\\") {
+									if (Pindex.at(P-1)>0) ctsisomer.at(Pindex.at(P-1)-1)="/";
+                            	}
+							}
+
+							//vector<string> buf(0);
+							buf.clear();
+							for (int k1=0;k1<Cindex.size();k1++) {
+								if (Pindex.at(k1)==Cindex.at(i)) {
+									buf.push_back(ctsisomer.at(k1));
+									posi.at(k1)=1;
+								}
+							}
+							if (buf.size()==2) {
+								for (int k1=0;k1<Cindex.size();k1++) {
+									if (buf.at(0)=="/" && buf.at(1)=="/") {
+        		                	    if (Pindex.at(k1)==Cindex.at(i)) {
+											if (ctsisomer.at(k1)=="/") {
+												ctsisomer.at(k1)="\\";
+												break;
+											}
+                            			}
+                        			}
+									if (buf.at(0)=="\\" && buf.at(1)=="\\") {
+                        				for (int k1=0;k1<Cindex.size();k1++) {
+                                    		if (Pindex.at(k1)==Cindex.at(i)) {
+                                        		if (ctsisomer.at(k1)=="\\") {
+                                            		ctsisomer.at(k1)="/";
+                                            		break;
+                                        		}
+                                    		}
+										}	
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			for (int i=0;i<ctsisomer.size();i++) {
+				//if (ctsisomer.at(i)!="/" && ctsisomer.at(i)!="\\" && ctsisomer.at(i)!="") ctsisomer.at(i)="";
+				if (!posi.at(i)) ctsisomer.at(i)="";
+			}
+
+			for (int i=0;i<posi.size();i++) {
+				if (posi.at(i) && ctsisomer.at(i)!="") posi.at(i)=0;
+			}
+			
+			//for (int i=0;i<posi.size();i++) {
+            //    if (posi.at(i)) break;
+			//	else if (!posi.at(i) && i>=posi.size()-1) return;
+            //}
+		}
+		else ctsisomer.clear();
+
+		if (!ctsisomer.size()) {
+			ctsisomer.resize(Cindex.size(),"");
+			for (int i=0;i<posi.size();i++) posi.at(i)=1;
+		}
+	}
+	*/
+
+    if (1) {
+		int flip=0;
+        for (int i=sposi;i<=lposi;i++) { // C\C=C\C  //i=lposi;i>=sposi;i-- //i=sposi;i<=lposi;i++
+			bool go=0;
+			if (Mindex.at(i)==2) go=1;
+			if (Mindex.at(i)==8) go=1;
+			if (Mindex.at(i)==16) go=1;
+
+            if (Rindex.at(i)==2 && go) {
+                int P=Pindex.at(i);
+
+                if (P>0) {
+					bool go1=0;
+		            if (Mindex.at(P-1)==2) go1=1;
+            		if (Mindex.at(P-1)==8) go1=1;
+            		if (Mindex.at(P-1)==16) go1=1;
+
+                    if (go1 && Cindex.at(P-1)>0) { // Mindex.at(P-1)==2 && Pindex.at(P-1)>0
+						vector< vector<int> > chainsM(4,vector<int>(0));
+                        vector< vector<int> > chainsR(4,vector<int>(0));
+
+						bool cas=0;
+						if (Pindex.at(P-1)>0) {
+							cas=0;
+						    if (Cindex.at(Pindex.at(P-1)-1)>0) {
+        						int compa=Cindex.at(Pindex.at(P-1)-1);
+        						int cont=0;
+        						while (compa>=1 && cont<=Cindex.size()) {
+            						if (compa>=1) {
+                						if (Pindex.at(compa-1)>=1) {
+											chainsM.at(0).push_back(Mindex.at(compa-1));
+											chainsR.at(0).push_back(Rindex.at(compa-1));
+
+
+
+                                    		vector<int> curatm(0);
+                                    		curatm.push_back(Cindex.at(compa-1));
+
+                                    		bool goout=0;
+
+                                    		do {
+                                        		for (int k3=0;k3<curatm.size();k3++) {
+                                            		vector<int> tmpp(0);
+                                            		for (int k2=0;k2<Cindex.size();k2++) {
+                                                		if (Pindex.at(k2)==curatm.at(k3) && Cindex.at(k2)!=Cindex.at(P-1)) {
+                                                    		chainsM.at(0).push_back(Mindex.at(k2));
+                                                    		chainsR.at(0).push_back(Rindex.at(k2));
+                                                    		tmpp.push_back(Cindex.at(k2));
+                                                		}
+                                            		}
+                                            		if (tmpp.size()>0) {
+                                                		curatm.resize(0);
+                                                		for (int k3=0;k3<tmpp.size();k3++) curatm.push_back(tmpp.at(k3));
+                                            		}
+                                            		else {
+                                               			goout=1;
+                                                		break;
+                                            		}
+                                        		}
+                                    		} while (!goout);
+
+
+                    						compa=Cindex.at(Pindex.at(compa-1)-1);
+                						}
+                						else break;
+                						cont++;
+            						}
+            						else break;
+        						}
+								if (compa==1) {
+									chainsM.at(0).push_back(Mindex.at(0));
+									chainsR.at(0).push_back(Rindex.at(0));
+								}
+
+    						}
+
+                            for (int k1=0;k1<Cindex.size();k1++) {
+                                if (Pindex.at(k1)==Cindex.at(P-1) && Cindex.at(k1)!=Cindex.at(i)) {
+                                    chainsM.at(1).push_back(Mindex.at(k1));
+                                    chainsR.at(1).push_back(Rindex.at(k1));
+
+                                    vector<int> curatm(0);
+                                    curatm.push_back(Cindex.at(k1));
+
+                                    bool goout=0;
+
+                                    do {
+                                        for (int k3=0;k3<curatm.size();k3++) {
+                                            vector<int> tmpp(0);
+                                            for (int k2=0;k2<Cindex.size();k2++) {
+                                                if (Pindex.at(k2)==curatm.at(k3)) {
+                                                    chainsM.at(1).push_back(Mindex.at(k2));
+                                                    chainsR.at(1).push_back(Rindex.at(k2));
+                                                    tmpp.push_back(Cindex.at(k2));
+                                                }
+                                            }
+                                            if (tmpp.size()>0) {
+                                                curatm.resize(0);
+                                                for (int k3=0;k3<tmpp.size();k3++) curatm.push_back(tmpp.at(k3));
+                                            }
+                                            else {
+                                                goout=1;
+                                                break;
+                                            }
+                                        }
+                                    } while (!goout);
+                                }
+                            }
+						}
+						else {
+							cas=1;
+							int ct=0;
+                            for (int k1=0;k1<Cindex.size();k1++) {
+                                if (Pindex.at(k1)==Cindex.at(P-1) && Cindex.at(k1)!=Cindex.at(i)) {
+                                    chainsM.at(ct).push_back(Mindex.at(k1));
+                                    chainsR.at(ct).push_back(Rindex.at(k1));
+
+                                    vector<int> curatm(0);
+                                    curatm.push_back(Cindex.at(k1));
+
+                                    bool goout=0;
+
+                                    do {
+                                        for (int k3=0;k3<curatm.size();k3++) {
+                                            vector<int> tmpp(0);
+                                            for (int k2=0;k2<Cindex.size();k2++) {
+                                                if (Pindex.at(k2)==curatm.at(k3)) {
+                                                    chainsM.at(ct).push_back(Mindex.at(k2));
+                                                    chainsR.at(ct).push_back(Rindex.at(k2));
+                                                    tmpp.push_back(Cindex.at(k2));
+                                                }
+                                            }
+                                            if (tmpp.size()>0) {
+                                                curatm.resize(0);
+                                                for (int k3=0;k3<tmpp.size();k3++) curatm.push_back(tmpp.at(k3));
+                                            }
+                                            else {
+                                                goout=1;
+                                                break;
+                                            }
+                                        }
+                                    } while (!goout);
+
+									ct++;
+                                }
+                            }
+
+						}
+
+						int ct=2;
+                        for (int k1=0;k1<Cindex.size();k1++) {
+                            if (Pindex.at(k1)==Cindex.at(i)) {
+                                chainsM.at(ct).push_back(Mindex.at(k1));
+								chainsR.at(ct).push_back(Rindex.at(k1));
+
+								vector<int> curatm(0);
+								curatm.push_back(Cindex.at(k1));
+									
+								bool goout=0;
+									
+								do {
+									for (int k3=0;k3<curatm.size();k3++) {
+										vector<int> tmpp(0);
+										for (int k2=0;k2<Cindex.size();k2++) {
+                                			if (Pindex.at(k2)==curatm.at(k3)) {
+                                    			chainsM.at(ct).push_back(Mindex.at(k2));
+                                    			chainsR.at(ct).push_back(Rindex.at(k2));
+												tmpp.push_back(Cindex.at(k2));
+                                			}
+										}
+										if (tmpp.size()>0) {
+											curatm.resize(0);
+											for (int k3=0;k3<tmpp.size();k3++) curatm.push_back(tmpp.at(k3));
+										}
+										else {
+											goout=1;
+											break;
+										}
+                            		}
+								} while (!goout);
+
+								ct++;
+                            }
+                        }
+
+						for (int g=0;g<chainsM.size();g++) {
+							for (int g1=0;g1<chainsM.at(g).size();g1++) {
+								for (int g2=g1+1;g2<chainsM.at(g).size();g2++) {
+									if (chainsM.at(g).at(g1)>chainsM.at(g).at(g2)) swap(chainsM.at(g).at(g1),chainsM.at(g).at(g2));
+								}
+							}
+						}
+
+						if (0) {
+                            for (int g=0;g<chainsM.size();g++) {
+								cout << "F " << filenum << " | chg " << chg << " | " << g+1 << " | ";
+                                for (int g1=0;g1<chainsM.at(g).size();g1++) {
+                                    cout << chainsM.at(g).at(g1) << " ";
+                                }
+								cout << endl;
+                            }
+						}
+
+						bool hascistrans=1;
+						if (chainsM.at(0).size()==chainsM.at(1).size()) {
+							if (chainsM.at(0).size()==0) hascistrans=0;
+							else {
+								for (int g=0;g<chainsM.at(0).size();g++) {
+									if (chainsM.at(1).at(g)-chainsM.at(0).at(g)) {
+										break;
+									}
+									else if (chainsM.at(1).at(g)==chainsM.at(0).at(g) && g>=chainsM.at(0).size()-1) {
+										hascistrans=0;
+									}
+								}
+							}
+						}
+						if (hascistrans) {
+                            if (chainsM.at(2).size()==chainsM.at(3).size()) {
+                                if (chainsM.at(2).size()==0) hascistrans=0;
+                                else {
+                                    for (int g=0;g<chainsM.at(2).size();g++) {
+                                        if (chainsM.at(3).at(g)-chainsM.at(2).at(g)) {
+                                            break;
+                                        }
+										else if (chainsM.at(3).at(g)==chainsM.at(2).at(g) && g>=chainsM.at(2).size()-1) {
+											hascistrans=0;
+										}
+                                    }
+                                }
+                            }
+						}
+
+						bool y1=1,y2=1;
+						if (hascistrans && if_circle) {
+    						vector<int> C_ringmember(0);
+
+    						for (int k1=if_circle;k1>=1;k1--) {
+        						C_ringmember.resize(0);
+        						int rep_quota=1;
+        						for (int k2=Cyindex.size()-1;k2>=0;k2--) {
+            						if (Cyindex.at(k2)) {
+                						int digits=(int)log10(Cyindex.at(k2))+1;
+                						for (int k3=1;k3<=digits;k3++) {
+                    						int w=Cyindex.at(k2)/(int)pow(10,k3-1);
+                    						w=w%10;
+                    						if (w==k1) {
+                        						int compa=Cindex.at(k2);
+                        						int cont=0;
+                        						while (compa>1 && cont<=Cyindex.size()) {
+                            						if (1) C_ringmember.push_back(compa);
+
+                            						if (compa>=1) {
+                                						if (Pindex.at(compa-1)>=1) compa=Cindex.at(Pindex.at(compa-1)-1);
+                                						else break;
+                                						cont++;
+                            						}
+                        							else break;
+                        						}
+                        						if (compa==1) if (1) C_ringmember.push_back(compa);
+                    						}
+                						}
+            						}
+        						}
+        						if (C_ringmember.size()>0) {
+            						for (int k2=0;k2<C_ringmember.size()-1;k2++) {
+                						for (int k3=k2+1;k3<C_ringmember.size();k3++) {
+                    						if (C_ringmember.at(k2)!=-1 && C_ringmember.at(k3)!=-1) {
+                        						if (C_ringmember.at(k2)==C_ringmember.at(k3) && rep_quota<=0) {
+                            						C_ringmember.at(k2)=C_ringmember.at(k3)=-1;
+                        						}
+                        						else if (C_ringmember.at(k2)==C_ringmember.at(k3) && rep_quota>0) {
+                            						C_ringmember.at(k3)=-1;
+                            						rep_quota--;
+                        						}
+                    						}
+                						}
+            						}
+        						}
+        						if (C_ringmember.size()>0) {
+                					for (int k2=0;k2<C_ringmember.size();k2++) {
+                    					if (C_ringmember.at(k2)==-1) {
+											C_ringmember.erase(C_ringmember.begin()+k2);
+											k2--;
+                    					}
+                					}
+        						}
+								for (int g=0;g<C_ringmember.size();g++) {
+									if (Cindex.at(i)==C_ringmember.at(g)) y1=0;
+                                    if (Cindex.at(P-1)==C_ringmember.at(g)) y2=0;
+								}
+
+							}
+
+						}
+
+						bool z=0;
+						if (y1 || y2) z=1;
+						if (hascistrans && z) {
+							if (0) {
+                            	if (0) ctsisomer.at(1).at(Pindex.at(P-1)-1)+="/"; 
+
+								if (1) ctsisomer.at(0).at(Cindex.at(P-1)-1)+="/";
+
+								if (0) {
+                           			for (int k1=0;k1<Cindex.size();k1++) {
+                                		if (Cindex.at(P-1)==Pindex.at(k1) && Cindex.at(k1)!=Cindex.at(i)) {
+                                    		ctsisomer.at(0).at(k1)+="\\"; 
+											if (0) ctsisomer.at(0).at(Cindex.at(P-1)-1)+="\\";
+                                    		break;
+                                		}
+                            		}
+								}
+
+								if (0) {
+									int ct=0;
+                            		for (int k1=0;k1<Cindex.size();k1++) {
+                                		if (Pindex.at(k1)==Cindex.at(i)) {
+                                    		ct=rand()%2;
+                                    		string cis_trans="";
+                                    		if (ct) cis_trans="\\";
+                                    		else cis_trans="/";
+
+                                    		ctsisomer.at(0).at(k1)+=cis_trans;
+
+											if (0) ctsisomer.at(1).at(Cindex.at(i)-1)+=cis_trans;
+
+                                    		ct++;
+                                    		ct=ct%2;
+                                		}
+                            		}
+								}
+
+								if (1) ctsisomer.at(1).at(Cindex.at(i)-1)+='/';
+							}
+							if (1) {
+								if (!cas) {
+									if (0) {
+										if (1) {
+											if (!flip) ctsisomer.at(0).at(Cindex.at(P-1)-1)+="/";
+											else ctsisomer.at(0).at(Cindex.at(P-1)-1)+="\\";
+										}
+										if (1) {
+											if (!flip) ctsisomer.at(1).at(Cindex.at(i)-1)+='/';
+											else ctsisomer.at(1).at(Cindex.at(P-1)-1)+="\\";
+										}
+
+										flip++;
+										flip=flip%2;
+									}
+									if (1) {
+										ctsisomer.at(0).at(Cindex.at(P-1)-1)+="/";
+										ctsisomer.at(1).at(Cindex.at(i)-1)+='/';
+									}
+								}
+								else {
+	                                if (1) {
+    	                                int ct=0;
+                                    	for (int k1=0;k1<Cindex.size();k1++) {
+                                        	if (Pindex.at(k1)==Cindex.at(P-1) && Cindex.at(k1)!=Cindex.at(i)) {
+                                            	ct=rand()%2;
+                                            	string cis_trans="";
+                                            	if (ct) cis_trans="\\";
+                                            	else cis_trans="/";
+
+                                            	ctsisomer.at(0).at(k1)+=cis_trans;
+
+                                            	ct++;
+                                            	ct=ct%2;
+                                        	}
+                                    	}
+                                	}
+									
+								}
+							}
+
+							if (0) cout << hascistrans << " | " << y1 << " | " << y2 << " | Append pos: " << Cindex.at(P-1)-1 << " " << Cindex.at(i)-1 << endl;
+
+						}
+
+					}
+				}
+			}
+		}
+	}
+
+	/*
+	vector<bool> posi(Cindex.size(),0);
+	if (1) {
+		if (ctsisomer.size()==Cindex.size()) {
+			for (int i=Cindex.size()-1;i>=0;i--) {
+				if (Rindex.at(i)==2 && Mindex.at(i)==2) {
+					int P=Pindex.at(i);
+					if (P>0) {
+						if (Mindex.at(P-1)==2 && Cindex.at(P-1)>0) {
+							//if (ctsisomer.at(Cindex.at(P-1)-1)=="") {
+							//	ctsisomer.clear();
+							//	break;
+							//}
+							//else posi.push_back(Cindex.at(P-1)-1);
+							posi.at(Cindex.at(P-1)-1)=1;
+						}
+						for (int k1=0;k1<Cindex.size();k1++) {
+							if (Pindex.at(k1)==Cindex.at(i)) {
+								//if (ctsisomer.at(k1)=="") {
+								//	ctsisomer.clear();
+								//	break;
+								//}
+								//else posi.push_back(k1);
+								posi.at(k1)=1;
+							}
+						}
+					}
+				}
+			}
+			for (int i=0;i<posi.size();i++) {
+				if (posi.at(i) && ctsisomer.at(i)!="") posi.at(i)=0;
+			}
+			
+			for (int i=0;i<posi.size();i++) {
+                if (posi.at(i)) break;
+				else if (!posi.at(i) && i>=posi.size()-1) return;
+            }
+		}
+		else ctsisomer.clear();
+
+		if (!ctsisomer.size()) {
+			ctsisomer.resize(Cindex.size(),"");
+			for (int i=0;i<posi.size();i++) posi.at(i)=1;
+		}
+	}
+	if (0) {
+		ctsisomer.clear();
+		ctsisomer.resize(Cindex.size(),"");
+	}
+	
+	for (int i=lposi;i>=sposi;i--) { // C\C=C\C
+		if (Rindex.at(i)==2 && Mindex.at(i)==2) {
+			int P=Pindex.at(i);
+
+			if (P>0) {
+				if (Mindex.at(P-1)==2 && Cindex.at(P-1)>0) { // Mindex.at(P-1)==2 && Pindex.at(P-1)>0
+					string cis_trans="";
+					if (prob()>=0.5) cis_trans="/";
+					else cis_trans="\\";
+					
+					if (posi.at(Cindex.at(P-1)-1)) {
+						ctsisomer.at(Cindex.at(P-1)-1)+=cis_trans;
+						posi.at(Cindex.at(P-1)-1)=0;
+					}
+
+		            if (1) {
+        		        int ct=rand()%2;
+						string keep="";
+                		for (int k1=0;k1<Cindex.size();k1++) {
+                    		if (Pindex.at(k1)==Cindex.at(i)) {
+                        		cis_trans="";
+                        		if (ct) cis_trans="/";
+                        		else cis_trans="\\";
+
+                                if (!posi.at(k1)) keep=ctsisomer.at(k1);
+                        		if (posi.at(k1)) {
+									if (keep=="/") ctsisomer.at(k1)="\\";
+									else if (keep=="\\") ctsisomer.at(k1)="/";
+									else ctsisomer.at(k1)+=cis_trans;
+									posi.at(k1)=0;
+								}
+
+                        		ct++;
+                        		ct=ct%2;
+                    		}
+                		}
+						
+            		}
+				}
+			}		
+		}
+	}
+
+	vector<bool>().swap(posi);
+	*/
+}
+
 
 void MOLECULE::reset() {
-  int i;
-  int j;
-  int n, m;
-  int b;
-  int c;
-  int x;
-  int u;
-  int M;
-  int smindex, t[2], s[2];
-  clear();
-  for (i = 0; i < Cindex.size(); i++) {
-    b = Mindex.at(i);
-    c = Pindex.at(i);
-    x = Rindex.at(i);
-    for (j = 0; j < data.a[b].norder; j++) {
-      Bindex[i].push_back(data.a[b].order[j]);
-    }
-    u = 0;
-    if (c == 0) {
-      for (j = 0; j < data.a[b].nbond; j++) {
-        atomsmi[i].push_back(j);
-      }
-    } else if (c > 0) {
-      M = Mindex.at(c - 1);
-      for (j = 0; j < data.a[M].norder; j++) {
-        if (Bindex[c - 1].at(j) == x) {
-          for (n = 0; n < data.a[b].norder; n++) {
-            if (Bindex[i].at(n) == x) {
-              Bindex[i].at(n) = 0;
-              Bindex[c - 1].at(j) = 0;
-              u = 1;
-              break;
-            }
-          }
-          if (u == 1) break;
-        }
-      }
-      smindex = 0;
-      if (u) smindex = data.a[M].index + j * 3;
-      for (j = 0; j < data.a[b].nbond; j++) {
-        atomsmi[i].push_back(j + atomsmi[c - 1][smindex] + 1);
-      }
-      for (j = 0; j < i; j++) {
-        for (n = 0; n < data.a[Mindex.at(j)].nbond; n++) {
-          if (atomsmi[j].at(n) > atomsmi[c - 1].at(smindex)) {
-            atomsmi[j].at(n) = atomsmi[j].at(n) + data.a[b].nbond;
-          }
-        }
-      }
-    }
-  }
-  m = 0;
-  for (i = 0; i < Cyindex.size(); i++) {
-    if (Cyindex.at(i) > m) {
-      if (Cyindex.at(i) > 10) {
-        t[0] = Cyindex.at(i) / 10;
-        t[1] = Cyindex.at(i) % 10;
-        if (t[0] > m && t[0] > t[1])
-          m = t[0];
-        else if (t[1] > t[0] && t[1] > m)
-          m = t[1];
-      } else
-        m = Cyindex.at(i);
-    }
-  }
-  if (if_circle) {
-    vector<int> cyclic;
-    cyclic.resize(m);
-    for (i = 0; i < m; i++) cyclic[i] = 0;
-    for (i = 0; i < Mindex.size(); i++) {
-      if (Cyindex.at(i)) {
-        if (Cyindex.at(i) > 10) {
-          j = Cyindex.at(i) / 10;
-          n = Cyindex.at(i) % 10;
-          cyclic.at(j - 1) += 1;
-          cyclic.at(n - 1) += 1;
-        } else
-          cyclic.at(Cyindex.at(i) - 1) += 1;
-      }
-    }
-    m = -1;
-    for (i = 0; i < cyclic.size(); i++) {
-      if (cyclic.at(i) == 2) {
-        u = 0;
-        for (j = 0; j < Mindex.size(); j++) {
-          for (n = j + 1; n < Mindex.size(); n++) {
-            if (Cyindex.at(j) > 10) {
-              t[0] = Cyindex.at(j) / 10;
-              t[1] = Cyindex.at(j) % 10;
-            } else {
-              t[0] = t[1] = Cyindex.at(j);
-            }
-            if (Cyindex.at(n) > 10) {
-              s[0] = Cyindex.at(n) / 10;
-              s[1] = Cyindex.at(n) % 10;
-            } else {
-              s[0] = s[1] = Cyindex.at(n);
-            }
-            if ((s[0] == t[0] || s[0] == t[1] || s[1] == t[0] ||
-                 s[1] == t[1]) &&
-                (s[0] == (i + 1) || s[1] == (i + 1))) {
-              for (m = 0; m < data.a[Mindex.at(j)].norder; m++) {
-                for (x = 0; x < data.a[Mindex.at(n)].norder; x++) {
-                  if (Bindex[j].at(m) == 1 && Bindex[n].at(x) == 1) {
-                    Bindex[j].at(m) = 0;
-                    Bindex[n].at(x) = 0;
-                    u = 1;
-                    break;
-                  }
+	clear();
+	Bindex.reserve(Cindex.size());
+	Bindex.resize(Cindex.size(),vector<int> (0));
+	//Bindex.shrink_to_fit();
+	atomsmi.reserve(Cindex.size());
+	atomsmi.resize(Cindex.size(),vector<int> (0));
+	//atomsmi.shrink_to_fit();
+
+	for (int i=0;i<Cindex.size();i++) {
+		int b = Mindex.at(i);
+		int c = Pindex.at(i);
+		int x = Rindex.at(i);
+
+		for (int j=0;j<data->a.at(b).norder;j++) {
+			Bindex.at(i).push_back(data->a.at(b).order.at(j));
+		}
+
+		bool u=0;
+		if (c==0) {
+			for (int j=0;j<data->a.at(b).name.length();j++) { // data.a[b].nbond //20191230
+				atomsmi.at(i).push_back(j);
+			}
+		}
+		else if (c>0) {
+			int M = Mindex.at(c-1);
+			int j=0;
+			for (j=0;j<data->a.at(M).norder;j++) {
+				if (Bindex.at(c-1).at(j) == x) {
+					for (int n=0;n<data->a.at(b).norder;n++) {
+						if (Bindex.at(i).at(n) == x) {
+							Bindex.at(i).at(n) = 0;
+							Bindex.at(c-1).at(j) = 0;
+							u=1;
+							break;
+						}
+					}
+					if (u) break;
+				}
+			}
+			int smindex=0;
+			if (u) smindex=data->a.at(M).index+j*3;
+
+			for (j=0;j<data->a.at(b).name.length();j++) {  // data.a[b].nbond //20191230
+				int a=j+atomsmi.at(c-1).at(smindex)+1;		
+				atomsmi.at(i).push_back(a);
+			}
+
+			for (j=0;j<i;j++) {
+				for (int n=0;n<data->a.at(Mindex.at(j)).name.length();n++) { // data.a[Mindex.at(j)].nbond
+					if (atomsmi.at(j).at(n) > atomsmi.at(c-1).at(smindex)) {
+						atomsmi.at(j).at(n) = atomsmi.at(j).at(n)+data->a.at(b).name.length();  // + data.a[b].nbond
+					}  
+				}
+			}
+
+		}
+
+	}
+
+
+
+    if (1) { //delete "(-)" , "(=)" , "(#)"
+        if (0) {
+            for (int i=0;i<atomsmi.size();i++) {
+                cout << "orig ";
+                for (int j=0;j<atomsmi.at(i).size();j++) {
+                    cout << atomsmi.at(i).at(j) << " ";
                 }
-                if (u) break;
-              }
-              if (u == 0) {
-                u = 1;
-                Cyindex.at(j) = 0;
-                Cyindex.at(n) = 0;
-              }
-              if (u) break;
+                cout << endl;
             }
-            if (u) break;
-          }
-          if (u) break;
         }
-      } else {
-        for (j = 0; j < Mindex.size(); j++) {
-          if (Cyindex.at(j) == (i + 1)) {
-            Cyindex.at(j) = 0;
-            break;
-          }
+        vector<int> cid(0);
+        vector<int> rpos(0);
+        vector<int> apos(0);
+        for (int i=0;i<Bindex.size();i++) {
+            int M=Mindex.at(i);
+            int R=Rindex.at(i);
+            int P_quota=1;
+            for (int j=0;j<data->a.at(M).norder;j++) {
+                if (Bindex.at(i).at(j)) {
+                    int pos=data->a.at(M).index+3*j-1;
+                    int tmp=atomsmi.at(i).at(pos); //pos-1
+                    cid.push_back(Cindex.at(i));
+                    rpos.push_back(pos);
+                    apos.push_back(tmp);
+                }
+                else if (!Bindex.at(i).at(j) && data->a.at(M).order.at(j)==R && P_quota>0) {
+                    int pos=data->a.at(M).index+3*j-1;
+                    int tmp=atomsmi.at(i).at(pos); //pos-1
+                    cid.push_back(Cindex.at(i));
+                    rpos.push_back(pos);
+                    apos.push_back(tmp);
+                    P_quota--;
+                }
+            }
         }
-      }
+		
+        cid.reserve(cid.size());
+        rpos.reserve(rpos.size());
+        apos.reserve(apos.size());
+		
+        for (int i=0;i<cid.size();i++) {
+            for (int j=i+1;j<cid.size();j++) {
+                if (apos.at(j)<apos.at(i)) {
+                    swap(cid.at(i),cid.at(j));
+                    swap(apos.at(i),apos.at(j));
+                    swap(rpos.at(i),rpos.at(j));
+                }
+            }
+        }
+        for (int i=0;i<cid.size();i++) {
+            int rtmp=rpos.at(i);
+            int atmp=atomsmi.at(cid.at(i)-1).at(rpos.at(i));
+            for (int j=0;j<3;j++) {
+                atomsmi.at(cid.at(i)-1).erase(atomsmi.at(cid.at(i)-1).begin()+rpos.at(i));
+            }
+            for (int k=0;k<atomsmi.size();k++) {
+                for (int l=0;l<atomsmi.at(k).size();l++) {
+                    if (atomsmi.at(k).at(l)>atmp) atomsmi.at(k).at(l)-=3;
+                }
+            }
+            for (int j=i+1;j<cid.size();j++) {
+                if (cid.at(j)==cid.at(i) && apos.at(j)>apos.at(i)) rpos.at(j)-=3;
+                if (apos.at(j)>apos.at(i)) apos.at(j)-=3;
+            }
+            if (0) {
+                for (int k=0;k<atomsmi.size();k++) {
+                    cout << Cindex.at(k) << " " << Mindex.at(k) << " QQ ";
+                    for (int j=0;j<atomsmi.at(k).size();j++) {
+                        cout << atomsmi.at(k).at(j) << " ";
+                    }
+                    cout << endl;
+                }
+            }
+        }
+
+        vector<int>().swap(apos);
+        vector<int>().swap(cid);
+        vector<int>().swap(rpos);
     }
-  }
-  n = 0;
-  if (if_circle) {
-    m = 0;
-    for (i = 0; i < Cyindex.size(); i++) {
-      if (Cyindex.at(i) > m) {
-        if (Cyindex.at(i) > 10) {
-          j = Cyindex.at(i) / 10;
-          n = Cyindex.at(i) % 10;
-          if (j > n && j > m)
-            m = j;
-          else if (n > j && n > m)
-            m = n;
-        } else
-          m = Cyindex.at(i);
-      }
+
+
+    if (1) { //delete "-" of "....(-....."
+        vector<int> cid(0);
+        vector<int> rpos(0);
+        vector<int> apos(0);
+
+        for (int i=0;i<Bindex.size();i++) {
+            int M=Mindex.at(i);
+            int R=Rindex.at(i);
+            int P_quota=1;
+			int ct=0;
+            for (int j=0;j<data->a.at(M).norder;j++) {
+                if (Bindex.at(i).at(j)) ;
+                else if (!Bindex.at(i).at(j) && data->a.at(M).order.at(j)==R && P_quota>0) P_quota--;
+				else {
+					if (data->a.at(M).order.at(j)==1) {
+                    	int pos=data->a.at(M).index+3*ct;
+                    	int tmp=atomsmi.at(i).at(pos);
+                    	cid.push_back(Cindex.at(i));
+                    	rpos.push_back(pos);
+                    	apos.push_back(tmp);
+					}
+					ct++;
+				}
+            }
+        }
+
+        cid.reserve(cid.size());
+        rpos.reserve(rpos.size());
+        apos.reserve(apos.size());
+
+        for (int i=0;i<cid.size();i++) {
+            for (int j=i+1;j<cid.size();j++) {
+                if (apos.at(j)<apos.at(i)) {
+                    swap(cid.at(i),cid.at(j));
+                    swap(apos.at(i),apos.at(j));
+                    swap(rpos.at(i),rpos.at(j));
+                }
+            }
+        }
+        for (int i=0;i<cid.size();i++) {
+            int rtmp=rpos.at(i);
+            int atmp=atomsmi.at(cid.at(i)-1).at(rpos.at(i));
+
+            atomsmi.at(cid.at(i)-1).erase(atomsmi.at(cid.at(i)-1).begin()+rpos.at(i));
+
+            for (int k=0;k<atomsmi.size();k++) {
+                for (int l=0;l<atomsmi.at(k).size();l++) {
+                    if (atomsmi.at(k).at(l)>atmp) atomsmi.at(k).at(l)--;
+                }
+            }
+            for (int j=i+1;j<cid.size();j++) {
+                if (cid.at(j)==cid.at(i) && apos.at(j)>apos.at(i)) rpos.at(j)--;
+                if (apos.at(j)>apos.at(i)) apos.at(j)--;
+            }
+            if (0) {
+                for (int k=0;k<atomsmi.size();k++) {
+                    cout << Cindex.at(k) << " " << Mindex.at(k) << " QQ ";
+                    for (int j=0;j<atomsmi.at(k).size();j++) {
+                        cout << atomsmi.at(k).at(j) << " ";
+                    }
+                    cout << endl;
+                }
+            }
+        }
+
+        vector<int>().swap(apos);
+        vector<int>().swap(cid);
+        vector<int>().swap(rpos);
     }
-    if_circle = m;
-  }
-  return;
+
+
+
+
+	if (1) {
+		int m=0;
+		vector<int> t(0);
+		vector<int> s(0);
+		for (int i=0;i<Cyindex.size();i++) {
+			if (Cyindex.at(i)>m) {
+				if (1) { //20200509
+                    int digits=(int)log10(Cyindex.at(i))+1;
+                    for (int ap=1;ap<=digits;ap++) {
+                        int nn=Cyindex.at(i)/(int)pow(10,ap-1);
+                        nn=nn%10;
+                        if (nn>m) m=nn;
+                    }
+				}
+			}
+		}
+		if (m==0) {
+			if_circle=0;
+			for (int i=0;i<Cyindex.size();i++) Cyindex.at(i)=0;
+			//chk_cistrans();
+			//return;
+		}
+
+		if (m) {
+			vector<int> cyclic;
+			cyclic.resize(m,0);
+			for (int i=0;i<Mindex.size();i++) {
+				if (Cyindex.at(i))  {
+					if (1) { //20200509
+						int digits=(int)log10(Cyindex.at(i))+1;
+						for (int ap=1;ap<=digits;ap++) {
+							int nn=Cyindex.at(i)/(int)pow(10,ap-1);
+							nn=nn%10;
+							cyclic.at(nn-1)+=1;
+						}
+					}
+				}
+			}
+			for (int i=cyclic.size()-1;i>=0;i--) { // orig i=0;i<cyclic.size();i++ //20200725
+				if (cyclic.at(i)==2) {
+					for (int j=0;j<Mindex.size();j++) {
+						if (1) { //20200509
+							t.resize(0);
+
+							if (Cyindex.at(j)) {
+                    			int digits=(int)log10(Cyindex.at(j))+1;
+                    			for (int ap=1;ap<=digits;ap++) {
+                        			int nn=Cyindex.at(j)/(int)pow(10,ap-1);
+                        			nn=nn%10;
+									t.push_back(nn);
+                    			}
+							}	
+						}
+
+						bool go1=0;
+						if (1) {
+							for (int j1=0;j1<t.size();j1++) {
+								if (t.at(j1)==(i+1)) { // orig t.at(j1)==s.at(j2) && s.at(j2)==(i+1)
+									go1=1;
+									break;
+								}
+							}
+						}
+
+
+
+						if (go1) { // orig go1 && go2 20200725 // ( (s[0]==t[0] || s[0]==t[1] || s[1]==t[0] || s[1]==t[1]) && (s[0]==(i+1) || s[1]==(i+1)) )
+							bool u=0;
+							for (int m1=0;m1<data->a.at(Mindex.at(j)).norder;m1++) {
+								if (Bindex.at(j).at(m1)==1) { // orig Bindex[j].at(m1)==1 && Bindex[n].at(x1)==1
+									Bindex.at(j).at(m1)=0;
+									u=1;
+									break;
+								}
+							}
+							if (!u) {
+								u=1;
+
+                            	if (Cyindex.at(j)) {
+                                	int digits=(int)log10(Cyindex.at(j))+1;
+                                	for (int ap=1;ap<=digits;ap++) {
+                                    	int nn=Cyindex.at(j)/(int)pow(10,ap-1);
+                                    	nn=nn%10;
+                                    	if (nn==(i+1)) Cyindex.at(j)=Cyindex.at(j)%(int)pow(10,ap-1)+(Cyindex.at(j)/(int)pow(10,ap))*(int)pow(10,ap-1);
+                                	}
+                            	}
+							}
+						}
+					}
+				} 
+				else {
+					for (int j=0;j<Mindex.size();j++) {
+						if (1) { //20200509
+							if (Cyindex.at(j)) {
+                                int digits=(int)log10(Cyindex.at(j))+1;
+                                for (int ap=1;ap<=digits;ap++) {
+                                    int nn=Cyindex.at(j)/(int)pow(10,ap-1);
+                                    nn=nn%10;
+									if (nn==(i+1)) {
+										Cyindex.at(j)=Cyindex.at(j)%(int)pow(10,ap-1)+(Cyindex.at(j)/(int)pow(10,ap))*(int)pow(10,ap-1);									
+									}
+                                }
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (m) {
+			m=0;
+			for (int i=0;i<Cyindex.size();i++) {
+				//if (Cyindex.at(i)>m) m=Cyindex.at(i);
+				if (Cyindex.at(i)>m) {
+					if (1) {
+                        int digits=(int)log10(Cyindex.at(i))+1;
+                        for (int ap=1;ap<=digits;ap++) {
+                            int nn=Cyindex.at(i)/(int)pow(10,ap-1);
+                            nn=nn%10;
+							if (nn>m) m=nn;
+                        }
+					}
+				}
+			}
+			if_circle=m;
+		}
+	}
+
+	if (para.protect) prct(); //20200101
+	//chk_cistrans();
+
+	return;
 }
+
 
 void MOLECULE::init() {
-  int i = 0, j = 0, k = 0;
-  string tmp;
-  double x, y, z;
-  smi2gjf();
-  if (atm != NULL) delete[] atm;
-  string temp = "";
-  ifstream inf((smiles + ".gjf").c_str());
-  getline(inf, temp);
-  inf >> ws;
-  getline(inf, temp);
-  inf >> ws;
-  while (!inf.eof()) {
-    inf >> tmp >> ws >> x >> ws >> y >> ws >> z >> ws;
-    i++;
-  }
-  inf.close();
-  natom = i;
-  inf.open((smiles + ".gjf").c_str());
-  k = 0;
-  atm = new DEATOM[natom];
-  getline(inf, temp);
-  inf >> ws;
-  getline(inf, temp);
-  inf >> ws;
-  while (!inf.eof()) {
-    inf >> atm[k].name >> ws >> atm[k].x[0] >> ws >> atm[k].x[1] >> ws >>
-        atm[k].x[2] >> ws;
-    atm[k].find_r();
-    k++;
-    if (k == natom) break;
-  }
-  dist = new double *[natom];
-  connect = new int *[natom];
-  order = new int *[natom];
-  for (i = 0; i < natom; i++) {
-    order[i] = new int[natom];
-    connect[i] = new int[natom];
-    dist[i] = new double[natom];
-  }
-  for (i = 0; i < natom; i++) {
-    dist[i][i] = 0.0;
-  }
-  k = 0;
-  for (i = 0; i < natom; i++) {
-    if (atm[i].name != "H") {
-      k++;
-    }
-  }
-  for (i = 0; i < k; i++) {
-    Cindex.push_back(i + 1);
-    Cyindex.push_back(0);
-  }
-  inf.close();
-  if_circle = 0;
-  cal_r();
-  check_bnd();
-  return;
-}
+	int i=0,j=0,k=0;
+	string tmp="";
+	double x,y,z;
 
-void MOLECULE::smi2gjf() {
-  system("pwd > pwddir.txt");
-  ifstream PWD("pwddir.txt");
-  string pwd = "";
-  PWD >> pwd >> ws;
-  PWD.close();
+	//OBMol mol;
+	//smi2gjf(mol);
+	smi2gjf();
 
-  ofstream out((pwd + "/" + smiles + ".smi").c_str());
-  out << smiles << endl;
-  out.close();
-  PWD.open((smiles + ".gjf").c_str());
-  if (!PWD.is_open()) {
-    ofstream out("molecule.log", ios::app);
-    out << "Error : you don't include the gjf file of molecule, " << smiles
-        << endl;
-    out.close();
-    exit(1);
-  }
-  return;
-}
+	if (atm!=NULL) delete [] atm;
+	atm=NULL;
+    atm = new DEATOM [natom];
+    ifstream inf((para.smidir+"gg.txt").c_str());
+    inf >> tmp >> ws;
+	k=0;
+    while (!inf.eof()) {
+        tmp="";
+        inf >> tmp >> ws;
+        if (tmp=="V30") {
+			string nam="";
+			int ch=0;
+            inf >> tmp >> ws;
+            inf >> nam >> ws; //inf >> atm[k].name >> ws;
+            inf >> tmp >> ws;
+            inf >> tmp >> ws;
+            inf >> tmp >> ws;
+            inf >> tmp >> ws;
+            do {
+                inf >> tmp >> ws;
+                if (tmp.length()>=4) {
+                    if (tmp[0]=='C' && tmp[1]=='H' && tmp[2]=='G' && tmp[3]=='=') {
+						string buf=tmp.substr(4);
+                        ch=atoi(buf.c_str()); //atm[k].chg=atoi(buf.c_str());
+                    }
+                }
+            } while (tmp!="M" && !inf.eof());
+			//k++;
 
-void MOLECULE::cal_r() {
-  int i, j, k;
-  double r;
-  for (i = 0; i < natom; i++) {
-    for (j = i + 1; j < natom; j++) {
-      r = (atm[i].x[0] - atm[j].x[0]) * (atm[i].x[0] - atm[j].x[0]) +
-          (atm[i].x[1] - atm[j].x[1]) * (atm[i].x[1] - atm[j].x[1]) +
-          (atm[i].x[2] - atm[j].x[2]) * (atm[i].x[2] - atm[j].x[2]);
-      r = sqrt(r);
-      dist[i][j] = dist[j][i] = r;
-    }
-  }
-  return;
-}
-void MOLECULE::check_bnd(int aaa) {
-  int i, j, k, sum[natom];
-  double r, tol = 1.15;
-  for (i = 0; i < natom; i++) {
-    connect[i][i] = 0;
-  }
-  for (i = 0; i < natom; i++) {
-    for (j = i + 1; j < natom; j++) {
-      r = tol * (atm[i].r_bnd + atm[j].r_bnd);
-      if (dist[i][j] <= r)
-        connect[i][j] = connect[j][i] = 1;
-      else
-        connect[i][j] = connect[j][i] = 0;
-    }
-  }
-  for (i = 0; i < natom; i++) {
-    sum[i] = 0;
-    for (j = 0; j < natom; j++) sum[i] += connect[i][j];
-  }
-
-  for (i = 0; i < natom; i++) {
-    for (j = 0; j < natom; j++) order[i][j] = connect[i][j];
-  }
-  k = 0;
-  for (i = 0; i < natom; i++) {
-    k = 0;
-    while (1) {
-      if (atm[i].nbnd > sum[i]) {
-        for (j = i + 1; j < natom; j++) {
-          if (atm[i].nbnd != sum[i] && connect[i][j] != 0 &&
-              atm[j].nbnd != sum[j]) {
-            if ((atm[j].nbnd - sum[j]) > 0) {
-              order[i][j] += 1;
-              sum[i] += 1;
-              sum[j] += 1;
-              order[j][i] = order[i][j];
-            }
-          }
+			if (nam!="H") {
+				atm[k].name=nam;
+				atm[k].chg=ch;
+				k++;
+			}
         }
-        k++;
-      }
-      if (atm[i].nbnd == sum[i])
-        break;
-      else if (k > 100)
-        break;
     }
-  }
+	inf.close();
 
-  for (i = 0; i < natom; i++) {
-    for (j = 0; j < natom; j++) {
-      connect[i][j] = order[i][j];
-    }
-  }
-  return;
+	//chir_and_stereo(mol);
+
+	//dist = new double *[natom];
+	connect = new int *[natom];
+	//order= new int *[natom];
+	for (i=0;i<natom;i++) {
+		//order[i]=new int [natom];
+		connect[i]=new int [natom];
+		//dist[i]=new double [natom];
+	}
+
+	//for (i=0;i<natom;i++) {
+	//	dist[i][i]=0.0;
+	//}
+	
+	/*
+	k=0;
+	for (i=0;i<natom;i++) {
+		if (atm[i].name != "H") {
+			k++;
+		}
+	}
+	*/
+	for (i=0;i<natom;i++) { //i<k
+		Cindex.push_back(i+1);
+		Cyindex.push_back(0);
+	}
+	if_circle=0;
+	//cal_r();
+	check_bnd(); //mol
+	return;
 }
 
-void MOLECULE::check_bnd() {
-  int i, j, k, sum[natom], chgg;
-  string tmp;
-  double r, tol = 1.15;
-  ifstream inf((smiles + ".gjf").c_str());
-  getline(inf, tmp);
-  inf >> ws;
-  inf >> chgg >> ws >> k >> ws;
-  inf.close();
-  for (i = 0; i < natom; i++) {
-    connect[i][i] = 0;
-  }
-  for (i = 0; i < natom; i++) {
-    for (j = i + 1; j < natom; j++) {
-      r = tol * (atm[i].r_bnd + atm[j].r_bnd);
-      if (dist[i][j] <= r)
-        connect[i][j] = connect[j][i] = 1;
-      else
-        connect[i][j] = connect[j][i] = 0;
-    }
-  }
-  for (i = 0; i < natom; i++) {
-    if (atm[i].name != "C" && atm[i].name != "H" && chgg) {
-      k = 0;
-      k = rd_nps(i);
-      if (k == -1) {
-      } else if (k != atm[i].nbnd)
-        atm[i].nbnd = k;
-    }
-  }
 
-  for (i = 0; i < natom; i++) {
-    sum[i] = 0;
-    for (j = 0; j < natom; j++) sum[i] += connect[i][j];
-  }
+void MOLECULE::smi2gjf() { //OBMol &mol
+	if (0) {
+		ofstream out((para.smidir+smiles+".smi").c_str());
+		out << smiles << endl;
+		out.close();
+		//system(("ssh cluster '  /home/software/programs/openbabel-openbabel-2-4-1/build/bin/obabel -ismi "+para.smidir+"\""+smiles+".smi\" -ogjf -O "+para.smidir+"\""+smiles+".gjf\" --gen3D --conformer --converge 1000000 -c  --nconf 100 ' ").c_str());
+		system(("ssh cluster ' /home/software/programs/openbabel-openbabel-2-4-1/build/bin/obabel -ismi "+para.smidir+"\""+smiles+".smi\" -omol -O "+para.smidir+"\""+smiles+".mol\" --gen3D -x3 --conformer --converge 100000 --score energy --nconf 100 -c  2> /dev/null ' ").c_str());
+	}
+	if (1) {
+        string a=smiles;
+        for (int i=0;i<a.length();i++) {
+        	if (a[i]=='/') a[i]='u';
+        	if (a[i]=='\\') a[i]='d';
+		}
+        
+		stringstream nu("");
+		if (1) {
+			stringstream ss(smiles);
+			stringstream ss1("");
+        	//ofstream out((para.smidir+smiles+".mol").c_str());
+        	ofstream out((para.smidir+a+".mol").c_str());
 
-  for (i = 0; i < natom; i++) {
-    for (j = 0; j < natom; j++) order[i][j] = connect[i][j];
-  }
-  k = 0;
-  for (i = 0; i < natom; i++) {
-    while (1) {
-      k = 0;
-      if (atm[i].nbnd > sum[i]) {
-        for (j = i + 1; j < natom; j++) {
-          if (atm[i].nbnd != sum[i] && connect[i][j] != 0 &&
-              atm[j].nbnd != sum[j]) {
-            if ((atm[j].nbnd - sum[j]) > 0) {
-              order[i][j] += 1;
-              sum[i] += 1;
-              sum[j] += 1;
-              order[j][i] = order[i][j];
-            }
-          }
+        	OBConversion conv(&ss,&ss1);
+        	if(conv.SetInAndOutFormats("SMI","MOL")) {
+            	conv.AddOption("gen3D", OBConversion::GENOPTIONS);
+				conv.AddOption("3", OBConversion::OUTOPTIONS);
+				//--minimize --ff --steps 0
+				conv.AddOption("canonical", OBConversion::GENOPTIONS);
+				//conv.AddOption("minimize", OBConversion::OUTOPTIONS);
+				//conv.AddOption("ff", OBConversion::OUTOPTIONS,"uff");
+				//conv.AddOption("step", OBConversion::OUTOPTIONS,"1");
+				//conv.AddOption("align", OBConversion::GENOPTIONS);
+				//conv.AddOption("c", OBConversion::OUTOPTIONS);
+				//a1=time(NULL);
+				//obErrorLog.StopLogging();
+				obErrorLog.SetOutputLevel(obMessageLevel::obError);
+				//obErrorLog.SetOutputLevel(obMessageLevel::obWarning);
+				obErrorLog.SetOutputStream(&cout);
+            	conv.Convert();
+        	}
+			out << ss1.str();
+			out.close();
+			nu << ss1.str();
+		}
+	    //system(("(grep -A10000 \"BEGIN ATOM\" "+para.smidir+"\""+smiles+".mol\" | grep -B10000 \"END ATOM\" |  tail -n +2 | tac | tail -n +2 | tac > "+para.smidir+"gg.txt) 2> /dev/null").c_str());
+    	//system(("(grep -A10000 \"BEGIN ATOM\" "+para.smidir+"\""+a+".mol\" | grep -B10000 \"END ATOM\" |  tail -n +2 | tac | tail -n +2 | tac > "+para.smidir+"gg.txt) 2> /dev/null").c_str());
+
+        OBMol *mol=NULL;
+        mol = new OBMol [1];
+        OBConversion conv(&nu);
+        conv.SetInFormat("MOL");
+        conv.Read(&mol[0]);
+        OBAtom *ar=NULL;
+		int ct=0;
+        FOR_ATOMS_OF_MOL(ar,mol[0]) {
+			ct++;
         }
-        k++;
-      }
-      if (atm[i].nbnd == sum[i])
-        break;
-      else if (k > 100)
-        break;
-    }
-  }
-  for (i = 0; i < natom; i++) {
-    for (j = 0; j < natom; j++) {
-      connect[i][j] = order[i][j];
-    }
-  }
-  return;
+		//natom=ct;
+		natom=mol[0].NumHvyAtoms();
+
+        mol[0].Clear();
+
+        if (mol!=NULL) {
+            delete [] mol;
+            mol=NULL;
+        }
+
+
+		stringstream ss("");
+		//ss << natom;
+		ss << ct;
+
+		system(("(grep -A"+ss.str()+" \"BEGIN ATOM\" "+para.smidir+"\""+a+".mol\" | tail -n +2 > "+para.smidir+"gg.txt) 2> /dev/null").c_str());
+	}
+	
+	return;
 }
+
+void MOLECULE::chir_and_stereo(OBMol &mol) {
+	if (1) {
+        vector<int> num(0);
+        FOR_ATOMS_OF_MOL(ar, mol) {
+            //cout << ar->GetIdx() << " " << ar->GetType() << " " << ar->GetFormalCharge() << " " << ar->GetSpinMultiplicity() << endl;
+            if (ar->GetFormalCharge()!=0) atm[ar->GetIdx()-1].chg=ar->GetFormalCharge();
+            if (ar->IsChiral()==1 && ar->GetAtomicNum()==6) num.push_back(ar->GetIdx());
+        }
+        for (int i=0;i<num.size();i++) {
+			OBAtom *ar=NULL;
+            ar = mol.GetAtom(num.at(i));
+            if (ar->IsChiral() && ar->GetAtomicNum()==6) {
+                OBChiralData* cd=(OBChiralData*)ar->GetData(OBGenericDataType::ChiralData);
+                if (!cd) { //if no Chiral Data Set, need to make one!
+                    cd=new OBChiralData;
+                    ar->SetData(cd);
+                }
+                if (ar->GetHvyValence()==4) {
+                    OBAtom *nbr=NULL;
+                    vector<unsigned int> nbr_atms;
+                    vector<OBEdgeBase*>::iterator i;
+                    for (nbr=ar->BeginNbrAtom(i);nbr;nbr=ar->NextNbrAtom(i)) nbr_atms.push_back(nbr->GetIdx());
+                    sort(nbr_atms.begin(),nbr_atms.end());
+                    cd->SetAtom4Refs(nbr_atms,output);   // This saves the output atom4refs calculated above
+                }
+            //If it has co-ordinates then we can calculate the signed volume which stores the atom4refs used in the calculation and its result. This can then be compared to the output order and the corretchirality worked out. At the moment this overides input chirality, rather than checking for a conflict with input chirality (which might be a usefull check)*
+                double vol=0;
+                if (mol.HasNonZeroCoords()) {
+                    vol=CalcSignedVolume(mol,ar);
+                    if (vol>0.0) ar->SetClockwiseStereo();
+                    else if(vol<0.0) ar->SetAntiClockwiseStereo();
+                    CorrectChirality(mol,ar,calcvolume,output);
+                }
+                else { //If no co-ords, then use the atom4refs defined by the input format*
+                    CorrectChirality(mol,ar); // will set the stereochem based on input/output atom4refs
+                }
+
+                if (ar->IsClockwise()) atm[ar->GetIdx()-1].chirality=2;
+                else if (ar->IsAntiClockwise()) atm[ar->GetIdx()-1].chirality=1;
+            }
+			ar=NULL;
+        }
+
+
+	}
+}
+
+
+void MOLECULE::check_bnd() { //OBMol &mol
+	int i,j,k,chgg=0; //sum[natom]
+	double r,tol=1.15;
+
+	for (i=0;i<natom;i++) {
+		connect[i][i]=0;
+		for (j=i+1;j<natom;j++) connect[i][j]=connect[j][i]=0;
+	}
+
+	if (1) {
+		if (0) {
+			system(("ssh cluster ' /home/software/programs/openbabel-openbabel-2-4-1/build/bin/obabel -ismi "+para.smidir+"\""+smiles+".smi\" -omol -O "+para.smidir+"\""+smiles+".mol\" --gen3D -x3 --weighted --conformer --converge 100000 --score energy --nconf 100 -c  2> /dev/null ' ").c_str());	
+		}
+
+		stringstream nu("");
+		
+	    string a=smiles;
+	    for (int i=0;i<a.length();i++) {
+	        if (a[i]=='/') a[i]='u';
+	        if (a[i]=='\\') a[i]='d';
+		}
+            
+		//k=rd_nps(mol);
+		k=rd_nps();
+
+		if (1) {
+			//int nonH=mol.NumHvyAtoms();
+        	int nonH=0;
+        	//for (k=0;k<natom;k++) {
+            //	if (atm[k].name!="H") nonH++;
+        	//}
+			if (1) nonH=natom;
+		
+			if (0) {
+			for (k=0;k<nonH;k++) {
+				if (atm[k].name=="H") {
+					for (int k1=nonH;k1<natom;k1++) {
+						if (atm[k1].name!="H") {
+							swap(atm[k],atm[k1]);
+                            for (int k2=0;k2<natom;k2++) {
+                                if (connect[k][k2]!=connect[k1][k2]) swap(connect[k][k2],connect[k1][k2]);
+                            }
+                            for (int k2=0;k2<natom;k2++) {
+                                if (connect[k2][k]!=connect[k2][k1]) swap(connect[k2][k],connect[k2][k1]);
+                            }
+							break;
+						}
+					}
+				}
+			}
+
+
+			for (k=0;k<nonH;k++) { // k<natom
+				if (atm[k].name!="H") {
+					bool aall0=1;
+					for (int k1=0;k1<=k;k1++) { 
+						if (connect[k1][k]!=0 || connect[k-k1][k]!=0) { // orig connect[k1][k]!=0
+							aall0=0;
+							break;
+						}
+					}
+
+					if (aall0) {
+						for (int k1=k+1;k1<nonH;k1++) { //k1<natom
+							if (atm[k1].name!="H") { 
+								bool ball0=1;
+								for (int k2=0;k2<=k;k2++) {
+									if (connect[k2][k]!=0 || connect[k-k2][k]!=0) { // orig connect[k2][k]!=0
+										ball0=0;
+										break;
+									}
+								} 
+								if (ball0) {
+									//cout << "NAME " << atm[k].name << " " << atm[k1].name << endl;
+									swap(atm[k],atm[k1]);
+									for (int k2=0;k2<natom;k2++) {
+										if (connect[k][k2]!=connect[k1][k2]) swap(connect[k][k2],connect[k1][k2]);
+									}
+									for (int k2=0;k2<natom;k2++) {
+										if (connect[k2][k]!=connect[k2][k1]) swap(connect[k2][k],connect[k2][k1]);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			}
+
+            if (1) {
+                bool sw=0;
+                for (k=1;k<nonH;k++) { // k<natom
+                    if (atm[k].name!="H") {
+                        bool aall0=1;
+                        //bndpos1=999999999; //int bndpos1=999999999;
+                        if (1) {
+                            for (int k1=0;k1<=k;k1++) {
+                                if (connect[k1][k]!=0 || connect[k-k1][k]!=0) { // orig connect[k1][k]!=0
+                                    aall0=0;
+                                    break;
+                                }
+                            }
+                        }
+                        if (aall0) {
+                            for (int k1=k+1;k1<nonH;k1++) { //k1<natom
+                                swap(atm[k],atm[k1]);
+
+                                for (int k2=0;k2<natom;k2++) {
+                                    if (connect[k][k2]!=connect[k1][k2]) swap(connect[k][k2],connect[k1][k2]);
+                                }
+                                for (int k2=0;k2<natom;k2++) {
+                                    if (connect[k2][k]!=connect[k2][k1]) swap(connect[k2][k],connect[k2][k1]);
+                                }
+                            }
+
+                            if (1) {
+                                for (int k2=0;k2<nonH-1;k2++) {
+                                    if (connect[k2][nonH-1]==1 && atm[k2].name=="C") {
+                                        if (atm[k2].chirality==1) atm[k2].chirality=2;
+                                        else if (atm[k2].chirality==2) atm[k2].chirality=1;
+                                    }
+                                }
+                            }
+
+							if (0) {
+								bool g1=0,g2=0;
+								for (int k2=0;k2<nonH-1;k2++) {
+									g1=0;
+									g2=0;
+									if (connect[k2][nonH-1]==1) {
+										g1=1;
+										g2=0;
+										for (int k3=0;k3<k2;k3++) {
+											if (connect[k3][k2]==2) {
+												g2=1;
+												g1=1;
+												if (1) {
+		                                			if (atm[k2].cistrans[0]=="") {
+        		                            			if (atm[k2].cistrans[1]=="/") atm[k2].cistrans[1]="\\";
+                		                    			else if (atm[k2].cistrans[1]=="\\") atm[k2].cistrans[1]="/";
+                        		        			}
+												}
+												if (0) {
+                                					if (atm[k2].cistrans[1]=="") {
+                                    					if (atm[k2].cistrans[0]=="/") atm[k2].cistrans[0]="\\";
+                                    					else if (atm[k2].cistrans[0]=="\\") atm[k2].cistrans[0]="/";
+                                					}
+												}
+												if (g1 && g2) break;
+											}
+										}
+										if (g1 && g2) break;
+									}
+								}
+							}
+
+							k--;
+                        }
+                    }
+                }
+            }
+
+
+		}
+
+	}
+
+    if (0) {
+        cout << setfill(' ');
+        cout << smiles << " " << molesmi << endl;
+        cout << setw(2) << " " << " ";
+        for (i=0;i<natom;i++) {
+            cout << setw(2) << atm[i].name << " ";
+        }
+        cout << endl;
+        for (i=0;i<natom;i++) {
+            cout << setw(2) << atm[i].name << " ";
+            for (j=0;j<natom;j++) {
+                cout << setw(2) << connect[i][j] << " ";
+            }
+			cout << setw(2) << atm[i].nH << " ";
+            cout << endl;
+        }
+    }
+
+
+	//for (i=0;i<natom;i++) {
+	//	sum[i]=0;
+	//	for (j=0;j<natom;j++) sum[i]+=connect[i][j];
+	//}
+
+	//for (i=0;i<natom;i++) {
+	//	for (j=0;j<natom;j++) order[i][j]=connect[i][j];
+	//}
+	//k=0;
+
+	//for (i=0;i<natom;i++) {
+	//	for (j=0;j<natom;j++) {
+	//		connect[i][j]=order[i][j];
+	//	}
+	//}
+	return;
+}
+
+
 void MOLECULE::smi2cod() {
-  int i, j, n, t, m, u;
-  vector<int> k;
-  for (i = 0; i < natom; i++) {
-    k.clear();
-    if (atm[i].name == "H")
-      continue;
-    else if (atm[i].name == "C") {
-      for (j = 0; j < natom; j++) {
-        if (connect[i][j] != 0) k.push_back(connect[i][j]);
-      }
-      if (k.size() == 4)
-        Mindex.push_back(1);
-      else if (k.size() == 3) {
-        Mindex.push_back(2);
-      } else if (k.size() == 2) {
-        for (n = 0; n < k.size(); n++) {
-          if (k[n] == 3 || k[n] == 1) {
-            Mindex.push_back(3);
-            break;
-          } else if (k[n] == 2) {
-            Mindex.push_back(4);
-            break;
-          }
-        }
-      }
-    } else if (atm[i].name == "O") {
-      for (j = 0; j < natom; j++) {
-        if (connect[i][j] != 0) k.push_back(connect[i][j]);
-      }
-      if (k.size() == 1) {
-        if (k[0] == 2)
-          Mindex.push_back(6);
-        else if (k[0] == 1)
-          Mindex.push_back(29);
-      } else if (k.size() == 2) {
-        for (j = 0; j < natom; j++) {
-          if (connect[i][j] != 0) {
-            if (atm[j].name == "H") {
-              Mindex.push_back(5);
-              n = 0;
-              break;
-            } else
-              n = 1;
-          }
-        }
-        if (n == 1) Mindex.push_back(5);
-      }
-    } else if (atm[i].name == "N") {
-      for (j = 0; j < natom; j++) {
-        if (connect[i][j] != 0) k.push_back(connect[i][j]);
-      }
-      if (k.size() == 4) Mindex.push_back(15);
-      if (k.size() == 3) {
-        t = 0;
-        for (n = 0; n < k.size(); n++) t += k[n];
-        if (t == 4)
-          Mindex.push_back(16);
-        else if (t == 3)
-          Mindex.push_back(7);
-      }
-      if (k.size() == 2) {
-        t = 0;
-        for (n = 0; n < k.size(); n++) t += k[n];
-        if (t == 3)
-          Mindex.push_back(8);
-        else if (t == 2)
-          Mindex.push_back(35);
-      }
-      if (k.size() == 1) Mindex.push_back(9);
-    } else if (atm[i].name == "P") {
-      for (j = 0; j < natom; j++) {
-        if (connect[i][j] != 0) k.push_back(connect[i][j]);
-      }
-      if (k.size() == 6) Mindex.push_back(30);
-      if (k.size() == 5) Mindex.push_back(31);
-      if (k.size() == 4) {
-        t = 0;
-        for (n = 0; n < k.size(); n++) t += k[n];
-        if (t == 4)
-          Mindex.push_back(17);
-        else if (t == 5)
-          Mindex.push_back(32);
-      }
-      if (k.size() == 3) {
-        t = 0;
-        for (n = 0; n < k.size(); n++) t += k[n];
-        if (t == 4)
-          Mindex.push_back(18);
-        else if (t == 3)
-          Mindex.push_back(21);
-      }
-      if (k.size() == 2) Mindex.push_back(22);
-      if (k.size() == 1) Mindex.push_back(23);
-    } else if (atm[i].name == "F") {
-      for (j = 0; j < natom; j++) {
-        if (connect[i][j] != 0) k.push_back(connect[i][j]);
-      }
-      if (k.size())
-        Mindex.push_back(11);
-      else
-        Mindex.push_back(24);
-    } else if (atm[i].name == "Cl") {
-      for (j = 0; j < natom; j++) {
-        if (connect[i][j] != 0) k.push_back(connect[i][j]);
-      }
-      if (k.size())
-        Mindex.push_back(12);
-      else
-        Mindex.push_back(25);
-    } else if (atm[i].name == "Br") {
-      for (j = 0; j < natom; j++) {
-        if (connect[i][j] != 0) k.push_back(connect[i][j]);
-      }
-      if (k.size())
-        Mindex.push_back(13);
-      else
-        Mindex.push_back(26);
-    } else if (atm[i].name == "I") {
-      for (j = 0; j < natom; j++) {
-        if (connect[i][j] != 0) k.push_back(connect[i][j]);
-      }
-      if (k.size())
-        Mindex.push_back(14);
-      else
-        Mindex.push_back(27);
-    }
+	int i,j,n,t,m,u;
+	vector<int> k;
 
-    else if (atm[i].name == "S") {
-      for (j = 0; j < natom; j++) {
-        if (connect[i][j] != 0) k.push_back(connect[i][j]);
-      }
-      if (k.size() == 2)
-        Mindex.push_back(19);
-      else if (k.size() == 1)
-        Mindex.push_back(20);
-      else if (k.size() == 3)
-        Mindex.push_back(34);
-      else if (k.size() == 4)
-        Mindex.push_back(33);
-    }
-  }
-  Rindex.push_back(-1);
-  Pindex.push_back(0);
-  vector<int> c_ref;
-  for (i = 0; i < natom; i++) {
-    if (atm[i].name != "H") {
-      c_ref.push_back(i);
-    }
-  }
-  for (i = 0; i < natom; i++) {
-    if (atm[i].name == "H") {
-      for (j = 0; j < natom; j++) {
-        order[i][j] = 0;
-        order[j][i] = 0;
-      }
-    }
-  }
-  int tmp[Cindex.size()];
-  n = 0;
-  for (i = 0; i < natom; i++) {
-    if (atm[i].name != "H") {
-      tmp[n] = i;
-      n++;
-    }
-  }
+	//cout << "SMI2COD" << endl;
 
-  for (i = 1; i < natom; i++) {
-    t = 0;
-    m = 0;
-    if (atm[i].name != "H") {
-      for (j = i; j >= 0; j--) {
-        if (order[i][j] > m) {
-          m = order[i][j];
+	//empty();
+	clear(); // 20190722
+	ctsisomer.resize(0,vector<string>(0));
+	ctsisomer.resize(2,vector<string>(0));
+
+	for (i=0;i<natom;i++) {
+		//cout << atm[i].name << " | " << atm[i].chg << " | " << atm[i].nH << endl;
+		k.clear();
+		if (atm[i].name=="H" && atm[i].chg==0) continue; 
+		if (atm[i].name!="H") {  //20200823
+			//ctsisomer.push_back(atm[i].cistrans);
+			ctsisomer.at(0).push_back(atm[i].cistrans[0]);
+			ctsisomer.at(1).push_back(atm[i].cistrans[1]);
+		}
+
+		if (atm[i].name == "C") { 
+			for (j=0;j<natom;j++) {
+				if (connect[i][j] != 0) k.push_back(connect[i][j]);
+			}
+			if (1) for (int u1=0;u1<atm[i].nH;u1++) k.push_back(1);
+
+			if (k.size() == 4) {
+				//cout << "Y" << endl;
+				if (atm[i].chg==0 && atm[i].chirality==1) Mindex.push_back(68);
+				else if (atm[i].chg==0 && atm[i].chirality==0) Mindex.push_back(1);
+				else if (atm[i].chg==0 && atm[i].chirality==2) Mindex.push_back(67);
+				//cout << Mindex.size() << endl;
+			}
+			else if (k.size() == 3) {
+				t=0;
+				for (n=0;n<k.size();n++) t+=k[n];
+				if (t==4 && atm[i].chg==0) Mindex.push_back(2);
+				else if (t==3 && atm[i].chg==-1) Mindex.push_back(59);
+			}
+			else if (k.size()==2) {
+				if (atm[i].chg==0) {
+					for (n=0;n<k.size();n++) {
+						if (k[n]==3 || k[n]==1) {
+							Mindex.push_back(3);
+							break;
+						} 
+						else if (k[n]==2) {
+							Mindex.push_back(4);
+							break;
+						}
+					}					
+				}
+			}
+		}
+		else if (atm[i].name=="O") {
+			for (j=0;j<natom;j++) {
+				if (connect[i][j] != 0) k.push_back(connect[i][j]);
+			}
+			if (1) for (int u1=0;u1<atm[i].nH;u1++) k.push_back(1);
+
+			if (k.size()==1) {
+				if (atm[i].chg==0) Mindex.push_back(6); // && k[0]==2
+				else if (atm[i].chg==-1) Mindex.push_back(29);  // k[0]==1
+			}
+			else if (k.size()==0) {
+				if (atm[i].chg==-1) Mindex.push_back(28);
+			}
+			else if (k.size()==2) {
+				if (atm[i].chg==0) Mindex.push_back(5);
+			}
+		}
+		else if (atm[i].name=="N") {
+			for (j=0;j<natom;j++) {
+				if (connect[i][j] != 0) k.push_back(connect[i][j]);
+			}
+			if (1) for (int u1=0;u1<atm[i].nH;u1++) k.push_back(1);
+
+			if (k.size()==4) {
+				if (atm[i].chg==1) Mindex.push_back(15);
+			}
+			if (k.size()==3) {
+				t=0;
+				for (n=0;n<k.size();n++) t+=k[n];
+				if (t==4 && atm[i].chg==1) Mindex.push_back(16);
+				else if (t==3  && atm[i].chg==0) Mindex.push_back(7);
+			}
+			if (k.size()==2) {
+				t=0;
+				for (n=0;n<k.size();n++) t+=k[n];
+				if (t==3 && atm[i].chg==0) Mindex.push_back(8);
+				else if (t==2 && atm[i].chg==-1) Mindex.push_back(35);
+			}
+			if (k.size()==1) {
+				if (atm[i].chg==0) Mindex.push_back(9);
+			}
+		}
+		else if (atm[i].name=="P") {
+			for (j=0;j<natom;j++) {
+				if (connect[i][j] != 0) k.push_back(connect[i][j]);
+			}
+			if (1) for (int u1=0;u1<atm[i].nH;u1++) k.push_back(1);
+
+			if (k.size()==6) {
+				if(atm[i].chg==-1) Mindex.push_back(30);
+			}
+			if (k.size()==5) {
+				if (atm[i].chg==0) Mindex.push_back(31);
+			}
+			if (k.size()==4) {
+				t=0;
+				for (n=0;n<k.size();n++) t+=k[n];
+				if (t==4 && atm[i].chg==1) Mindex.push_back(17);
+				else if (t==5 && atm[i].chg==0) Mindex.push_back(32);
+				else if (t==4 && atm[i].chg==0) Mindex.push_back(69);
+			}
+			if (k.size()==3) {
+				t=0;
+				for (n=0;n<k.size();n++) t+=k[n];
+				if (t==4 && atm[i].chg==1) Mindex.push_back(18);
+				if (t==4 && atm[i].chg==0) Mindex.push_back(66);
+				else if (t==3 && atm[i].chg==0) Mindex.push_back(21);
+			}
+			if (k.size()==2) {
+				if (atm[i].chg==0) Mindex.push_back(22);
+			}
+			if (k.size()==1) {
+				if (atm[i].chg==0) Mindex.push_back(23);
+			}
+		}
+		else if (atm[i].name=="F") {
+			for (j=0;j<natom;j++) {
+				if (connect[i][j] != 0) k.push_back(connect[i][j]);
+			}
+			if (1) for (int u1=0;u1<atm[i].nH;u1++) k.push_back(1);
+
+			if (k.size()==1) {
+				if (atm[i].chg==0) Mindex.push_back(11);
+				else if (atm[i].chg==-1) Mindex.push_back(24);
+			}
+			else if (k.size()==0) {
+				if (atm[i].chg==-1) Mindex.push_back(24);
+			}
+		}
+		else if (atm[i].name=="Cl") {
+			for (j=0;j<natom;j++) {
+				if (connect[i][j] != 0) k.push_back(connect[i][j]);
+			}
+			if (1) for (int u1=0;u1<atm[i].nH;u1++) k.push_back(1);
+
+			if (k.size()==1) {
+				if (atm[i].chg==0) Mindex.push_back(12);
+				else if (atm[i].chg==-1) Mindex.push_back(25);
+			}
+			else if (k.size()==0) {
+				if (atm[i].chg==-1) Mindex.push_back(25);
+			}
+			else if (k.size()==3) {
+				t=0;
+				for (n=0;n<k.size();n++) t+=k[n];
+				if (t==6 && atm[i].chg==0) Mindex.push_back(62);
+			}
+			else if (k.size()==4) {
+				if (atm[i].chg==0) Mindex.push_back(62);
+			}
+		}
+		else if (atm[i].name=="Br") {
+			for (j=0;j<natom;j++) {
+				if (connect[i][j] != 0) k.push_back(connect[i][j]);
+			}
+			if (1) for (int u1=0;u1<atm[i].nH;u1++) k.push_back(1);
+
+			if (k.size()==1) {
+				if (atm[i].chg==0) Mindex.push_back(13);
+				else if (atm[i].chg==-1) Mindex.push_back(26);
+			}
+			else if (k.size()==0) {
+				if (atm[i].chg==-1) Mindex.push_back(26);
+			}
+		}
+		else if (atm[i].name=="I") {
+			for (j=0;j<natom;j++) {
+				if (connect[i][j] != 0) k.push_back(connect[i][j]);
+			}
+			if (1) for (int u1=0;u1<atm[i].nH;u1++) k.push_back(1);
+
+			if (k.size()==1) {
+				if (atm[i].chg==0) Mindex.push_back(14);
+				else if (atm[i].chg==-1) Mindex.push_back(27);
+			}
+			else if (k.size()==0) {
+				if (atm[i].chg==-1) Mindex.push_back(27);
+			}
+		}
+		else if (atm[i].name=="S") {
+			for (j=0;j<natom;j++) {
+				if (connect[i][j] != 0) k.push_back(connect[i][j]);
+			}
+			if (1) for (int u1=0;u1<atm[i].nH;u1++) k.push_back(1);
+
+			if (k.size()==2) {
+				if (atm[i].chg==0) Mindex.push_back(19);
+			}
+			else if (k.size()==1) {
+				t=0;
+				for (n=0;n<k.size();n++) t+=k[n];
+				if (t==2 && atm[i].chg==0) Mindex.push_back(20);
+				else if (t==1 && atm[i].chg==-1) Mindex.push_back(63);
+			}
+			else if (k.size()==3) {
+				t=0;
+				for (n=0;n<k.size();n++) t+=k[n];				
+				if (t==5 && atm[i].chg==0)  Mindex.push_back(61);
+				else if (t==4 && atm[i].chg==0) Mindex.push_back(34);
+				else if (t==3 && atm[i].chg==1) Mindex.push_back(65);
+			}
+			else if (k.size()==4) {
+				t=0;
+				for (n=0;n<k.size();n++) t+=k[n];
+				if (t==6 && atm[i].chg==0) Mindex.push_back(61);
+			}
+		}
+		else if (atm[i].name=="B") {
+			for (j=0;j<natom;j++) {
+				if (connect[i][j] != 0) k.push_back(connect[i][j]);
+			}
+			if (1) for (int u1=0;u1<atm[i].nH;u1++) k.push_back(1);
+
+			if (k.size()==4) {
+				if (atm[i].chg==-1) Mindex.push_back(44);
+			}
+		}
+		else if (atm[i].name=="In") {
+			for (j=0;j<natom;j++) {
+				if (connect[i][j] != 0) k.push_back(connect[i][j]);
+			}
+			if (1) for (int u1=0;u1<atm[i].nH;u1++) k.push_back(1);
+
+			if (k.size()==4) {
+				if (atm[i].chg==3) Mindex.push_back(57);
+			}
+		}
+		else if (atm[i].name=="Ga") {
+			for (j=0;j<natom;j++) {
+				if (connect[i][j] != 0) k.push_back(connect[i][j]);
+			}
+			if (1) for (int u1=0;u1<atm[i].nH;u1++) k.push_back(1);
+
+			if (k.size()==4) {
+				if (atm[i].chg==3) Mindex.push_back(64);
+			}
+		}
+	}
+	Rindex.push_back(-1);
+	Pindex.push_back(0);
+
+    if (0) {
+        cout << setfill(' ');
+        cout << smiles << " " << molesmi << endl;
+        cout << setw(2) << " " << " ";
+        for (i=0;i<natom;i++) {
+            cout << setw(2) << atm[i].name << " ";
         }
-      }
-      for (j = i; j >= 0; j--) {
-        if (order[i][j] == m) {
-          for (n = 0; n < Cindex.size(); n++) {
-            if (tmp[n] == j) {
-              Rindex.push_back(order[i][j]);
-              Pindex.push_back(Cindex[n]);
-              order[j][i] = order[i][j] = 0;
-              t = 1;
-              break;
+        cout << endl;
+        for (i=0;i<natom;i++) {
+            cout << setw(2) << atm[i].name << " ";
+            for (j=0;j<natom;j++) {
+                cout << setw(2) << connect[i][j] << " ";
             }
-          }
+            cout << setw(2) << atm[i].nH << " ";
+            cout << endl;
         }
-        if (t) break;
-      }
     }
-  }
-  n = 1;
-  for (i = 0; i < natom; i++) {
-    for (j = i + 1; j < natom; j++) {
-      if (atm[j].name != "H" && order[i][j] != 0) {
-        Cyindex.at(i) = Cyindex.at(i) * 10 + n;
-        Cyindex.at(j) = Cyindex.at(j) * 10 + n;
-        order[i][j] = order[j][i] = 0;
-        if_circle = n;
-        n++;
-      }
-    }
-  }
-  return;
+
+
+	if (0) {
+		cout << "M: " << Mindex.size() << " | ";
+		for (int s=0;s<Mindex.size();s++) cout << Mindex.at(s) << " ";
+		cout << endl;
+	}
+
+    int nonH=natom;
+    //for (i=0;i<natom;i++) {
+    //    if (atm[i].name!="H") nonH++;
+    //}
+	if (0) {
+		int *tmp=NULL;
+		tmp=new int [nonH];
+		for (i=0;i<nonH;i++) tmp[i]=-10;
+		n=0;
+		for (i=0;i<natom;i++) {
+			if (atm[i].name=="H") {
+				connect[i][i]=0; //order[i][i]=0;
+				for (j=0;j<natom;j++) { //j=0;j=i+1
+					connect[i][j]=connect[j][i]=0; //order[i][j]=order[j][i]=0;
+				}
+			}
+			else {
+				tmp[n]=i;
+				n++;
+			}
+		}
+
+		for (i=1;i<nonH;i++) { //i=1
+			t=0;
+			m=0;
+			if (atm[i].name!="H") {
+				for (int c1=0;c1<3;c1++) {
+					m=0;
+					for (j=i;j>=0;j--) { // j=i;j>=0;j--
+						if (connect[i][j]>m) { //order[i][j]>m
+							m=connect[i][j]; //order[i][j]
+						}
+					}
+
+					for (j=i;j>=0;j--) { // j=i;j>=0;j--
+						if (connect[i][j]==m && m>0 && atm[j].name!="H") { //order[i][j]==m
+							for (int s=0;s<n;s++) {
+								if (tmp[s]==j && tmp[s]!=-10) {
+									Rindex.push_back(connect[i][j]); //order[i][j]
+									Pindex.push_back(Cindex.at(s));
+									connect[j][i]=connect[i][j]=0; //order[j][i]=order[i][j]=0;
+									t=1;
+									break;
+								}
+							}
+						}
+						if (t) break;
+					}
+				}
+			}
+		}
+		delete [] tmp;
+		tmp=NULL;
+	}
+
+	if (1) {
+		if (0) {
+        for (i=nonH;i<natom;i++) { //i=0;i<natom;i++
+            if (atm[i].name=="H") {
+                connect[i][i]=0; //order[i][i]=0;
+                for (j=0;j<i;j++) { //j=0;j=i+1
+                    connect[i][j]=connect[j][i]=0; //order[i][j]=order[j][i]=0;
+                }
+            }
+        }
+		}
+
+        for (i=1;i<nonH;i++) { //i=1
+			t=0;
+            if (atm[i].name!="H") {
+				for (int c1=3;c1>=1;c1--) {
+                	for (j=0;j<=i;j++) { // j=i;j>=0;j--
+                    	if (connect[i][j]==c1 && atm[j].name!="H") { //order[i][j]==m
+                        	Rindex.push_back(connect[i][j]); //order[i][j]
+                        	Pindex.push_back(Cindex.at(j));
+                        	connect[j][i]=connect[i][j]=0; //order[j][i]=order[i][j]=0;
+							t=1;
+                        	break;
+                    	}
+                	}
+					if (t) break;
+				}
+            }
+        }
+
+
+	}
+
+
+	n=1;
+	for (i=0;i<nonH;i++) {
+		if (atm[i].name!="H") {
+			for (j=i+1;j<nonH;j++) {
+				if (atm[j].name!="H" && connect[i][j]!=0) { //order[i][j]!=0
+					Cyindex.at(i)=Cyindex.at(i)*10+n;
+					//cout << j << " " << natom << " " << Cyindex.size() << endl;
+					Cyindex.at(j)=Cyindex.at(j)*10+n;
+					connect[i][j]=connect[j][i]=0; // order[i][j]=order[j][i]=0;
+					if_circle=n;
+					n++;
+				}
+			}
+		}
+	}
+
+	if (0) {
+		for (i=0;i<Cindex.size();i++) {
+            bool go=0;
+            if (Mindex.at(i)==2) go=1;
+            if (Mindex.at(i)==8) go=1;
+            if (Mindex.at(i)==16) go=1;
+			
+			if (go && Rindex.at(i)==2) {
+				int P=Pindex.at(i);
+
+            	bool go1=0;
+            	if (Mindex.at(P-1)==2) go1=1;
+            	if (Mindex.at(P-1)==8) go1=1;
+            	if (Mindex.at(P-1)==16) go1=1;
+
+				if (go1) {
+					//swap(ctsisomer.at(1).at(P-1),ctsisomer.at(1).at(i));  //20201105
+					//swap(ctsisomer.at(0).at(P-1),ctsisomer.at(0).at(i));  //20201105
+
+					if (P>0) {
+						if (ctsisomer.at(1).at(P-1)!="" && ctsisomer.at(0).at(P-1)=="") {
+							swap(ctsisomer.at(1).at(P-1),ctsisomer.at(0).at(P-1));
+
+							if (0) { //20201105
+								if (ctsisomer.at(0).at(P-1)=="/") ctsisomer.at(0).at(P-1)="\\";
+								if (ctsisomer.at(0).at(P-1)=="\\") ctsisomer.at(0).at(P-1)="/";
+							}
+						}
+					}
+					if (ctsisomer.at(0).at(i)!="" && ctsisomer.at(1).at(i)=="") {
+						swap(ctsisomer.at(1).at(i),ctsisomer.at(0).at(i));
+
+                        if (0) { //20201105
+                            if (ctsisomer.at(1).at(i)=="/") ctsisomer.at(1).at(i)="\\";
+                            if (ctsisomer.at(1).at(i)=="\\") ctsisomer.at(1).at(i)="/";
+                        }
+					}
+
+				}
+
+			}
+		}
+	}
+
+	if (Cindex.size()>2) {
+		if (ctsisomer.at(0).at(0)!="" && ctsisomer.at(1).at(1)!="" && Rindex.at(1)==2 && Pindex.at(1)==1) {
+			int ct1=0,ct2=0;
+        	for (int k1=0;k1<Cindex.size();k1++) {
+            	if (Pindex.at(k1)==Cindex.at(0) && Cindex.at(k1)!=Cindex.at(1)) {
+					if (ct1==0) {
+						//ctsisomer.at(0).at(Cindex.at(k1)-1)=ctsisomer.at(0).at(0)+ctsisomer.at(0).at(Cindex.at(k1)-1);
+						if (1) {
+                        	if (ctsisomer.at(0).at(0)=="/") ctsisomer.at(0).at(Cindex.at(k1)-1)="\\"+ctsisomer.at(0).at(Cindex.at(k1)-1);
+                        	else if (ctsisomer.at(0).at(0)=="\\") ctsisomer.at(0).at(Cindex.at(k1)-1)="/"+ctsisomer.at(0).at(Cindex.at(k1)-1);
+						}
+			
+						if (0) {
+                            if (ctsisomer.at(0).at(0)=="/") ctsisomer.at(0).at(Cindex.at(k1)-1)="/"+ctsisomer.at(0).at(Cindex.at(k1)-1);
+                            else if (ctsisomer.at(0).at(0)=="\\") ctsisomer.at(0).at(Cindex.at(k1)-1)="\\"+ctsisomer.at(0).at(Cindex.at(k1)-1);
+						}
+					}
+					else if (ct1==1) {
+						ctsisomer.at(0).at(Cindex.at(k1)-1)=ctsisomer.at(0).at(0)+ctsisomer.at(0).at(Cindex.at(k1)-1);
+						//if (ctsisomer.at(0).at(0)=="/") ctsisomer.at(0).at(Cindex.at(k1)-1)="\\"+ctsisomer.at(0).at(Cindex.at(k1)-1);
+						//else if (ctsisomer.at(0).at(0)=="\\") ctsisomer.at(0).at(Cindex.at(k1)-1)="/"+ctsisomer.at(0).at(Cindex.at(k1)-1);
+					} 
+					//if (ct1==1) ctsisomer.at(0).at(0)=ctsisomer.at(1).at(0)="";
+					ct1++;
+				}
+				if (Pindex.at(k1)==Cindex.at(1)) {
+					if (ct2==0) {
+						//ctsisomer.at(0).at(Cindex.at(k1)-1)=ctsisomer.at(1).at(1)+ctsisomer.at(0).at(Cindex.at(k1)-1);
+						if (1) {
+                        	if (ctsisomer.at(1).at(1)=="/") ctsisomer.at(0).at(Cindex.at(k1)-1)="\\"+ctsisomer.at(0).at(Cindex.at(k1)-1);
+                        	else if (ctsisomer.at(1).at(1)=="\\") ctsisomer.at(0).at(Cindex.at(k1)-1)="/"+ctsisomer.at(0).at(Cindex.at(k1)-1);
+						}
+                        if (0) {
+                            if (ctsisomer.at(1).at(1)=="/") ctsisomer.at(0).at(Cindex.at(k1)-1)="/"+ctsisomer.at(0).at(Cindex.at(k1)-1);
+                            else if (ctsisomer.at(1).at(1)=="\\") ctsisomer.at(0).at(Cindex.at(k1)-1)="\\"+ctsisomer.at(0).at(Cindex.at(k1)-1);
+                        }
+					}
+					else if (ct2==1) {
+						ctsisomer.at(0).at(Cindex.at(k1)-1)=ctsisomer.at(1).at(1)+ctsisomer.at(0).at(Cindex.at(k1)-1);
+                    	//if (ctsisomer.at(1).at(1)=="/") ctsisomer.at(0).at(Cindex.at(k1)-1)="\\"+ctsisomer.at(0).at(Cindex.at(k1)-1);
+                    	//else if (ctsisomer.at(1).at(1)=="\\") ctsisomer.at(0).at(Cindex.at(k1)-1)="/"+ctsisomer.at(0).at(Cindex.at(k1)-1);
+					}
+					//if (ct2==1) ctsisomer.at(1).at(1)=ctsisomer.at(0).at(1)="";
+					ct2++;
+				}
+			}
+			ctsisomer.at(0).at(0)="";
+			ctsisomer.at(1).at(1)="";
+		}
+	}
+
+	return;
 }
+
 
 void MOLECULE::report() {
-  ofstream outf((smiles + ".mds").c_str());
-  int i;
-  outf << "natom " << Cindex.size();
-  outf << endl;
-  outf << "Mindex ";
-  for (i = 0; i < Cindex.size(); i++) outf << Mindex[i] << " ";
-  outf << endl;
-  outf << "Pindex ";
-  for (i = 0; i < Cindex.size(); i++) outf << Pindex[i] << " ";
-  outf << endl;
-  outf << "Cindex ";
-  for (i = 0; i < Cindex.size(); i++) outf << Cindex[i] << " ";
-  outf << endl;
-  outf << "Rindex ";
-  for (i = 0; i < Cindex.size(); i++) outf << Rindex[i] << " ";
-  outf << endl;
-  outf << "Cyindex ";
-  for (i = 0; i < Cindex.size(); i++) {
-    outf << Cyindex[i] << " ";
-  }
-  outf << endl;
-  outf << "if_circle " << if_circle << endl;
-  Cindex.clear();
-  Mindex.clear();
-  Pindex.clear();
-  Cyindex.clear();
-  Rindex.clear();
-  if_circle = 0;
-  outf.close();
-  clean();
-  return;
+	int i=0,j=0;
+	if (para.protect) prct();
+
+	string a=smiles;
+	for (int k=0;k<a.length();k++) {
+		if (a[k]=='/') a[k]='u';
+		if (a[k]=='\\') a[k]='d';
+	}
+
+	//ofstream outf((para.smidir+smiles+".mds").c_str());
+	ofstream outf((para.smidir+a+".mds").c_str());
+	outf<<"natom "<<setw(4)<<left<<setfill(' ')<<Cindex.size()<<" ";
+	outf<<endl;
+	outf<<"Mindex ";
+	for (i=0;i<Mindex.size();i++) outf<<setw(4)<<left<<setfill(' ')<<Mindex.at(i)<<" ";
+	outf<<endl;
+	outf<<"Pindex ";
+	for (i=0;i<Pindex.size();i++) outf<<setw(4)<<left<<setfill(' ')<<Pindex.at(i)<<" ";
+	outf<<endl;
+	outf<<"Cindex ";
+	for (i=0;i<Cindex.size();i++) outf<<setw(4)<<left<<setfill(' ')<<Cindex.at(i)<<" ";
+	outf<<endl;
+	outf<<"Rindex ";
+	for (i=0;i<Rindex.size();i++) outf<<setw(4)<<left<<setfill(' ')<<Rindex.at(i)<<" ";
+	outf<<endl;
+	outf<<"Cyindex ";
+	for (i=0;i<Cyindex.size();i++) outf<<setw(4)<<left<<setfill(' ')<<Cyindex.at(i)<<" ";
+	outf<<endl;
+	//outf<<"ctsisomer ";
+    //for (i=0;i<ctsisomer.size();i++) {
+	//	if (ctsisomer.at(i)!="") outf<<setw(4)<<left<<setfill(' ')<<ctsisomer.at(i)<<" ";
+	//	else outf<<setw(4)<<left<<setfill(' ')<<"N/A"<<" ";
+	//}
+    //outf<<endl;
+    outf<<"ctsisomer_start ";
+    for (i=0;i<ctsisomer.at(0).size();i++) {
+      	if (ctsisomer.at(0).at(i)!="") outf<<setw(4)<<left<<setfill(' ')<<ctsisomer.at(0).at(i)<<" ";
+      	else outf<<setw(4)<<left<<setfill(' ')<<"N/A"<<" ";
+    }
+    outf<<endl;
+    outf<<"ctsisomer_end ";
+    for (i=0;i<ctsisomer.at(1).size();i++) {
+    	if (ctsisomer.at(1).at(i)!="") outf<<setw(4)<<left<<setfill(' ')<<ctsisomer.at(1).at(i)<<" ";
+    	else outf<<setw(4)<<left<<setfill(' ')<<"N/A"<<" ";
+    }
+    outf<<endl;
+
+	if (para.protect) {
+		outf<<"protection ";
+		//for (i=0;i<Cindex.size();i++) outf<<j<<" ";
+		for (i=0;i<protect.size();i++) outf<<setw(4)<<left<<setfill(' ')<<protect.at(i)<<" ";
+		outf<<endl;
+	}
+
+	outf<<"if_circle "<<setw(4)<<left<<setfill(' ')<<if_circle<<endl;
+	outf.close();
+
+	//print(); //20190801
+
+	/*
+	   Cindex.clear();
+	   Mindex.clear();
+	   Pindex.clear();
+	   Cyindex.clear();
+	   Rindex.clear();
+	   */
+	empty(); //20200101
+	if_circle=0;
+	clean();
+	return;
 }
+
 
 void MOLECULE::clean() {
-  int i;
-  if (dist == NULL) return;
-  for (i = 0; i < natom; i++) {
-    delete[] dist[i];
-    delete[] connect[i];
-    delete[] order[i];
-  }
-  delete[] dist;
-  delete[] connect;
-  delete[] order;
-  delete[] atm;
-  dist = NULL;
-  connect = NULL;
-  order = NULL;
-  atm = NULL;
-  return;
+	int i;
+	//if(dist==NULL && connect==NULL && order==NULL && atm==NULL) return;
+	if (connect==NULL && atm==NULL) return;
+	for (i=0;i<natom;i++) {
+		//if (dist!=NULL) delete [] dist[i]; //if(dist[i]!=NULL)
+		if (connect!=NULL) delete [] connect[i]; //if(connect[i]!=NULL)
+		//if (order!=NULL) delete [] order[i]; //if(order[i]!=NULL)
+	}
+	//if(dist!=NULL) delete [] dist;
+	if(connect!=NULL) delete [] connect;
+	//if(order!=NULL) delete [] order;
+	if(atm!=NULL) delete [] atm;
+	//dist=NULL;
+	connect=NULL;
+	//order=NULL;
+	atm=NULL;
+	/*
+	   if(dist.size()) return;
+	   for (i=0;i<natom;i++) {
+	   dist.at(i).resize(0);
+	   connect.at(i).resize(0);
+	   order.at(i).resize(0);
+	   }
+	   dist.resize(0);
+	   connect.resize(0);
+	   order.resize(0);
+	   atm.resize(0);
+	   */
+	return;
 }
+
 
 void MOLECULE::outmds(ostream &outs) {
-  int i, j, k;
-  outs << "natom " << Cindex.size();
-  outs << endl;
-  outs << "Mindex ";
-  for (i = 0; i < Cindex.size(); i++) outs << Mindex[i] << " ";
-  outs << endl;
-  outs << "Pindex ";
-  for (i = 0; i < Cindex.size(); i++) outs << Pindex[i] << " ";
-  outs << endl;
-  outs << "Cindex ";
-  for (i = 0; i < Cindex.size(); i++) outs << Cindex[i] << " ";
-  outs << endl;
-  outs << "Rindex ";
-  for (i = 0; i < Cindex.size(); i++) outs << Rindex[i] << " ";
-  outs << endl;
-  outs << "Cyindex ";
-  for (i = 0; i < Cindex.size(); i++) {
-    outs << Cyindex[i] << " ";
-  }
-  outs << endl;
-  outs << "if_circle " << if_circle << endl << endl;
-  return;
+	int i,j,k;
+	outs<<"natom "<<setw(4)<<left<<setfill(' ')<<Cindex.size()<<" ";
+	outs<<endl;
+	outs<<"Mindex ";
+	for (i=0;i<Mindex.size();i++) outs<<setw(4)<<left<<setfill(' ')<<Mindex.at(i)<<" ";
+	outs<<endl;
+	outs<<"Pindex ";
+	for (i=0;i<Pindex.size();i++) outs<<setw(4)<<left<<setfill(' ')<<Pindex.at(i)<<" ";
+	outs<<endl;
+	outs<<"Cindex ";
+	for (i=0;i<Cindex.size();i++) outs<<setw(4)<<left<<setfill(' ')<<Cindex.at(i)<<" ";
+	outs<<endl;
+	outs<<"Rindex ";
+	for (i=0;i<Rindex.size();i++) outs<<setw(4)<<left<<setfill(' ')<<Rindex.at(i)<<" ";
+	outs<<endl;
+	outs<<"Cyindex ";
+	for (i=0;i<Cyindex.size();i++) outs<<setw(4)<<left<<setfill(' ')<<Cyindex.at(i)<<" ";
+	outs<<endl;
+    //outs<<"ctsisomer ";
+    //for (i=0;i<ctsisomer.size();i++) {
+    //    if (ctsisomer.at(i)!="") outs<<setw(4)<<left<<setfill(' ')<<ctsisomer.at(i)<<" ";
+    //    else outs<<setw(4)<<left<<setfill(' ')<<"N/A"<<" ";
+    //}
+	//outs<<endl;
+    outs<<"ctsisomer_start ";
+    for (i=0;i<ctsisomer.at(0).size();i++) {
+        if (ctsisomer.at(0).at(i)!="") outs<<setw(4)<<left<<setfill(' ')<<ctsisomer.at(0).at(i)<<" ";
+        else outs<<setw(4)<<left<<setfill(' ')<<"N/A"<<" ";
+    }
+    outs<<endl;
+    outs<<"ctsisomer_end ";
+    for (i=0;i<ctsisomer.at(1).size();i++) {
+        if (ctsisomer.at(1).at(i)!="") outs<<setw(4)<<left<<setfill(' ')<<ctsisomer.at(1).at(i)<<" ";
+        else outs<<setw(4)<<left<<setfill(' ')<<"N/A"<<" ";
+    }
+    outs<<endl;
+
+
+	outs<<"if_circle "<<setw(4)<<left<<setfill(' ')<<if_circle<<endl<<endl;
+	return;
 }
 
-int MOLECULE::combine(MOLECULE &B, int k, int p) {
-  int i, j, tmp, counter, x;
-  x = 1;
-  for (i = 0; i < data.a[Mindex[k]].norder; i++) {
-    for (j = 0; j < B.data.a[B.Mindex[p]].norder; j++) {
-      if (Bindex[k].at(i) >= 1 && Bindex[k].at(i) == B.Bindex[p].at(j)) x = 0;
+int MOLECULE::combine(MOLECULE &B, int k,int p,int bnd) {
+	if (k>=Cindex.size() || k<0) return 0;
+	if (p>=B.Cindex.size() || p<0) return 0;
+	if (!data->a[Mindex.at(k)].bd[bnd-1]) return 0;
+	if (!B.data->a[B.Mindex.at(p)].bd[bnd-1]) return 0;
+
+	int nu=B.Cindex.at(p);
+
+    if (1) {
+        bool totbndchk=0;
+        bool bndchk=0;
+
+        int bndsum=0; // max available # of bonds of element(id) (calc. from pool)
+        vector<int> ordcount(6,0);
+        if (Rindex.at(k)>0) {
+			bndsum+=Rindex.at(k);
+			ordcount.at(Rindex.at(k)-1)+=1;
+		}
+        if (Cyindex.at(k)) {
+            int yi=(int)log10(Cyindex.at(k))+1;
+            bndsum+=yi;
+            ordcount.at(0)+=yi;
+        }
+        for (int k1=0;k1<Cindex.size();k1++) {
+            if (Pindex.at(k1)==Cindex.at(k)) {
+                bndsum+=Rindex.at(k1);
+                ordcount.at(Rindex.at(k1)-1)+=1;
+            }
+        }
+		bndsum+=bnd;
+		ordcount.at(bnd-1)+=1;
+
+        int maxbnd=0; // max available # of bonds for atom C(n) (calc. from pool)
+        for (int k2=0;k2<6;k2++) {
+            maxbnd+=data->a[Mindex.at(k)].order.at(k2);
+        }
+		/*
+        if (bndsum<=maxbnd) totbndchk=1;
+        else {
+			cout << "1st molecule " << Cindex.at(k) << " | Required bonds: " << bndsum << " | Available bonds: " << maxbnd << endl;
+            totbndchk=0;
+            return 0;
+        }
+		*/
+
+        for (int k2=0;k2<3;k2++) {  // chk if "the bond orders of k1 after connecting with k" match the definition of atom k1 in pool
+            if (ordcount.at(k2)>data->a[Mindex.at(k)].bd[k2]) { // orig ordcount.at(k2)>data.a[Mindex.at(k1)].order.at(k2)
+				//cout << "1st molecule " << Cindex.at(k) << " | Bond order: " << (k2+1) << " | Required number: " << ordcount.at(k2) << " | Available number: " << data.a[Mindex.at(k)].bd[k2] << endl;
+                bndchk=0;
+                return 0;
+            }
+            else if (k2>=2 && ordcount.at(k2)<=data->a[Mindex.at(k)].bd[k2]) { // orig k2>=5 && ordcount.at(k2)<=data.a[Mindex.at(k1)].order.at(k2)
+                bndchk=1;
+            }
+        }
+
     }
-  }
-  if (x) {
-    reset();
+
+    if (1) {
+        bool totbndchk=0;
+        bool bndchk=0;
+
+        int bndsum=0; // max available # of bonds of element(id) (calc. from pool)
+        vector<int> ordcount(6,0);
+        if (B.Rindex.at(p)>0) {
+			bndsum+=B.Rindex.at(p);
+			ordcount.at(B.Rindex.at(p)-1)+=1;
+		}
+        if (B.Cyindex.at(p)) {
+            int yi=(int)log10(B.Cyindex.at(p))+1;
+            bndsum+=yi;
+            ordcount.at(0)+=yi;
+        }
+        for (int k1=0;k1<B.Cindex.size();k1++) {
+            if (B.Pindex.at(k1)==B.Cindex.at(p)) {
+                bndsum+=B.Rindex.at(k1);
+                ordcount.at(B.Rindex.at(k1)-1)+=1;
+            }
+        }
+        bndsum+=bnd;
+        ordcount.at(bnd-1)+=1;
+
+        int maxbnd=0; // max available # of bonds for atom C(n) (calc. from pool)
+        for (int k2=0;k2<6;k2++) {
+            maxbnd+=data->a[B.Mindex.at(p)].order.at(k2);
+        }
+		/*
+        if (bndsum<=maxbnd) totbndchk=1;
+        else {
+			cout << "2nd molecule " << B.Cindex.at(p) << " | Required bonds: " << bndsum << " | Available bonds: " << maxbnd << endl;
+            totbndchk=0;
+            return 0;
+        }
+		*/
+
+        for (int k2=0;k2<3;k2++) {  // chk if "the bond orders of k1 after connecting with k" match the definition of atom k1 in pool
+            if (ordcount.at(k2)>data->a[B.Mindex.at(p)].bd[k2]) { // orig ordcount.at(k2)>data.a[Mindex.at(k1)].order.at(k2)
+				//cout << "2nd molecule " << B.Cindex.at(p) << " | Bond order: " << (k2+1) << " | Required number: " << ordcount.at(k2) << " | Available number: " << data.a[B.Mindex.at(p)].bd[k2]  << endl;
+                bndchk=0;
+                return 0;
+            }
+            else if (k2>=2 && ordcount.at(k2)<=data->a[B.Mindex.at(p)].bd[k2]) { // orig k2>=5 && ordcount.at(k2)<=data.a[Mindex.at(k1)].order.at(k2)
+                bndchk=1;
+            }
+        }
+
+    }
+
+
+	vector<int> tmpP(B.Pindex.size(),0);
+	vector<int> tmpC(B.Cindex.size(),0);
+	vector<int> tmpM(B.Mindex.size(),0);
+	vector<int> tmpR(B.Rindex.size(),0);
+	vector<int> tmpCy(B.Cyindex.size(),0);
+	//vector<string> tmpCT(B.ctsisomer.size(),"");
+	vector< vector<string> > tmpCT(2,vector<string>(B.ctsisomer.at(0).size(),""));
+	vector<int> tmpPr(B.protect.size(),0);
+	for (int k2=0;k2<B.Pindex.size();k2++) tmpP.at(k2)=B.Pindex.at(k2);
+	for (int k2=0;k2<B.Cindex.size();k2++) tmpC.at(k2)=B.Cindex.at(k2);
+	for (int k2=0;k2<B.Mindex.size();k2++) tmpM.at(k2)=B.Mindex.at(k2);
+	for (int k2=0;k2<B.Rindex.size();k2++) tmpR.at(k2)=B.Rindex.at(k2);
+	//for (int k2=0;k2<B.ctsisomer.size();k2++) tmpCT.at(k2)=B.ctsisomer.at(k2);
+	for (int k2=0;k2<B.ctsisomer.at(0).size();k2++) tmpCT.at(0).at(k2)=B.ctsisomer.at(0).at(k2);
+	for (int k2=0;k2<B.ctsisomer.at(1).size();k2++) tmpCT.at(1).at(k2)=B.ctsisomer.at(1).at(k2);
+	for (int k2=0;k2<B.Cyindex.size();k2++) tmpCy.at(k2)=B.Cyindex.at(k2);
+	if (para.protect) for (int k2=0;k2<B.protect.size();k2++) tmpPr.at(k2)=B.protect.at(k2);
+
+	if (p!=0) {
+		tmpP.at(p)=0;
+    	int compa=B.Cindex.at(p);
+    	int cont=0;
+    	while (compa>=1 && cont<=B.Cindex.size()) {
+        	//if (1) C_ringmember.push_back(compa);
+
+        	if (compa>=1) {
+            	if (B.Pindex.at(compa-1)>=1) {
+					tmpP.at(B.Pindex.at(compa-1)-1)=B.Cindex.at(compa-1);
+					tmpR.at(B.Pindex.at(compa-1)-1)=B.Rindex.at(compa-1);
+					compa=B.Cindex.at(B.Pindex.at(compa-1)-1);
+				}
+            	else break;
+            	cont++;
+        	}
+        	else break;
+    	}
+		tmpR.at(p)=-1;
+	}
+
+	if (p!=0) {
+		swap(tmpP.at(p),tmpP.at(0));
+		swap(tmpC.at(p),tmpC.at(0));
+		swap(tmpM.at(p),tmpM.at(0));
+		swap(tmpR.at(p),tmpR.at(0));
+		swap(tmpCy.at(p),tmpCy.at(0));
+		//swap(tmpCT.at(p),tmpCT.at(0));
+		swap(tmpCT.at(0).at(p),tmpCT.at(0).at(0));
+		swap(tmpCT.at(1).at(p),tmpCT.at(1).at(0));
+		if (para.protect) swap(tmpPr.at(p),tmpPr.at(0));
+	}
+	
+	for (int i=0;i<tmpC.size();i++) {
+		for (int j=i+1;j<tmpC.size();j++) {
+			if (tmpP.at(i)==tmpC.at(j)) {
+				swap(tmpP.at(j),tmpP.at(i));
+                swap(tmpC.at(j),tmpC.at(i));
+                swap(tmpM.at(j),tmpM.at(i));
+                swap(tmpR.at(j),tmpR.at(i));
+                swap(tmpCy.at(j),tmpCy.at(i));
+				//swap(tmpCT.at(j),tmpCT.at(i));
+				swap(tmpCT.at(0).at(j),tmpCT.at(0).at(i));
+				swap(tmpCT.at(1).at(j),tmpCT.at(1).at(i));
+				if (para.protect) swap(tmpPr.at(j),tmpPr.at(i));
+			}
+		}
+	}
+
+	
+    for (int i=0;i<tmpC.size();i++) {
+        for (int j=i+1;j<tmpC.size();j++) {
+            if (tmpP.at(i)==tmpC.at(j) && tmpC.at(i)==tmpP.at(j)) {
+
+				if (0) {
+        			cout << "terminate_1" << endl;
+        			for (int k2=0;k2<tmpP.size();k2++) cout << tmpP.at(k2) << " ";
+        			cout << endl;
+        			for (int k2=0;k2<tmpC.size();k2++) cout << tmpC.at(k2) << " ";
+        			cout << endl;
+        			for (int k2=0;k2<tmpM.size();k2++) cout << tmpM.at(k2) << " ";
+        			cout << endl;
+        			for (int k2=0;k2<tmpR.size();k2++) cout << tmpR.at(k2) << " ";
+        			cout << endl;
+        			for (int k2=0;k2<tmpCy.size();k2++) cout << tmpCy.at(k2) << " ";
+        			cout << endl;
+        			if (para.protect) {
+            			for (int k2=0;k2<tmpPr.size();k2++) cout << tmpPr.at(k2) << " ";
+            			cout << endl;
+        			}
+    			}
+
+
+			    vector<int>().swap(tmpP);
+			    vector<int>().swap(tmpC);
+			    vector<int>().swap(tmpM);
+			    vector<int>().swap(tmpR);
+			    vector<int>().swap(tmpCy);
+			    vector<int>().swap(tmpPr);
+				//vector<string>().swap(tmpCT);
+				vector< vector<string> >().swap(tmpCT);
+
+                return 0;
+            }
+        }
+    }
+	
+
+    if (0) {
+        cout << "loop 2-1" << endl;
+        for (int k2=0;k2<tmpP.size();k2++) cout << tmpP.at(k2) << " ";
+        cout << endl;
+        for (int k2=0;k2<tmpC.size();k2++) cout << tmpC.at(k2) << " ";
+        cout << endl;
+        for (int k2=0;k2<tmpM.size();k2++) cout << tmpM.at(k2) << " ";
+        cout << endl;
+        for (int k2=0;k2<tmpR.size();k2++) cout << tmpR.at(k2) << " ";
+        cout << endl;
+    	for (int k2=0;k2<tmpCy.size();k2++) cout << tmpCy.at(k2) << " ";
+        cout << endl;
+        if (para.protect) {
+            for (int k2=0;k2<tmpPr.size();k2++) cout << tmpPr.at(k2) << " ";
+            cout << endl;
+        }
+    }
+
+
+    for (int i=0;i<tmpC.size();i++) {
+            int j=tmpC.at(i);
+            tmpC.at(i)=(i+1)+tmpC.size();
+            for (int k1=0;k1<tmpC.size();k1++) { 
+                if (tmpP.at(k1)==j) tmpP.at(k1)=tmpC.at(i);
+            }
+    }
+	for (int i=0;i<tmpC.size();i++) {
+		tmpC.at(i)-=tmpC.size();
+		if (i!=0) tmpP.at(i)-=tmpC.size();
+	}
+
+
+
+	if (0) {
+		cout << "semi-final" << endl;	
+    	for (int k2=0;k2<tmpP.size();k2++) cout << tmpP.at(k2) << " ";
+		cout << endl;
+    	for (int k2=0;k2<tmpC.size();k2++) cout << tmpC.at(k2) << " ";
+		cout << endl;
+    	for (int k2=0;k2<tmpM.size();k2++) cout << tmpM.at(k2) << " ";
+		cout << endl;
+    	for (int k2=0;k2<tmpR.size();k2++) cout << tmpR.at(k2) << " ";
+		cout << endl;
+    	for (int k2=0;k2<tmpCy.size();k2++) cout << tmpCy.at(k2) << " ";
+		cout << endl;
+		if (para.protect) {
+    		for (int k2=0;k2<tmpPr.size();k2++) cout << tmpPr.at(k2) << " ";
+			cout << endl;
+		}
+	}
+	
+
+	int Cshift=Cindex.size();
+    for (int i=0;i<tmpC.size();i++) {
+        tmpC.at(i)+=Cshift;  //at
+        if (i==0) { // orig i==p
+        	tmpP.at(i)=Cindex.at(k); //at
+        	tmpR.at(i)=bnd;
+        }
+        else tmpP.at(i)+=Cshift; //at
+    }
+
+	if (0) {
+    	cout << "if_circle " << if_circle << endl;
+    	cout << "B.if_circle " << B.if_circle << endl;
+    	cout << "Cy: ";
+	}
+    for (int k2=0;k2<tmpCy.size();k2++) {
+        if (0) cout << tmpCy.at(k2) << " ";
+        if (tmpCy.at(k2)) {
+            int t=0;
+            int digits=(int)log10(tmpCy.at(k2))+1;
+            for (int ap=1;ap<=digits;ap++) {
+                int w=tmpCy.at(k2)/(int)pow(10,ap-1);
+                w=w%10;
+                w+=if_circle;
+                t+=(int)w*pow(10,ap-1);
+            }
+            tmpCy.at(k2)=t;
+            if (0) cout << "CHANGED " << tmpCy.at(k2) << " ";
+        }
+    }
+    if (0) cout << endl;
+	if_circle=B.if_circle+if_circle;
+
+
+    for (int i=0;i<tmpC.size();i++) {
+        Pindex.push_back(tmpP.at(i));
+        Cindex.push_back(tmpC.at(i));
+        Rindex.push_back(tmpR.at(i));
+        Cyindex.push_back(tmpCy.at(i));
+        Mindex.push_back(tmpM.at(i));
+		//ctsisomer.push_back(tmpCT.at(i));
+		ctsisomer.at(0).push_back(tmpCT.at(0).at(i));
+		ctsisomer.at(1).push_back(tmpCT.at(1).at(i));
+        if (para.protect) protect.push_back(tmpPr.at(i));
+    }
+
+
+    if (0) {
+        cout << "final" << endl;
+        for (int k2=0;k2<Pindex.size();k2++) cout << Pindex.at(k2) << " ";
+        cout << endl;
+        for (int k2=0;k2<Cindex.size();k2++) cout << Cindex.at(k2) << " ";
+        cout << endl;
+        for (int k2=0;k2<Mindex.size();k2++) cout << Mindex.at(k2) << " ";
+        cout << endl;
+        for (int k2=0;k2<Rindex.size();k2++) cout << Rindex.at(k2) << " ";
+        cout << endl;
+        for (int k2=0;k2<Cyindex.size();k2++) cout << Cyindex.at(k2) << " ";
+        cout << endl;
+        if (para.protect) {
+            for (int k2=0;k2<protect.size();k2++) cout << protect.at(k2) << " ";
+            cout << endl;
+        }
+    }
+	
+	vector<int>().swap(tmpP);
+	vector<int>().swap(tmpC);
+	vector<int>().swap(tmpM);
+	vector<int>().swap(tmpR);
+	vector<int>().swap(tmpCy);
+	//vector<string>().swap(tmpCT);
+	vector< vector<string> >().swap(tmpCT);
+	vector<int>().swap(tmpPr);
+
+	//reset();
+	//chk_cistrans(); //20200806
     mds2smi();
-    ofstream log("molecule.log", ios::app);
-    log << "Warning : " << smiles << " cannot combine with " << B.smiles
-        << " at point " << k << " and " << p
-        << " because of different bond order." << endl;
-    return 0;
-  }
-  if (p == 0)
-    ;
-  else {
-    B.recode(p);
-    B.reset();
-  }
-  if (if_circle && B.if_circle) {
-    for (i = 0; i < B.Cindex.size(); i++) {
-      if (B.Cyindex.at(i) > 0) B.Cyindex.at(i) += if_circle;
-    }
-  }
-  counter = 0;
-  while (1) {
-    tmp = 0;
-    for (i = 0; i < data.a[Mindex.at(k)].norder; i++) {
-      if (Bindex[k].at(i) > 0) {
-        j = i;                  // the position
-        tmp = Bindex[k].at(i);  // the order
-        break;
-      }
-    }
-    x = 1;
-    for (i = 0; i < B.data.a.at(B.Mindex.at(0)).norder; i++) {
-      if (B.Bindex[0][i] == tmp) {
-        x = 0;
-        break;
-      }
-    }
-    if (x) {
-      B.clear();
-      B.empty();
-      B.input();
-      return 0;
-    }
-    if (tmp != 0) {
-      x = 1;
-      for (i = 0; i < B.data.a[B.Mindex[0]].norder; i++) {
-        if (B.Bindex[0][i] == tmp) {
-          x = 0;
-          break;
-        }
-      }
-      if (1) {
-        B.Rindex[0] = tmp;
-        int tmpp = Cindex.size();
-        for (i = 0; i < B.Cindex.size(); i++) {
-          B.Cindex[i] += tmpp;
-          if (i == 0)
-            B.Pindex[i] = Cindex[k];
-          else
-            B.Pindex[i] += tmpp;
-        }
-        for (i = 0; i < B.Cindex.size(); i++) {
-          Pindex.push_back(B.Pindex.at(i));
-          Cindex.push_back(B.Cindex.at(i));
-          Rindex.push_back(B.Rindex.at(i));
-          Cyindex.push_back(B.Cyindex.at(i));
-          Mindex.push_back(B.Mindex.at(i));
-        }
-        B.clear();
-        B.empty();
-        B.input();
-        if_circle = B.if_circle + if_circle;
-        reset();
-        mds2smi();
-        return 1;
-      }
+	//if (0) cout << Cindex.at(k) << " " << nu << " " << molesmi << endl;
 
-    } else if (tmp == 0) {
-      if (p) {
-        B.clear();
-        B.empty();
-        B.input();
-      }
-      reset();
-      mds2smi();
-      return 0;
-    }
-  }
-  return 1;
+
+    return 1;
+
 }
 
-void MOLECULE::recode(int k) {
-  if (smiles == "") smiles = molesmi;
-  if (1) {
-    empty();
-    clear();
-    init(k);
-    check_bnd(k);
-    smi2cod();
-    report();
-    read(smiles);
-    reset();
-    mds2smi();
-  }
-  return;
+/*
+int MOLECULE::change_stereo() {
+    if (!Cindex.size()) return 0;
+    vector<int> posi(0);
+    for (int i=0;i<Cindex.size();i++) {
+        if (Mindex.at(i)==67 && Mindex.at(i)==68) {
+            int P=Pindex.at(i);
+            if (P>0) {
+                if (Mindex.at(P-1)==2 && ctsisomer.at(P-1)!="") posi.push_back(i);
+            }
+        }
+    }
+    if (!posi.size()) return 0;
+
+    for (int i=0;i<posi.size();i++) {
+        if (prob()<=0.33) change_stereo(posi.at(i));
+    }
+	return 1;
 }
+*/
+
+/*
+int MOLECULE::change_stereo(int pos) {
+	if (Mindex.at(pos)==67) Mindex.at(pos)=68;
+	else if (Mindex.at(pos)==68) Mindex.at(pos)=67;
+	return 1;
+}
+*/
+
+/*
+int MOLECULE::change_cistrans() {
+	if (!Cindex.size()) return 0;
+	vector<int> posi(0);
+	for (int i=0;i<Cindex.size();i++) {
+		if (Mindex.at(i)==2 && Rindex.at(i)==2 && ctsisomer.at(i)!="") {
+			int P=Pindex.at(i);
+			if (P>0) {
+				if (Mindex.at(P-1)==2 && ctsisomer.at(P-1)!="") posi.push_back(i);
+			}
+		}
+	}
+	if (!posi.size()) return 0;
+
+	for (int i=0;i<posi.size();i++) {
+		if (prob()<=0.33) change_cistrans(posi.at(i));
+	}
+	return 1;
+}
+*/
+
+int MOLECULE::change_cistrans(int pos,int he) {
+
+	if (ctsisomer.size()==2) {
+		if (ctsisomer.at(0).size()==Cindex.size() && ctsisomer.at(0).size()==ctsisomer.at(1).size()) {
+			if (ctsisomer.at(he).at(pos)!="") {
+				if (ctsisomer.at(he).at(pos)=="/") ctsisomer.at(he).at(pos)="\\";
+				else if (ctsisomer.at(he).at(pos)=="\\") ctsisomer.at(he).at(pos)="/";
+			}
+			else return 0;
+		}
+		else return 0;
+	}
+	else return 0;
+	/*
+    int i,j,k;
+    if (!Cindex.size()) return 0;
+	//for (i=0;i<Cindex.size();i++) {
+	//	if (ctsisomer.at(i)=="/" || ctsisomer.at(i)=="\\") break;
+	//	else if (ctsisomer.at(i)!="/" && ctsisomer.at(i)!="\\" && i>=Cindex.size()-1) return 0;
+	//}
+
+    vector<bool> posi(Cindex.size(),0);
+    if (1) {
+        if (ctsisomer.size()==Cindex.size()) {
+            for (int i=Cindex.size()-1;i>=0;i--) {
+                if (Rindex.at(i)==2 && Mindex.at(i)==2) {
+                    int P=Pindex.at(i);
+                    if (P>0) {
+                        if (Mindex.at(P-1)==2 && Cindex.at(P-1)>0) posi.at(Cindex.at(P-1)-1)=1;
+                        for (int k1=0;k1<Cindex.size();k1++) {
+                            if (Pindex.at(k1)==Cindex.at(i)) posi.at(k1)=1;
+                        }
+                    }
+                }
+            }
+            for (int i=0;i<posi.size();i++) {
+                if (posi.at(i) && ctsisomer.at(i)!="") posi.at(i)=0;
+            }
+            for (int i=0;i<posi.size();i++) {
+                if (posi.at(i)) break;
+                else if (!posi.at(i) && i>=posi.size()-1) return 0;
+            }
+        }
+        else ctsisomer.clear();
+
+        if (!ctsisomer.size()) {
+            ctsisomer.resize(Cindex.size(),"");
+            for (int i=0;i<posi.size();i++) posi.at(i)=1;
+        }
+    }
+    if (0) {
+        ctsisomer.clear();
+        ctsisomer.resize(Cindex.size(),"");
+    }
+    //for (int i=Cindex.size()-1;i>=0;i--) { // C\C=C\C
+        if (Rindex.at(pos)==2 && Mindex.at(pos)==2) {
+            int P=Pindex.at(pos);
+            if (P>0) {
+                if (Mindex.at(P-1)==2 && Cindex.at(P-1)>0) { // Mindex.at(P-1)==2 && Pindex.at(P-1)>0
+					int count=0;
+                    for (int k1=0;k1<Cindex.size();k1++) {
+                        if (Pindex.at(k1)==Cindex.at(pos)) {
+							if (!posi.at(k1)) count++;
+						}
+                    }
+
+					if (count==2) {
+                    	for (int k1=0;k1<Cindex.size();k1++) {
+                        	if (Pindex.at(k1)==Cindex.at(pos)) {
+                                if (ctsisomer.at(k1)=="/") ctsisomer.at(k1)="\\";
+                                else if (ctsisomer.at(k1)=="\\") ctsisomer.at(k1)="//";
+                        	}
+                    	}
+					}
+					//else chk_cistrans();
+                }
+            }
+        }
+    //}
+
+    vector<bool>().swap(posi);
+	*/
+
+    return 1;
+}
+
 void MOLECULE::wipe() {
-  vector<int>().swap(Cindex);
-  vector<int>().swap(Pindex);
-  vector<int>().swap(Cyindex);
-  vector<int>().swap(Rindex);
-  vector<int>().swap(Mindex);
-  int i;
-  for (i = 0; i < 1024; i++) {
-    vector<int>().swap(Bindex[i]);
-    vector<int>().swap(atomsmi[i]);
-  }
-  delete[] atm;
-  molesmi.clear();
-  smiles.clear();
-  return;
-}
-void MOLECULE::init(int p) {
-  int i = 0, j = 0, k = 0, n = 0, s = 0, q = 0;
-  vector<string> n_tmp;
-  string trash;
-  MOLECULE tmp;
-  double **d_tmp = NULL;
-  double x, y, z;
-  smi2gjf();
-  string *temp = new string("a");
-  tmp.smiles = smiles;
-  tmp.init();
-  int point[tmp.Cindex.size()];
-  ifstream inf((smiles + ".gjf").c_str());
-  getline(inf, *temp);
-  inf >> ws;
-  getline(inf, *temp);
-  inf >> ws;
-  i = 0;
-  while (!inf.eof()) {
-    inf >> trash >> x >> y >> z >> ws;
-    i++;
-  }
-  inf.close();
-  natom = i;
-  inf.open((smiles + ".gjf").c_str());
-  atm = new DEATOM[natom];
-  d_tmp = new double *[natom];
-  for (i = 0; i < natom; i++) {
-    d_tmp[i] = new double[3];
-  }
-  getline(inf, *temp);
-  inf >> ws;
-  getline(inf, *temp);
-  inf >> ws;
-  k = 0;
-  while (!inf.eof()) {
-    inf >> trash >> d_tmp[k][0] >> d_tmp[k][1] >> d_tmp[k][2];
-    n_tmp.push_back(trash);
-    k++;
-    if (k == natom) break;
-  }
-  inf.close();
-  delete temp;
-  k = 0;
-  for (i = 0; i < natom; i++) {
-    if (n_tmp[i] != "H") {
-      point[k] = i;
-      k++;
-    }
-  }
+	vector<int>().swap(Cindex);
+	vector<int>().swap(Pindex);
+	vector<int>().swap(Cyindex);
+	vector<int>().swap(Rindex);
+	vector<int>().swap(Mindex);
+	vector<int>().swap(protect);
+	
+	
 
-  n = point[p];
-  atm[0].name = n_tmp[point[p]];
-  for (j = 0; j < 3; j++) atm[0].x[j] = d_tmp[point[p]][j];
-  if (atm[0].name != "C" && atm[0].name != "H")
-    atm[0].nbnd = tmp.atm[point[p]].nbnd;
-  atm[0].find_r();
-  point[p] = -1;
-  q = 1;
-  j = 0;
-  s = 0;
-  while (1) {
-    if (q == 1) {
-      j = 0;
-      for (i = 0; i < natom; i++) {
-        if (tmp.connect[i][n] == 3) {
-          j = i;
-          break;
-        } else if (tmp.connect[i][n] == 2) {
-          j = i;
-          break;
-        }
-      }
-      if (j > n)
-        s = 1;
-      else
-        s = 0;
-      if (s) {
-        for (i = 0; i < k; i++) {
-          if (point[i] == j) {
-            s = point[i];
-            point[i] = -1;
-            break;
-          } else
-            s = -2;
-        }
-        if (s != -2) {
-          for (i = 0; i < natom; i++) {
-            // tmp.connect[i][n]=0;
-            tmp.connect[n][i] = 0;
-          }
-          atm[q].name = n_tmp[s];
-          for (i = 0; i < 3; i++) atm[q].x[i] = d_tmp[s][i];
-          atm[q].find_r();
-          if (atm[q].name != "C" && atm[q].name != "H")
-            atm[q].nbnd = tmp.atm[s].nbnd;
-          q++;
-        }
-      }
-    }
+	//int i;
+	//for (i=0;i<1024;i++) {
+	//	vector<int>().swap(Bindex[i]);
+	//	vector<int>().swap(atomsmi[i]);
+	//}
 
-    for (i = n; i >= 0; i--) {
-      if (tmp.connect[i][n] != 0 && n_tmp[i] != "H") {
-        for (j = 0; j < k; j++) {
-          if (point[j] == i) {
-            s = point[j];
-            point[j] = -1;
-            break;
-          } else
-            s = -2;
-        }
-        if (s == -2) break;
-        for (j = 0; j < natom; j++) {
-          tmp.connect[j][n] = 0;
-          tmp.connect[n][j] = 0;
-        }
-        atm[q].name = n_tmp[s];
-        for (j = 0; j < 3; j++) atm[q].x[j] = d_tmp[s][j];
-        atm[q].find_r();
-        if (atm[q].name != "H" && atm[q].name != "C")
-          atm[q].nbnd = tmp.atm[s].nbnd;
-        q++;
-        n = i;
-        break;
-      }
-    }
-    s++;
-    if (s == natom) break;
-  }
-  for (i = 0; i < k; i++) {
-    if (point[i] != -1) {
-      atm[q].name = n_tmp[point[i]];
-      for (j = 0; j < 3; j++) atm[q].x[j] = d_tmp[point[i]][j];
-      atm[q].find_r();
-      if (atm[q].name == "N" || atm[q].name == "S" || atm[q].name == "P") {
-        atm[q].nbnd = tmp.atm[point[i]].nbnd;
-      }
-      q++;
-    }
-  }
-  for (i = 0; i < natom; i++) {
-    delete[] tmp.dist[i];
-    delete[] tmp.connect[i];
-    delete[] tmp.order[i];
-  }
-  delete[] tmp.dist;
-  delete[] tmp.connect;
-  delete[] tmp.order;
-  tmp.wipe();
-  for (i = 0; i < natom; i++) {
-    if (q >= natom) break;
-    if (n_tmp[i] == "H") {
-      atm[q].name = n_tmp[i];
-      for (j = 0; j < 3; j++) {
-        atm[q].x[j] = d_tmp[i][j];
-      }
-      atm[q].find_r();
-      q++;
-    }
-  }
+	vector< vector<int> >().swap(Bindex);
+	vector< vector<int> >().swap(atomsmi);
+	//vector<string>().swap(ctsisomer);
+	vector< vector<string> >().swap(ctsisomer);
 
-  for (i = 0; i < natom; i++) {
-    delete[] d_tmp[i];
-  }
-  delete[] d_tmp;
-  d_tmp = NULL;
+	//delete [] atm;
+	//atm=NULL;
+	clean();
 
-  dist = new double *[natom];
-  connect = new int *[natom];
-  order = new int *[natom];
-  for (i = 0; i < natom; i++) {
-    order[i] = new int[natom];
-    connect[i] = new int[natom];
-    dist[i] = new double[natom];
-  }
-  for (i = 0; i < natom; i++) {
-    dist[i][i] = 0.0;
-  }
-  k = 0;
-  for (i = 0; i < natom; i++) {
-    if (atm[i].name != "H") {
-      k++;
-    }
-  }
-  for (i = 0; i < k; i++) {
-    Cindex.push_back(i + 1);
-    Cyindex.push_back(0);
-  }
-  inf.close();
-  if_circle = 0;
-  cal_r();
-  return;
+	//atm.resize(0);
+	//vector<DEATOM>().swap(atm);
+	molesmi.clear();
+	smiles.clear();
+	return;
 }
 
-void MOLECULE::input() {
-  empty();
-  if (atm != NULL) delete[] atm;
-  init();
-  smi2cod();
-  report();
-  read((smiles).c_str());
-  reset();
-  mds2smi();
-  return;
+
+void MOLECULE::input(bool ct_on) {
+	if (smiles=="" && molesmi!="null") smiles=molesmi;
+	int tmpchg=chg;
+	empty();
+	clean(); //20200701
+	init(); //cout << "init end" << endl;
+	smi2cod(); //cout << "smi2cod end" << endl;
+	report(); //cout << "report end" << endl;
+	read(smiles); //cout << "read end" << endl;
+	//reset();
+	//chk_cistrans(); //20200806
+	mds2smi(ct_on); //cout << "mds2smi end" << endl;
+	canonicalize_SMILES(); //20200706
+	return;
 }
+
 
 void MOLECULE::empty() {
-  Cindex.clear();
-  Pindex.clear();
-  Mindex.clear();
-  Rindex.clear();
-  Cyindex.clear();
-  molesmi = "";
-  for (int i = 0; i < 1024; i++) {
-    Bindex[i].clear();
-    atomsmi[i].clear();
-  }
-  return;
+	Cindex.resize(0);
+	Pindex.resize(0);
+	Mindex.resize(0);
+	Rindex.resize(0);
+	Cyindex.resize(0);
+	protect.resize(0);
+	//ctsisomer.resize(0);
+	ctsisomer.resize(0,vector<string> (0));
+	Bindex.resize(0,vector<int> (0));
+	atomsmi.resize(0,vector<int> (0));
+	//for (int i=0;i<1024;i++) {
+	//	Bindex[i].resize(0);
+	//	atomsmi[i].resize(0);
+	//}
+	return;
 }
 
-int MOLECULE::rd_nps(int a) {
-  system("pwd > pwddir.txt");
-  ifstream PWD("pwddir.txt");
-  string pwd = "";
-  PWD >> pwd >> ws;
-  PWD.close();
-  ifstream inf((smiles + ".mol").c_str());
-  if (!inf.is_open()) {
-    ofstream out("molecule.log", ios::app);
-    out << "Warning : you don't include the mol file of this molecule, "
-        << smiles << ". It might cause the error of ionic molecule." << endl;
-    out.close();
-    return -1;
-  }
-  string tmp;
-  int i, j, k, l = 0, s = 0, m, n, p, q;
-  a++;
-  inf >> ws;
-  getline(inf, tmp);
-  inf >> ws;
-  getline(inf, tmp);
-  for (i = 0; i < natom; i++) getline(inf, tmp);
-  for (i = 0; i < natom; i++) {
-    inf >> j >> k >> l >> m >> n >> p >> q >> ws;
-    if (j == a || k == a) s += l;
-  }
-  inf.close();
-  return s;
-}
-int MOLECULE::add(int pt, int id) {
-  int i, j, n = 0;
-  for (i = 0; i < data.a[Mindex.at(pt)].norder; i++) {
-    for (j = 0; j < data.a[id].norder; j++) {
-      if (Bindex[pt][i] == data.a[id].order[j]) {
-        Pindex.push_back(Cindex.at(pt));
-        Cindex.push_back(Cindex.size() + 1);
-        Mindex.push_back(id);
-        Rindex.push_back(Bindex[pt][i]);
-        Cyindex.push_back(0);
-        n = 1;
-        break;
-      }
-    }
-    if (n) break;
-  }
-  if (n == 0) {
-    ofstream log("molecule.log", ios::app);
-    log << "Warning : "
-        << "for " << smiles << ", it can't excute addition at this point " << pt
-        << " with this atom (id), " << id << "." << endl;
-    log.close();
-    reset();
-    return 0;
-  }
-  reset();
-  return 1;
-}
 
-void MOLECULE::subtract(int n) {
-  int i, j, k;
-  vector<int> ref;
-  ref.push_back(Cindex.at(n));
-  if (n == 0) {
-    ofstream log("molecule.log", ios::app);
-    log << "Warning : This molecule would be empty because of point, " << n
-        << endl;
-    log.close();
-  }
-  for (i = n; i < Cindex.size(); i++) {
-    if (Cindex[i] > n) {
-      j = ref.size();
-      for (k = 0; k < j; k++) {
-        if (Pindex[i] == ref[k]) {
-          ref.push_back(Cindex.at(i));
-        }
-      }
-    }
-  }
-  for (i = 0; i < ref.size(); i++) {
-    for (j = 0; j < Cindex.size(); j++) {
-      if (ref[i] == Cindex.at(j)) {
-        Mindex.erase(Mindex.begin() + j);
-        Cindex.erase(Cindex.begin() + j);
-        Pindex.erase(Pindex.begin() + j);
-        Rindex.erase(Rindex.begin() + j);
-        Cyindex.erase(Cyindex.begin() + j);
-      }
-    }
-  }
-  for (i = 0; i < Cindex.size(); i++) {
-    if (Cindex.at(i) != (i + 1)) {
-      j = Cindex.at(i);
-      Cindex.at(i) = i + 1;
-      for (k = i; k < Cindex.size(); k++) {
-        if (Pindex.at(k) == j) Pindex.at(k) = Cindex.at(i);
-      }
-    }
-  }
-  reset();
-  return;
-}
-int MOLECULE::exchange(int n, int id, int id2, int bond) {
-  int i, j, k, M, P, C, R, bd[3];
-  reset();
-  vector<int> tmp;
-  for (i = 0; i < data.a[Mindex.at(n)].norder; i++)
-    tmp.push_back(Bindex[n].at(i));
-  M = Mindex.at(n);
-  P = Pindex.at(n);
-  C = Cindex.at(n);
-  R = Rindex.at(n);
-  if (R + bond < 1 || R + bond > 3) {
-    ofstream log("molecule.log", ios::app);
-    log << "Warning : for " << smiles << ", it can't be exchanged at point, "
-        << n << " to become as " << id << " and " << id2 << " with add " << bond
-        << " order." << endl;
-    log.close();
-    reset();
-    return 0;
-  }
-  if (R == 2) {
-    bd[0] = bd[1] = bd[2] = 0;
-    for (i = 0; i < tmp.size(); i++) {
-      if (tmp.at(i)) bd[tmp.at(i) - 1] += 1;
-    }
-    tmp.clear();
-    for (i = 0; i < 3; i++) bd[i] = data.a[M].bd[i] - bd[i];
-    if (bond < 0) {
-      bd[0] += 1;
-      bd[1] -= 1;
-    } else if (bond > 0) {
-      bd[2] += 1;
-      bd[1] -= 1;
-    }
-    k = 0;
-    j = 0;
-    i = id;
-    if (bd[0] <= data.a[i].bd[0] && bd[1] <= data.a[i].bd[1] &&
-        bd[2] <= data.a[i].bd[2] && data.a[M].chg == data.a[i].chg) {
-      Mindex.at(n) = i;
-      Rindex.at(n) = R + bond;
-    } else {
-      reset();
-      ofstream log("molecule.log", ios::app);
-      log << "Warning : for " << smiles << ", it can't be exchanged at point, "
-          << n << " to become as " << id << " and " << id2 << " with add "
-          << bond << " order." << endl;
-      log.close();
-      return 0;
-    }
-    bd[0] = bd[1] = bd[2] = 0;
-    for (i = 0; i < data.a[Mindex[P - 1]].norder; i++)
-      tmp.push_back(Bindex[P - 1].at(i));
-    for (i = 0; i < tmp.size(); i++) {
-      if (tmp.at(i)) bd[tmp.at(i) - 1] += 1;
-    }
-    tmp.clear();
-    for (i = 0; i < 3; i++) bd[i] = data.a[Mindex.at(P - 1)].bd[i] - bd[i];
-    if (bond < 0) {
-      bd[0] += 1;
-      bd[1] -= 1;
-    } else if (bond > 0) {
-      bd[2] += 1;
-      bd[1] -= 1;
-    }
-    k = 0;
-    j = 0;
-    i = id2;
-    if (bd[0] <= data.a[i].bd[0] && bd[1] <= data.a[i].bd[1] &&
-        bd[2] <= data.a[i].bd[2] &&
-        data.a[Mindex[P - 1]].chg == data.a[i].chg) {
-      Mindex.at(P - 1) = i;
-      Rindex.at(n) = R + bond;
-    } else {
-      ofstream log("molecule.log", ios::app);
-      log << "Warning : for " << smiles << ", it can't be exchanged at point, "
-          << n << " to become as " << id << " and " << id2 << " with add "
-          << bond << " order." << endl;
-      log.close();
-      Rindex.at(n) = R;
-      Mindex.at(n) = M;
-      reset();
-      return 0;
-    }
-  } else if (R == 3) {
-    bd[0] = bd[1] = bd[2] = 0;
-    for (i = 0; i < tmp.size(); i++) {
-      if (tmp.at(i)) bd[tmp.at(i) - 1] += 1;
-    }
-    tmp.clear();
-    for (i = 0; i < 3; i++) bd[i] = data.a[M].bd[i] - bd[i];
-    if (bond == -1) {
-      bd[1] += 1;
-      bd[2] -= 1;
-    } else if (bond == -2) {
-      bd[0] += 1;
-      bd[2] -= 1;
-    }
-    k = 0;
-    j = 0;
-    i = id;
-    if (bd[0] <= data.a[i].bd[0] && bd[1] <= data.a[i].bd[1] &&
-        bd[2] <= data.a[i].bd[2] && data.a[M].chg == data.a[i].chg) {
-      Mindex.at(n) = i;
-      Rindex.at(n) = R + bond;
-    } else {
-      ofstream log("molecule.log", ios::app);
-      log << "Warning : for " << smiles << ", it can't be exchanged at point, "
-          << n << " to become as " << id << " and " << id2 << " with add "
-          << bond << " order." << endl;
-      log.close();
-      reset();
-      return 0;
-    }
-    bd[0] = bd[1] = bd[2] = 0;
-    for (i = 0; i < data.a[Mindex[P - 1]].norder; i++)
-      tmp.push_back(Bindex[P - 1].at(i));
-    for (i = 0; i < tmp.size(); i++) {
-      if (tmp.at(i)) bd[tmp.at(i) - 1] += 1;
-    }
-    tmp.clear();
-    for (i = 0; i < 3; i++) bd[i] = data.a[Mindex.at(P - 1)].bd[i] - bd[i];
-    if (bond == -1) {
-      bd[1] += 1;
-      bd[2] -= 1;
-    } else if (bond == -2) {
-      bd[0] += 1;
-      bd[2] -= 1;
-    }
-    k = 0;
-    j = 0;
-    i = id2;
-    if (bd[0] <= data.a[i].bd[0] && bd[1] <= data.a[i].bd[1] &&
-        bd[2] <= data.a[i].bd[2] &&
-        data.a[Mindex[P - 1]].chg == data.a[i].chg) {
-      Mindex.at(P - 1) = i;
-      Rindex.at(n) = R + bond;
-    } else {
-      ofstream log("molecule.log", ios::app);
-      log << "Warning : for " << smiles << ", it can't be exchanged at point, "
-          << n << " to become as " << id << " and " << id2 << " with add "
-          << bond << " order." << endl;
-      log.close();
-      Rindex.at(n) = R;
-      Mindex.at(n) = M;
-      reset();
-      return 0;
-    }
-  } else if (R == 1) {
-    bd[0] = bd[1] = bd[2] = 0;
-    for (i = 0; i < tmp.size(); i++) {
-      if (tmp.at(i)) bd[tmp.at(i) - 1] += 1;
-    }
-    tmp.clear();
-    for (i = 0; i < 3; i++) bd[i] = data.a[M].bd[i] - bd[i];
-    if (bond == 1) {
-      bd[1] += 1;
-      bd[0] -= 1;
-    } else if (bond == 2) {
-      bd[2] += 1;
-      bd[0] -= 1;
-    }
-    k = 0;
-    j = 0;
-    i = id;
-    if (bd[0] <= data.a[i].bd[0] && bd[1] <= data.a[i].bd[1] &&
-        bd[2] <= data.a[i].bd[2] && data.a[M].chg == data.a[i].chg) {
-      Mindex.at(n) = i;
-      Rindex.at(n) = R + bond;
-    } else {
-      reset();
-      return 0;
-    }
-    bd[0] = bd[1] = bd[2] = 0;
-    for (i = 0; i < data.a[Mindex[P - 1]].norder; i++)
-      tmp.push_back(Bindex[P - 1].at(i));
-    for (i = 0; i < tmp.size(); i++) {
-      if (tmp.at(i)) bd[tmp.at(i) - 1] += 1;
-    }
-    tmp.clear();
-    for (i = 0; i < 3; i++) bd[i] = data.a[Mindex.at(P - 1)].bd[i] - bd[i];
-    if (bond == 1) {
-      bd[1] += 1;
-      bd[0] -= 1;
-    } else if (bond == 2) {
-      bd[2] += 1;
-      bd[0] -= 1;
-    }
-    k = 0;
-    j = 0;
-    i = id2;
-    if (bd[0] <= data.a[i].bd[0] && bd[1] <= data.a[i].bd[1] &&
-        bd[2] <= data.a[i].bd[2] &&
-        data.a[Mindex[P - 1]].chg == data.a[i].chg) {
-      Mindex.at(P - 1) = i;
-      Rindex.at(n) = R + bond;
-    } else {
-      Rindex.at(n) = R;
-      Mindex.at(n) = M;
-      reset();
-      return 0;
-    }
-  }
-  reset();
-  return 1;
-}
-int MOLECULE::chk_chg(MOLECULE &mol) {
-  rechg();
-  mol.rechg();
-  int num[2];
-  char dot = '.';
-  ionic = "";
-  num[0] = abs(mol.chg);
-  num[1] = abs(chg);
-  if (num[0] == 0 && num[1] == 0)
-    ionic = molesmi;
-  else if (num[0] == 0)
-    ionic = mol.molesmi;
-  else if (num[1] == 0)
-    ionic = molesmi;
-  else {
-    int i;
-    for (i = 0; i < num[0]; i++) {
-      ionic += "(";
-      ionic += molesmi;
-      ionic += ")";
-    }
-    ionic += dot;
-    for (i = 0; i < num[1]; i++) {
-      ionic += "(";
-      ionic += mol.molesmi;
-      ionic += ")";
-    }
-  }
-  return 1;
-}
-int MOLECULE::rechg() {
-  int i = 0, j = 0;
-  chg = 0;
-  for (j = 0; j < Cindex.size(); j++) {
-    chg += data.a[Mindex.at(j)].chg;
-  }
-  return 1;
-}
+int MOLECULE::rd_nps() { //OBMol &mol
+	//system(("ssh cluster ' /home/software/programs/openbabel-openbabel-2-4-1/build/bin/obabel -ismi "+para.smidir+"\""+smiles+".smi\" -omol -O "+para.smidir+"\""+smiles+".mol\" --gen3D --weighted --conformer --converge 100000 --score energy --nconf 100 -c  2> /dev/null ' ").c_str());
+	//int i=0,j=0,k=0,l=0,s=0,m,n,p,q,x=0,y=0;
 
-void MOLECULE::neutralize() {
-  int i, j, k, m, n;
-  chg = 0;
-  for (i = 0; i < Cindex.size(); i++) {
-    chg += data.a[Mindex.at(i)].chg;
-    if (data.a[Mindex.at(i)].chg) j = i;
-  }
-  if (chg) {
-    if (chg < 0) {
-      m = 0;
-      while (1) {
-        m++;
-        n = 0;
-        k = rand() % Cindex.size();
-        for (i = 0; i < data.a[Mindex.at(k)].nbond; i++) {
-          if (Bindex[k][i] && Bindex[k][i] < 3) n = Bindex[k][i];
-        }
-        if (k != j && n) break;
-        if (m > 5) return;
-      }
-      if (n == 2) {
-        if (rand() % 2) {
-          Cindex.push_back(Mindex.size());
-          Pindex.push_back(Cindex.at(k));
-          Mindex.push_back(16);
-          Cyindex.push_back(0);
-          Rindex.push_back(2);
-        } else {
-          Cindex.push_back(Mindex.size());
-          Pindex.push_back(Cindex.at(k));
-          Mindex.push_back(18);
-          Cyindex.push_back(0);
-          Rindex.push_back(2);
-        }
-      } else if (n == 1) {
-        Cindex.push_back(Mindex.size());
-        Pindex.push_back(Cindex.at(k));
-        Mindex.push_back(rand() % 3 + 15);
-        Cyindex.push_back(0);
-        Rindex.push_back(1);
-      }
-    } else if (chg > 0) {
-      m = 0;
-      while (1) {
-        n = 0;
-        m++;
-        k = rand() % Cindex.size();
-        for (i = 0; i < data.a[Mindex.at(k)].nbond; i++) {
-          if (Bindex[k][i] && Bindex[k][i] == 1) n = Bindex[k][i];
-        }
-        if (k != j && n) break;
-        if (m > 5) return;
-      }
-      if (n) {
-        int tmp[3] = {30, 29, 35};
-        Cindex.push_back(Mindex.size());
-        Pindex.push_back(Cindex.at(k));
-        Mindex.push_back(tmp[rand() % 3]);
-        Cyindex.push_back(0);
-        Rindex.push_back(1);
-      }
-    }
-  }
-  reset();
-  mds2smi();
-  return;
-}
+    stringstream nu("");
 
-void MOLECULE::mds23d(ostream &outs) {
-  int i, j, k, n;
-  double sum;
-  Matrix vec[Mindex.size()][6];
-  int **cont;
-  cont = new int *[Mindex.size()];
-  for (i = 0; i < Mindex.size(); i++) cont[i] = new int[6];
-  vector<double> x[3];
-  vector<int> mm;
-  vector<OPT> opt;
-  opt.resize(1);
-  for (i = 0; i < Mindex.size(); i++) mm.push_back(Mindex.at(i));
-  for (i = 0; i < mm.size(); i++) {
-    if (mm.at(i) == 10)
-      mm.at(i) = 5;
-    else if (mm.at(i) == 28)
-      mm.at(i) = 29;
-  }
-  for (i = 0; i < mm.size(); i++) {
-    k = data.a[mm.at(i)].norder;
-    n = 0;
-    for (j = 0; j < data.a[mm.at(i)].norder; j++) {
-      if (Bindex[i][j] > 1) {
-        k += (Bindex[i][j] - 1);
-        n = 1;
-      }
-    }
-    if (k > data.a[Mindex.at(i)].norder) {
-      for (j = 1; j < data.num; j++) {
-        if (n == 1 && data.a.at(j).atm == data.a.at(mm.at(i)).atm &&
-            data.a.at(j).norder == k &&
-            data.a.at(j).chg == data.a.at(mm.at(i)).chg) {
-          mm.at(i) = j;
-          break;
+    if (1) {
+        string a=smiles;
+        for (int i=0;i<a.length();i++) {
+            if (a[i]=='/') a[i]='u';
+            if (a[i]=='\\') a[i]='d';
         }
-      }
-    }
-  }
-  for (i = 0; i < Mindex.size(); i++) {
-    for (j = 0; j < 6; j++) {
-      vec[i][j].resize(1, 1);
-      cont[i][j] = 0;
-    }
-  }
 
-  for (i = 0; i < mm.size(); i++) {
-    for (j = 0; j < data.a[mm.at(i)].norder; j++) {
-      vec[i][j].resize(3, 1);
-      cont[i][j] = 1;
-    }
-  }
-  /* initailize */
-  if (data.a[mm.at(0)].type == 1) {
-    vec[0][0].Mtrx[0][0] = 0.000000;
-    vec[0][0].Mtrx[1][0] = 0.000000;
-    vec[0][0].Mtrx[2][0] = 1.000000;
-    vec[0][1].Mtrx[0][0] = -0.78335;
-    vec[0][1].Mtrx[1][0] = -0.4523;
-    vec[0][1].Mtrx[2][0] = -0.4264;
-    vec[0][2].Mtrx[0][0] = 0.000000;
-    vec[0][2].Mtrx[1][0] = 0.9045;
-    vec[0][2].Mtrx[2][0] = -0.4264;
-    vec[0][3].Mtrx[0][0] = 0.78335;
-    vec[0][3].Mtrx[1][0] = -0.4523;
-    vec[0][3].Mtrx[2][0] = -0.4264;
-    vec[0][0].rotate(vec[0][1], vec[0][0], 15.0 * 3.1415926 / 180.0);
-    vec[0][3].rotate(vec[0][1], vec[0][3], 15.0 * 3.1415926 / 180.0);
-    vec[0][2].rotate(vec[0][1], vec[0][2], 15.0 * 3.1415926 / 180.0);
-  } else if (data.a[mm.at(0)].type == 2) {
-    Matrix ref(3, 1);
-    ref[0][0] = ref[1][0] = ref[2][0] = 1.0;
-    vec[0][0].Mtrx[0][0] = 1.0 / sqrt(3.0);
-    vec[0][0].Mtrx[1][0] = 1.0 / sqrt(3.0);
-    vec[0][0].Mtrx[2][0] = 1.0 / sqrt(3.0);
-    vec[0][1].Mtrx[0][0] = 1.0 / sqrt(3.0);
-    vec[0][1].Mtrx[1][0] = 1.0 / sqrt(3.0);
-    vec[0][1].Mtrx[2][0] = 1.0 / sqrt(3.0);
-    vec[0][2].Mtrx[0][0] = 1.0 / sqrt(3.0);
-    vec[0][2].Mtrx[1][0] = 1.0 / sqrt(3.0);
-    vec[0][2].Mtrx[2][0] = 1.0 / sqrt(3.0);
-    vec[0][1].rotate(ref, vec[0][1], 120.0 * 3.1415926 / 180.0);
-    vec[0][2].rotate(ref, vec[0][2], -120.0 * 3.1415926 / 180.0);
-  } else if (data.a[mm.at(0)].type == 3) {
-    Matrix ref(3, 1);
-    ref[0][0] = ref[1][0] = ref[2][0] = 1.0;
-    vec[0][0].Mtrx[0][0] = 1.0 / sqrt(3.0);
-    vec[0][0].Mtrx[1][0] = 1.0 / sqrt(3.0);
-    vec[0][0].Mtrx[2][0] = 1.0 / sqrt(3.0);
-    vec[0][1].Mtrx[0][0] = 1.0 / sqrt(3.0);
-    vec[0][1].Mtrx[1][0] = 1.0 / sqrt(3.0);
-    vec[0][1].Mtrx[2][0] = 1.0 / sqrt(3.0);
-    vec[0][2].Mtrx[0][0] = 1.0 / sqrt(3.0);
-    vec[0][2].Mtrx[1][0] = 1.0 / sqrt(3.0);
-    vec[0][2].Mtrx[2][0] = 1.0 / sqrt(3.0);
-    vec[0][1].rotate(ref, vec[0][1], 120.0 * 3.1415926 / 180.0);
-    vec[0][2].rotate(ref, vec[0][2], -120.0 * 3.1415926 / 180.0);
+        if (1) {
+            stringstream ss(smiles);
+            stringstream ss1("");
+            //ofstream out((para.smidir+smiles+".mol").c_str());
+            ofstream out((para.smidir+a+".mol").c_str());
 
-  } else if (data.a[mm.at(0)].type == 4) {
-    vec[0][0].Mtrx[0][0] = 1.0 / sqrt(3.0);
-    vec[0][0].Mtrx[1][0] = 1.0 / sqrt(3.0);
-    vec[0][0].Mtrx[2][0] = 1.0 / sqrt(3.0);
-    vec[0][1].Mtrx[0][0] = -1.0 / 2.0;
-    vec[0][1].Mtrx[1][0] = 1.0 / 2.0;
-    vec[0][1].Mtrx[2][0] = -1.0 / sqrt(2.0);
-  } else if (data.a[mm.at(0)].type == 5) {
-    vec[0][0].Mtrx[0][0] = 0.3;
-    vec[0][0].Mtrx[1][0] = 0.1;
-    vec[0][0].Mtrx[2][0] = 1.0000;
-    vec[0][1].Mtrx[0][0] = 0.3;
-    vec[0][1].Mtrx[1][0] = 0.1;
-    vec[0][1].Mtrx[2][0] = -1.0000;
-    vec[0][2].Mtrx[0][0] = -0.50000 * sqrt(3.0000);
-    vec[0][2].Mtrx[1][0] = -sqrt(3.0000) / 6.0000 * sqrt(3.00000);
-    vec[0][2].Mtrx[2][0] = 0.100000;
-    vec[0][3].Mtrx[0][0] = 0.50000 * sqrt(3.0000);
-    vec[0][3].Mtrx[1][0] = -sqrt(3.0000) / 6.0000 * sqrt(3.00000);
-    vec[0][3].Mtrx[2][0] = 0.300000;
-    vec[0][4].Mtrx[0][0] = 0.1000000;
-    vec[0][4].Mtrx[1][0] = 1.0000;
-    vec[0][4].Mtrx[2][0] = 0.30000;
-    for (i = 0; i < 5; i++) {
-      sum = 0.0;
-      for (j = 0; j < 3; j++)
-        sum += vec[0][i].Mtrx[j][0] * vec[0][i].Mtrx[j][0];
-      sum = sqrt(sum);
-      for (j = 0; j < 3; j++) vec[0][i].Mtrx[j][0] = vec[0][i].Mtrx[j][0] / sum;
-    }
-  } else if (data.a[mm.at(0)].type == 6) {
-    vec[0][0].Mtrx[0][0] = 0.2;
-    vec[0][0].Mtrx[1][0] = 0.1;
-    vec[0][0].Mtrx[2][0] = 1.0000;
-    vec[0][1].Mtrx[0][0] = 0.3;
-    vec[0][1].Mtrx[1][0] = 0.5;
-    vec[0][1].Mtrx[2][0] = -1.0000;
-    vec[0][2].Mtrx[0][0] = 1.00000;
-    vec[0][2].Mtrx[1][0] = 0.1;
-    vec[0][2].Mtrx[2][0] = 0.3;
-    vec[0][3].Mtrx[0][0] = -1.0000;
-    vec[0][3].Mtrx[1][0] = 0.5;
-    vec[0][3].Mtrx[2][0] = 0.3;
-    vec[0][4].Mtrx[0][0] = 0.3;
-    vec[0][4].Mtrx[1][0] = 1.000000;
-    vec[0][4].Mtrx[2][0] = 0.3;
-    vec[0][5].Mtrx[0][0] = 0.2;
-    vec[0][5].Mtrx[1][0] = -1.0000;
-    vec[0][5].Mtrx[2][0] = 0.3;
-    for (i = 0; i < 6; i++) {
-      sum = 0.0;
-      for (j = 0; j < 3; j++)
-        sum += vec[0][i].Mtrx[j][0] * vec[0][i].Mtrx[j][0];
-      sum = sqrt(sum);
-      for (j = 0; j < 3; j++) vec[0][i].Mtrx[j][0] = vec[0][i].Mtrx[j][0] / sum;
-    }
-  } else if (data.a[mm.at(0)].type == 7) {
-    vec[0][0].Mtrx[0][0] = 1.0 / sqrt(3.0);
-    vec[0][0].Mtrx[1][0] = 1.0 / sqrt(3.0);
-    vec[0][0].Mtrx[2][0] = 1.0 / sqrt(3.0);
-  }
-  x[0].push_back(0.0000000000);
-  x[1].push_back(0.0000000000);
-  x[2].push_back(0.0000000000);
-  int P = 0;
-  double *pt;
-  pt = new double[3];
-  double *xx;
-  xx = new double[3];
-  int memo;
-  for (i = 1; i < mm.size(); i++) {
-    P = Pindex.at(i) - 1;
-    for (j = 0; j < data.a[mm.at(P)].norder; j++) {
-      if (cont[P][j]) {
-        cont[P][j] = 0;
-        memo = j;
-        break;
-      }
-    }
-    cont[i][0] = 0;
-    for (k = 0; k < 3; k++)
-      x[k].push_back(x[k].at(P) + (data.a[mm.at(P)].rb + data.a[mm.at(i)].rb) *
-                                      vec[P][j].Mtrx[k][0]);
-    for (k = 0; k < 3; k++) vec[i][0].Mtrx[k][0] = -vec[P][j].Mtrx[k][0];
-    if (data.a[mm.at(i)].type == 1) { /* tetrahedral */
-      for (k = 0; k < 3; k++) pt[k] = -0.5000 * vec[i][0].Mtrx[k][0];
-      int tmpp[3];
-      for (k = 0; k < 3; k++) tmpp[3] = (fabs(vec[i][0].Mtrx[k][0]) > 1E-5);
-      for (k = 0; k < 3; k++) {
-        if (tmpp[k])
-          xx[k] = pt[k] + (double)rand() / RAND_MAX * 3.0;
-        else
-          xx[k] = pt[k];
-      }
-      sum = 0.0;
-      if (tmpp[0]) {
-        sum = vec[i][0].Mtrx[1][0] * (pt[1] - xx[1]) +
-              vec[i][0].Mtrx[2][0] * (pt[2] - xx[2]);
-        xx[0] = sum / vec[i][0].Mtrx[0][0] + pt[0];
-      } else if (tmpp[1]) {
-        sum = vec[i][0].Mtrx[0][0] * (pt[0] - xx[0]) +
-              vec[i][0].Mtrx[2][0] * (pt[2] - xx[2]);
-        xx[1] = sum / vec[i][0].Mtrx[1][0] + pt[1];
-      } else {
-        sum = vec[i][0].Mtrx[0][0] * (pt[0] - xx[0]) +
-              vec[i][0].Mtrx[1][0] * (pt[1] - xx[1]);
-        xx[1] = sum / vec[i][0].Mtrx[2][0] + pt[2];
-      }
-      sum = 0;
-      sum = (xx[0] - pt[0]) * (xx[0] - pt[0]) +
-            (xx[1] - pt[1]) * (xx[1] - pt[1]) +
-            (xx[2] - pt[2]) * (xx[2] - pt[2]);
-      sum = sqrt(sum);
-      sum /= (sqrt(3.0) / 2.0);
-      xx[0] = (xx[0] - pt[0]) / sum;
-      xx[1] = (xx[1] - pt[1]) / sum;
-      xx[2] = (xx[2] - pt[2]) / sum;
-      for (k = 1; k < data.a[mm.at(i)].norder; k++) {
-        vec[i][k].Mtrx[0][0] = xx[0];
-        vec[i][k].Mtrx[1][0] = xx[1];
-        vec[i][k].Mtrx[2][0] = xx[2];
-      }
-      for (k = 2; k < data.a[mm.at(i)].norder; k++) {
-        vec[i][k].rotate(vec[i][0], vec[i][k],
-                         2.0000 * 3.14159 / 3.0000 * (double)pow(-1, k));
-        sum = 0;
-        sum = vec[i][k].Mtrx[0][0] * vec[i][k].Mtrx[0][0] +
-              vec[i][k].Mtrx[1][0] * vec[i][k].Mtrx[1][0] +
-              vec[i][k].Mtrx[2][0] * vec[i][k].Mtrx[2][0];
-        sum = sqrt(sum);
-        vec[i][k].Mtrx[0][0] /= sum;
-        vec[i][k].Mtrx[1][0] /= sum;
-        vec[i][k].Mtrx[2][0] /= sum;
-      }
-    } else if (0) {
-      for (k = 0; k < 3; k++)
-        pt[k] = x[k].at(i) - 0.5000 * vec[i][0].Mtrx[k][0];
-      for (k = 0; k < 2; k++) {
-        xx[k] = pt[k] + (double)rand() / RAND_MAX * 3.0;
-      }
-      sum = 0;
-      sum = vec[i][0].Mtrx[0][0] * (pt[0] - xx[0]) +
-            vec[i][0].Mtrx[1][0] * (pt[1] - xx[1]);
-      if (fabs(vec[i][0].Mtrx[2][0]) > 1E-5)
-        xx[2] = sum / vec[i][0].Mtrx[2][0] + pt[2];
-      else {
-        xx[2] = pt[2];
-        if (fabs(vec[i][0].Mtrx[1][0]) > 1E-5)
-          xx[1] =
-              vec[i][0].Mtrx[0][0] * (pt[0] - xx[0]) / vec[i][0].Mtrx[1][0] +
-              pt[1];
-        else
-          xx[1] = pt[1];
-        if (fabs(vec[i][0].Mtrx[2][0]) > 1E-5)
-          xx[0] =
-              vec[i][0].Mtrx[1][0] * (pt[1] - xx[1]) / vec[i][0].Mtrx[0][0] +
-              pt[0];
-        else
-          xx[0] = pt[0];
-      }
-      sum = 0;
-      sum = (xx[0] - pt[0]) * (xx[0] - pt[0]) +
-            (xx[1] - pt[1]) * (xx[1] - pt[1]) +
-            (xx[2] - pt[2]) * (xx[2] - pt[2]);
-      sum = sqrt(sum);
-      sum = sum / (sqrt(3.0) / 2.0);
-      xx[0] = (xx[0] - pt[0]) / sum;
-      xx[1] = (xx[1] - pt[1]) / sum;
-      xx[2] = (xx[2] - pt[2]) / sum;
-      for (k = 1; k < data.a[mm.at(i)].norder; k++) {
-        vec[i][k].Mtrx[0][0] = xx[0] - 0.50000 * vec[i][0].Mtrx[0][0];
-        vec[i][k].Mtrx[1][0] = xx[1] - 0.50000 * vec[i][0].Mtrx[1][0];
-        vec[i][k].Mtrx[2][0] = xx[2] - 0.50000 * vec[i][0].Mtrx[2][0];
-      }
-      for (k = 2; k < data.a[mm.at(i)].norder; k++) {
-        vec[i][k].rotate(vec[i][0], vec[i][k],
-                         2.0000 * 3.14159 / 3.0000 * (double)pow(-1, k));
-        sum = 0;
-        sum = vec[i][k].Mtrx[0][0] * vec[i][k].Mtrx[0][0] +
-              vec[i][k].Mtrx[1][0] * vec[i][k].Mtrx[1][0] +
-              vec[i][k].Mtrx[2][0] * vec[i][k].Mtrx[2][0];
-        sum = sqrt(sum);
-        vec[i][k].Mtrx[0][0] /= sum;
-        vec[i][k].Mtrx[1][0] /= sum;
-        vec[i][k].Mtrx[2][0] /= sum;
-      }
-    } else if (data.a[mm.at(i)].type == 3 || data.a[mm.at(i)].type == 2) {
-      Matrix a(3, 1), aa(3, 1);
-      if (data.a[mm.at(P)].norder > 2) {
-        for (j = 0; j < data.a[mm.at(P)].norder; j++) {
-          if (j != memo) break;
-        }
-        n = 0;
-        a[0][0] = vec[i][0].Mtrx[1][0] * vec[P][j].Mtrx[2][0] -
-                  vec[i][0].Mtrx[2][0] * vec[P][j].Mtrx[1][0];
-        a[1][0] = vec[i][0].Mtrx[2][0] * vec[P][j].Mtrx[1][0] -
-                  vec[i][0].Mtrx[1][0] * vec[P][j].Mtrx[2][0];
-        a[2][0] = vec[i][0].Mtrx[0][0] * vec[P][j].Mtrx[1][0] -
-                  vec[i][0].Mtrx[1][0] * vec[P][j].Mtrx[0][0];
-        if (fabs(a[0][0]) < 1E-3 && fabs(a[1][0]) < 1E-3 &&
-            fabs(a[2][0]) < 1E-3)
-          n = 1;
-        if (n) {
-          while (1) {
-            for (k = 0; k < 3; k++) aa[k][0] = (double)rand() / RAND_MAX;
-            a[0][0] = aa[1][0] * vec[P][j].Mtrx[2][0] -
-                      aa[2][0] * vec[P][j].Mtrx[1][0];
-            a[1][0] = aa[2][0] * vec[P][j].Mtrx[1][0] -
-                      aa[1][0] * vec[P][j].Mtrx[2][0];
-            a[2][0] = aa[0][0] * vec[P][j].Mtrx[1][0] -
-                      aa[1][0] * vec[P][j].Mtrx[0][0];
-            if (fabs(a[0][0]) > 1E-3 || fabs(a[1][0]) > 1E-3 ||
-                fabs(a[2][0]) > 1E-3)
-              break;
-          }
-        }
-        for (k = 1; k < data.a[mm.at(i)].norder; k++) {
-          vec[i][k].Mtrx[0][0] = vec[i][0].Mtrx[0][0];
-          vec[i][k].Mtrx[1][0] = vec[i][0].Mtrx[1][0];
-          vec[i][k].Mtrx[2][0] = vec[i][0].Mtrx[2][0];
-        }
-        for (k = 1; k < data.a[mm.at(i)].norder; k++) {
-          vec[i][k].rotate(a, vec[i][k],
-                           2.0000 * 3.14159 / 3.0000 * (double)pow(-1, k));
-          sum = 0;
-          sum = vec[i][k].Mtrx[0][0] * vec[i][k].Mtrx[0][0] +
-                vec[i][k].Mtrx[1][0] * vec[i][k].Mtrx[1][0] +
-                vec[i][k].Mtrx[2][0] * vec[i][k].Mtrx[2][0];
-          sum = sqrt(sum);
-          vec[i][k].Mtrx[0][0] /= sum;
-          vec[i][k].Mtrx[1][0] /= sum;
-          vec[i][k].Mtrx[2][0] /= sum;
-        }
-      } else {
-        while (1) {
-          for (k = 0; k < 3; k++) aa[k][0] = (double)rand() / RAND_MAX;
-          a[0][0] =
-              aa[1][0] * vec[P][j].Mtrx[2][0] - aa[2][0] * vec[P][j].Mtrx[1][0];
-          a[1][0] =
-              aa[2][0] * vec[P][j].Mtrx[1][0] - aa[1][0] * vec[P][j].Mtrx[2][0];
-          a[2][0] =
-              aa[0][0] * vec[P][j].Mtrx[1][0] - aa[1][0] * vec[P][j].Mtrx[0][0];
-          if (fabs(a[0][0]) > 1E-3 || fabs(a[1][0]) > 1E-3 ||
-              fabs(a[2][0]) > 1E-3)
-            break;
-        }
-        for (k = 1; k < data.a[mm.at(i)].norder; k++) {
-          vec[i][k].Mtrx[0][0] = vec[i][0].Mtrx[0][0];
-          vec[i][k].Mtrx[1][0] = vec[i][0].Mtrx[1][0];
-          vec[i][k].Mtrx[2][0] = vec[i][0].Mtrx[2][0];
-        }
-        for (k = 1; k < data.a[mm.at(i)].norder; k++) {
-          vec[i][k].rotate(a, vec[i][k],
-                           2.0000 * 3.14159 / 3.0000 * (double)pow(-1, k));
-          sum = 0;
-          sum = vec[i][k].Mtrx[0][0] * vec[i][k].Mtrx[0][0] +
-                vec[i][k].Mtrx[1][0] * vec[i][k].Mtrx[1][0] +
-                vec[i][k].Mtrx[2][0] * vec[i][k].Mtrx[2][0];
-          sum = sqrt(sum);
-          vec[i][k].Mtrx[0][0] /= sum;
-          vec[i][k].Mtrx[1][0] /= sum;
-          vec[i][k].Mtrx[2][0] /= sum;
-        }
-      }
-    } else if (data.a[mm.at(i)].type == 4) {
-      Matrix a(3, 1);
-      Matrix aa(3, 1);
-      while (1) {
-        for (k = 0; k < 3; k++) aa[k][0] = (double)rand() / RAND_MAX;
-        a[0][0] =
-            aa[1][0] * vec[P][j].Mtrx[2][0] - aa[2][0] * vec[P][j].Mtrx[1][0];
-        a[1][0] =
-            aa[2][0] * vec[P][j].Mtrx[1][0] - aa[1][0] * vec[P][j].Mtrx[2][0];
-        a[2][0] =
-            aa[0][0] * vec[P][j].Mtrx[1][0] - aa[1][0] * vec[P][j].Mtrx[0][0];
-        if (fabs(a[0][0]) > 1E-3 || fabs(a[1][0]) > 1E-3 ||
-            fabs(a[2][0]) > 1E-3)
-          break;
-      }
-      for (k = 1; k < data.a[mm.at(i)].norder; k++) {
-        vec[i][k].Mtrx[0][0] = vec[i][0].Mtrx[0][0];
-        vec[i][k].Mtrx[1][0] = vec[i][0].Mtrx[1][0];
-        vec[i][k].Mtrx[2][0] = vec[i][0].Mtrx[2][0];
-      }
-      for (k = 1; k < data.a[mm.at(i)].norder; k++) {
-        vec[i][k].rotate(a, vec[i][k],
-                         2.0000 * 3.14159 / 3.0000 * (double)pow(-1, k));
-        sum = 0;
-        sum = vec[i][k].Mtrx[0][0] * vec[i][k].Mtrx[0][0] +
-              vec[i][k].Mtrx[1][0] * vec[i][k].Mtrx[1][0] +
-              vec[i][k].Mtrx[2][0] * vec[i][k].Mtrx[2][0];
-        sum = sqrt(sum);
-        vec[i][k].Mtrx[0][0] /= sum;
-        vec[i][k].Mtrx[1][0] /= sum;
-        vec[i][k].Mtrx[2][0] /= sum;
-      }
-
-    } else if (data.a[mm.at(i)].type == 5) {
-      for (k = 0; k < 3; k++) pt[k] = x[k].at(i);
-      for (k = 0; k < 2; k++) {
-        xx[k] = pt[k] + (double)rand() / RAND_MAX * 3.0;
-      }
-      sum = 0;
-      sum = vec[i][0].Mtrx[0][0] * (pt[0] - xx[0]) +
-            vec[i][0].Mtrx[1][0] * (pt[1] - xx[1]);
-      if (fabs(vec[i][0].Mtrx[2][0]) > 1E-5)
-        xx[2] = sum / vec[i][0].Mtrx[2][0] + pt[2];
-      else {
-        xx[2] = pt[2];
-        if (fabs(vec[i][0].Mtrx[1][0]) > 1E-5)
-          xx[1] =
-              vec[i][0].Mtrx[0][0] * (pt[0] - xx[0]) / vec[i][0].Mtrx[1][0] +
-              pt[1];
-        else
-          xx[1] = pt[1];
-        if (fabs(vec[i][0].Mtrx[2][0]) > 1E-5)
-          xx[0] =
-              vec[i][0].Mtrx[1][0] * (pt[1] - xx[1]) / vec[i][0].Mtrx[0][0] +
-              pt[0];
-        else
-          xx[0] = pt[0];
-      }
-      sum = 0;
-      sum = (xx[0] - pt[0]) * (xx[0] - pt[0]) +
-            (xx[1] - pt[1]) * (xx[1] - pt[1]) +
-            (xx[2] - pt[2]) * (xx[2] - pt[2]);
-      sum = sqrt(sum);
-      xx[0] = (xx[0] - pt[0]) / sum;
-      xx[1] = (xx[1] - pt[1]) / sum;
-      xx[2] = (xx[2] - pt[2]) / sum;
-      for (k = 1; k < data.a[mm.at(i)].norder; k++) {
-        vec[i][k].Mtrx[0][0] = xx[0];
-        vec[i][k].Mtrx[1][0] = xx[1];
-        vec[i][k].Mtrx[2][0] = xx[2];
-      }
-      for (k = 2; k < data.a[mm.at(i)].norder; k++) {
-        vec[i][k].rotate(vec[i][0], vec[i][k],
-                         2.0000 * 3.1415926 / 4.00000 * ((double)k - 1.00000));
-        sum = 0;
-        sum = vec[i][k].Mtrx[0][0] * vec[i][k].Mtrx[0][0] +
-              vec[i][k].Mtrx[1][0] * vec[i][k].Mtrx[1][0] +
-              vec[i][k].Mtrx[2][0] * vec[i][k].Mtrx[2][0];
-        sum = sqrt(sum);
-        vec[i][k].Mtrx[0][0] /= sum;
-        vec[i][k].Mtrx[1][0] /= sum;
-        vec[i][k].Mtrx[2][0] /= sum;
-      }
-    } else if (data.a[mm.at(i)].type == 6) {
-      for (k = 0; k < 3; k++) pt[k] = x[k].at(i);
-      for (k = 0; k < 2; k++) {
-        xx[k] = pt[k] + (double)rand() / RAND_MAX * 3.0;
-      }
-      sum = 0;
-      sum = vec[i][0].Mtrx[0][0] * (pt[0] - xx[0]) +
-            vec[i][0].Mtrx[1][0] * (pt[1] - xx[1]);
-      if (fabs(vec[i][0].Mtrx[2][0]) > 1E-5)
-        xx[2] = sum / vec[i][0].Mtrx[2][0] + pt[2];
-      else {
-        xx[2] = pt[2];
-        if (fabs(vec[i][0].Mtrx[1][0]) > 1E-5)
-          xx[1] =
-              vec[i][0].Mtrx[0][0] * (pt[0] - xx[0]) / vec[i][0].Mtrx[1][0] +
-              pt[1];
-        else
-          xx[1] = pt[1];
-        if (fabs(vec[i][0].Mtrx[2][0]) > 1E-5)
-          xx[0] =
-              vec[i][0].Mtrx[1][0] * (pt[1] - xx[1]) / vec[i][0].Mtrx[0][0] +
-              pt[0];
-        else
-          xx[0] = pt[0];
-      }
-      sum = 0;
-      sum = (xx[0] - pt[0]) * (xx[0] - pt[0]) +
-            (xx[1] - pt[1]) * (xx[1] - pt[1]) +
-            (xx[2] - pt[2]) * (xx[2] - pt[2]);
-      sum = sqrt(sum);
-      xx[0] = (xx[0] - pt[0]) / sum;
-      xx[1] = (xx[1] - pt[1]) / sum;
-      xx[2] = (xx[2] - pt[2]) / sum;
-      for (k = 1; k < data.a[mm.at(i)].norder; k++) {
-        vec[i][k].Mtrx[0][0] = xx[0];
-        vec[i][k].Mtrx[1][0] = xx[1];
-        vec[i][k].Mtrx[2][0] = xx[2];
-      }
-      for (k = 2; k < data.a[mm.at(i)].norder; k++) {
-        vec[i][k].rotate(vec[i][0], vec[i][k],
-                         108.5 * 3.1415926 / 180.0 * ((double)k - 1.000));
-        sum = 0;
-        sum = vec[i][k].Mtrx[0][0] * vec[i][k].Mtrx[0][0] +
-              vec[i][k].Mtrx[1][0] * vec[i][k].Mtrx[1][0] +
-              vec[i][k].Mtrx[2][0] * vec[i][k].Mtrx[2][0];
-        sum = sqrt(sum);
-        vec[i][k].Mtrx[0][0] /= sum;
-        vec[i][k].Mtrx[1][0] /= sum;
-        vec[i][k].Mtrx[2][0] /= sum;
-      }
-    } else if (data.a[mm.at(i)].type == 7) {
-    }
-  }
-  int q = 0;
-  for (i = 0; i < mm.size(); i++) {
-    if (Cyindex.at(i)) {
-      for (j = 0; j < data.a[mm.at(i)].norder; j++) {
-        if (cont[i][j]) {
-          for (k = i + 1; k < mm.size(); k++) {
-            if (Cyindex.at(i) == Cyindex.at(k)) {
-              for (n = 0; n < data.a[mm.at(k)].norder; n++) {
-                if (cont[k][n]) {
-                  sum = 0.0;
-                  sum = fabs(vec[i][j].Mtrx[0][0] + vec[k][n].Mtrx[0][0]) +
-                        fabs(vec[i][j].Mtrx[1][0] + vec[k][n].Mtrx[1][0]) +
-                        fabs(vec[i][j].Mtrx[2][0] + vec[k][n].Mtrx[2][0]);
-                  if (sum < 1E-3) {
-                    cont[i][j] = cont[k][n] = 0;
-                    q = 1;
-                    break;
-                  }
-                }
-              }
+            OBConversion conv(&ss,&ss1);
+            if(conv.SetInAndOutFormats("SMI","MOL")) {
+                conv.AddOption("gen3D", OBConversion::GENOPTIONS);
+                conv.AddOption("3", OBConversion::OUTOPTIONS);
+                //--minimize --ff --steps 0
+                conv.AddOption("canonical", OBConversion::GENOPTIONS);
+                //conv.AddOption("minimize", OBConversion::OUTOPTIONS);
+                //conv.AddOption("ff", OBConversion::OUTOPTIONS,"uff");
+                //conv.AddOption("step", OBConversion::OUTOPTIONS,"1");
+                //conv.AddOption("align", OBConversion::GENOPTIONS);
+                //obErrorLog.StopLogging();
+                obErrorLog.SetOutputLevel(obMessageLevel::obError);
+                //obErrorLog.SetOutputLevel(obMessageLevel::obWarning);
+                obErrorLog.SetOutputStream(&cout);
+                conv.Convert();
+                //cout << smiles << endl;
             }
-          }
-          if (q) break;
+            out << ss1.str();
+            out.close();
+            nu << ss1.str();
         }
-      }
-      if (q) break;
     }
-    if (q) break;
-  }
-  if (!q) {
-    for (i = 0; i < mm.size(); i++) {
-      if (Cyindex.at(i)) {
-        for (j = 0; j < data.a[mm.at(i)].norder; j++) {
-          if (cont[i][j]) {
-            cont[i][j] = 0;
-            break;
-          }
-        }
-      }
-    }
-  }
-  for (i = 0; i < mm.size(); i++) {
-    for (j = 0; j < data.a[mm.at(i)].norder; j++) {
-      if (cont[i][j]) {
-        for (k = 0; k < 3; k++) {
-          x[k].push_back(x[k].at(i) +
-                         vec[i][j].Mtrx[k][0] * (data.a[mm.at(i)].rb + 0.32));
-        }
-        cont[i][j] = 0;
-      }
-    }
-  }
-  opt[0].count = if_circle;
-  opt[0].num = x[0].size();
-  opt[0].f.resize(opt[0].num * 3, 1);
-  opt[0].df.resize(1, opt[0].num * 3);
-  opt[0].x0.resize(opt[0].num * 3, 1);
-  opt[0].id = new int[opt[0].num];
-  opt[0].table = new int *[opt[0].num];
-  for (i = 0; i < opt[0].num; i++) opt[0].table[i] = new int[opt[0].num];
-  for (i = 0; i < opt[0].num; i++) {
-    if (i < mm.size())
-      opt[0].id[i] = mm.at(i);
-    else
-      opt[0].id[i] = 0;
-  }
-  for (i = 0; i < opt[0].num; i++)
-    for (j = 0; j < opt[0].num; j++) opt[0].table[i][j] = 0;
-  for (i = 1; i < mm.size(); i++) {
-    opt[0].table[i][Pindex.at(i) - 1] = opt[0].table[Pindex.at(i) - 1][i] = 1;
-  }
-  if (if_circle) {
-    int c1[2], c2[2];
-    for (i = 0; i < Cyindex.size(); i++) {
-      if (Cyindex.at(i)) {
-        if (Cyindex.at(i) > 10) {
-          c1[0] = Cyindex.at(i) / 10;
-          c1[1] = Cyindex.at(i) % 10;
-        } else
-          c1[0] = c1[1] = Cyindex.at(i);
-        for (j = i + 1; j < Cyindex.size(); j++) {
-          if (Cyindex.at(j) > 10) {
-            c2[0] = Cyindex.at(j) / 10;
-            c2[1] = Cyindex.at(j) % 10;
-          } else
-            c2[0] = c2[1] = Cyindex.at(j);
-          if (c1[0] == c2[0] || c1[0] == c2[1] || c1[1] == c2[0] ||
-              c1[1] == c2[1]) {
-            opt[0].table[i][j] = opt[0].table[j][i] = 1;
-          }
-        }
-      }
-    }
-  }
 
-  int t = 0;
-  for (i = 0; i < mm.size(); i++) {
-    k = 0;
-    for (j = 0; j < opt[0].num; j++) k += opt[0].table[i][j];
-    if (k < data.a[mm.at(i)].norder) {
-      for (n = 0; n < (data.a[mm.at(i)].norder - k); n++) {
-        opt[0].table[i][mm.size() + t] = opt[0].table[mm.size() + t][i] = 1;
-        t++;
-      }
-    }
-  }
-  for (i = 0; i < opt[0].num; i++) {
-    for (j = 0; j < 3; j++) {
-      opt[0].x0[i + j * opt[0].num][0] = x[j].at(i);
-    }
-  }
-  opt[0].optimize();
-  opt[0].output(outs);
-  outs << endl;
-  delete[] opt[0].id;
-  for (i = 0; i < opt[0].num; i++) {
-    delete[] opt[0].table[i];
-  }
-  delete[] opt[0].table;
-  for (i = 0; i < Mindex.size(); i++) delete[] cont[i];
-  delete[] cont;
-  vector<int>().swap(mm);
-  vector<double>().swap(x[0]);
-  vector<double>().swap(x[1]);
-  vector<double>().swap(x[2]);
-  vector<OPT>().swap(opt);
-  delete[] pt;
-  delete[] xx;
-  return;
+
+
+	if (1) {
+        OBMol *mol=NULL;
+        mol = new OBMol [1];
+        OBConversion conv(&nu);
+        conv.SetInFormat("MOL");
+        conv.Read(&mol[0]);
+        OBStereoFacade facade(&mol[0]);
+		
+		vector<int> Hpos(0);
+        FOR_ATOMS_OF_MOL(ar, mol[0]) {
+            //atm[ar->GetId()].id=ar->GetId();
+			if (ar->GetAtomicNum()==1) Hpos.push_back(ar->GetId());
+        }
+
+		FOR_BONDS_OF_MOL(bond, mol[0]) {
+			OBAtom *bea=bond->GetBeginAtom();
+			OBAtom *ena=bond->GetEndAtom();
+			int bnd=bond->GetBondOrder();
+			if (0) if (bea!=NULL && ena!=NULL) connect[bea->GetId()][ena->GetId()]=connect[ena->GetId()][bea->GetId()]=bnd;
+			if (bea!=NULL && ena!=NULL && bea->GetAtomicNum()!=1 && ena->GetAtomicNum()!=1) {
+				int beanum=bea->GetId();
+				int enanum=ena->GetId();
+				for (int i=0;i<Hpos.size();i++) {
+					if (bea->GetId()>Hpos.at(i)) beanum--;
+					if (ena->GetId()>Hpos.at(i)) enanum--;
+				}
+				connect[beanum][enanum]=connect[enanum][beanum]=bnd;
+			}
+			else if (bea!=NULL && ena!=NULL && bea->GetAtomicNum()!=1 && ena->GetAtomicNum()==1) {
+                int beanum=bea->GetId();
+                for (int i=0;i<Hpos.size();i++) {
+                    if (bea->GetId()>Hpos.at(i)) beanum--;
+                }
+				atm[beanum].nH++;
+			}
+            else if (bea!=NULL && ena!=NULL && bea->GetAtomicNum()==1 && ena->GetAtomicNum()!=1) {
+                int enanum=ena->GetId();
+                for (int i=0;i<Hpos.size();i++) {
+                    if (ena->GetId()>Hpos.at(i)) enanum--;
+                }
+                atm[enanum].nH++;
+            }
+			bea==NULL;
+			ena==NULL;
+		}
+
+		vector<int> ringmem(0),ctcenter(0);
+		if (0) {
+			FOR_RINGS_OF_MOL(ring, mol[0]) {
+				for (int i=0;i<ring->_path.size();i++) ringmem.push_back(ring->_path.at(i));
+			}
+		}
+        //cout << "ringmem ";
+        //for (int i=0;i<ringmem.size();i++) cout << ringmem.at(i) << " ";
+        //cout << endl;
+
+		int flip=0;
+		FOR_BONDS_OF_MOL(bond, mol[0]){
+			if (bond->GetBondOrder()==2 && facade.HasCisTransStereo(bond->GetId())) {
+				OBAtom *bea=bond->GetBeginAtom();
+            	OBAtom *ena=bond->GetEndAtom();
+
+				bool fine=0;
+				if (ena->GetAtomicNum()==6 && bea->GetAtomicNum()==6) fine=1;
+				if (ena->GetAtomicNum()==7 && bea->GetAtomicNum()==6) fine=1;
+				if (ena->GetAtomicNum()==6 && bea->GetAtomicNum()==7) fine=1;
+				if (ena->GetAtomicNum()==7 && bea->GetAtomicNum()==7) fine=1;
+
+				if (fine) {
+					bool go=1;
+					bool a1=0,a2=0;
+					for (int i=0;i<ringmem.size();i++) {
+						if (bea->GetIdx()==ringmem.at(i)) {
+							a1=1;
+							break;
+						}					
+					}
+					for (int i=0;i<ringmem.size();i++) {
+						if (ena->GetIdx()==ringmem.at(i)) {
+							a2=1;
+							break;
+						}					
+					}
+					if (a1 && a2) go=0;
+
+					if (go) {
+            		//if (ena->GetAtomicNum()==6 && bea->GetAtomicNum()==6) {
+	                	OBCisTransStereo *ct1=NULL;
+	                	ct1=facade.GetCisTransStereo(bond->GetId());
+                		OBCisTransStereo::Config A=ct1->GetConfig(OBStereo::ShapeU);
+                		//cout << "CT1 " << A.begin+1 << " " << A.end+1 << " " << A.shape << " " << A.specified << endl;
+
+						//cout << "A.refs ";
+						//for (int g=0;g<A.refs.size();g++) cout << A.refs.at(g) << " ";
+						//cout << endl;
+
+						if (0) {
+							int small=1000000000,pos=-1;
+							for (int g=0;g<A.refs.size();g++) {
+								if (A.refs.at(g)<small) {
+									small=A.refs.at(g);
+									pos=g;
+								}
+							}
+							if (pos>0) {
+								vector<int> buf(A.refs.size(),0);
+								for (int g=0;g<buf.size();g++) {
+									int g1=g+pos;
+									if (g1>=buf.size()) g1-=buf.size();
+									buf.at(g)=A.refs.at(g1);
+								}
+								for (int g=0;g<buf.size();g++) A.refs.at(g)=buf.at(g);
+								vector<int>().swap(buf);
+							}
+						}
+
+						if (0) {
+               				for (int g=0;g<A.refs.size();g++) {
+								for (int i=0;i<ctcenter.size();i++) {
+									if (A.refs.at(g)==ctcenter.at(i)) {
+										go=0;
+										break;
+									}
+								}
+								if (!go) break;
+							}
+						}
+
+						if (go) {
+							//int ct=rand()%2;
+							int ct=0;
+							//cout << nu.str() << endl;
+
+							if (1) {
+								//int flip=0;
+								//if (A.refs.at(0)<natom) if (atm[A.refs.at(0)].cistrans[0][atm[A.refs.at(0)].cistrans[0].size()-1]=='/') flip=1;
+								//if (A.refs.at(2)<natom) if (atm[A.refs.at(2)].cistrans[0][atm[A.refs.at(2)].cistrans[0].size()-1]=='/') flip=1;
+								//if (A.refs.at(1)<natom) if (atm[A.refs.at(1)].cistrans[0][atm[A.refs.at(1)].cistrans[0].size()-1]=='\\') flip=1;
+								//if (A.refs.at(3)<natom) if (atm[A.refs.at(3)].cistrans[0][atm[A.refs.at(3)].cistrans[0].size()-1]=='\\') flip=1;
+
+								for (int g=0;g<A.refs.size();g++) {
+
+									//cout << bea->GetId() << " " << bea->GetType() << " " << ena->GetId() << " " << ena->GetType() << " | " << A.refs.at(g) << " " << natom << endl;
+									bool yn=1;
+                        			if (0) {
+                                		for (int i=0;i<ctcenter.size();i++) {
+                                    		if (A.refs.at(g)==ctcenter.at(i)) {
+                                        		yn=0;
+                                        		break;
+                                    		}
+                                		}
+                                		if (!yn) break;
+                        			}
+
+									if (A.refs.at(g)<natom && yn) {
+										if (ct) {
+											if (0) {
+												if (atm[A.refs.at(g)].cistrans[0].size()>0) {
+													if (atm[A.refs.at(g)].cistrans[0][atm[A.refs.at(g)].cistrans[0].size()-1]=='\\') {
+														//atm[A.refs.at(g)].cistrans[0][atm[A.refs.at(g)].cistrans[0].size()-1]='/';
+														atm[A.refs.at(g)].cistrans[0].pop_back();
+													}
+												} 
+												else atm[A.refs.at(g)].cistrans[0]+="/";
+											}
+											if (0) {
+												if (0) {
+													if (!flip) atm[A.refs.at(g)].cistrans[0]+="/";
+													else atm[A.refs.at(g)].cistrans[0]+="\\";
+												}
+												if (1) atm[A.refs.at(g)].cistrans[0]+="/";
+                                                if (0) {
+                                                    if (g==1) atm[A.refs.at(g)].cistrans[1]+="/";
+                                                    if (g==3) atm[A.refs.at(g)].cistrans[0]+="/";
+												}
+											}
+
+											if (1) {
+												if (0) {
+													if (!flip) {
+														if (g==1) atm[bea->GetId()].cistrans[0]+="/";
+														if (g==3) atm[ena->GetId()].cistrans[1]+="/";					
+													}
+													else {
+                                                    	if (g==1) atm[bea->GetId()].cistrans[0]+="\\";
+														if (g==3) atm[ena->GetId()].cistrans[1]+="\\";
+													}
+												}
+												if (1) {
+                                                    if (g==1 && atm[A.refs.at(g)].name!="H" && atm[bea->GetId()].cistrans[0]=="" && atm[bea->GetId()].cistrans[1]=="") {
+														OBAtom *ty=NULL;
+														ty=mol[0].GetAtomById(A.refs.at(g));
+														if (bea->IsConnected(ty)) {
+															if (0) {
+																if (!flip) atm[bea->GetId()].cistrans[0]+="\\";
+																else atm[bea->GetId()].cistrans[0]+="/";
+															}
+															if (1) {
+																int beanum=bea->GetId();
+																for (int u1=0;u1<Hpos.size();u1++) {
+																	if (bea->GetId()>Hpos.at(u1)) beanum--;
+																}
+																atm[beanum].cistrans[0]+="\\";
+																if (0) atm[bea->GetId()].cistrans[0]+="\\";
+															}
+														}
+														ty=NULL;
+													}
+                                                    if (g==3 && atm[A.refs.at(g)].name!="H" && atm[ena->GetId()].cistrans[0]=="" && atm[ena->GetId()].cistrans[1]=="") {
+														OBAtom *ty=NULL;
+                                                        ty=mol[0].GetAtomById(A.refs.at(g));
+														if (ena->IsConnected(ty)) {
+															if (0) {
+																if (!flip) atm[ena->GetId()].cistrans[1]+="\\";
+																else atm[ena->GetId()].cistrans[1]+="/";
+															}
+															if (1) {
+                                                                int enanum=ena->GetId();
+                                                                for (int u1=0;u1<Hpos.size();u1++) {
+                                                                    if (ena->GetId()>Hpos.at(u1)) enanum--;
+                                                                }
+                                                                atm[enanum].cistrans[1]+="\\";
+
+																if (0) atm[ena->GetId()].cistrans[1]+="\\";
+															}
+														}
+														ty=NULL;
+													}
+												}
+											}
+
+											if (0 && atm[A.refs.at(g)].cistrans[0]=="") atm[A.refs.at(g)].cistrans[0]="/";
+											if (0) atm[bea->GetId()].cistrans[0]+="/";
+
+											if (0) {
+												atm[A.refs.at(g)].cistrans[0]+="/";
+												if (atm[bea->GetId()].cistrans[0]=="") {
+													atm[bea->GetId()].cistrans[0]+="/";
+												}
+											}
+
+										}
+										else {
+											if (0) {
+												if (atm[A.refs.at(g)].cistrans[0].size()>0) {
+													if (atm[A.refs.at(g)].cistrans[0][atm[A.refs.at(g)].cistrans[0].size()-1]=='/')  {
+                                                    	//atm[A.refs.at(g)].cistrans[0][atm[A.refs.at(g)].cistrans[0].size()-1]='\\';
+                                                    	atm[A.refs.at(g)].cistrans[0].pop_back();
+													}
+												}
+												else atm[A.refs.at(g)].cistrans[0]+="\\";
+											}
+											if (0) {
+												if (0) {
+													if (!flip) atm[A.refs.at(g)].cistrans[0]+="\\";
+													else atm[A.refs.at(g)].cistrans[0]+="/";
+												}
+												if (1) atm[A.refs.at(g)].cistrans[0]+="\\";
+                                                if (0) {
+                                                    if (g==0) atm[A.refs.at(g)].cistrans[1]+="\\";
+                                                    if (g==2) atm[A.refs.at(g)].cistrans[0]+="\\";
+                                                }
+											}
+
+											if (1) {
+												if (0) {
+													if (!flip) {
+														if (g==0) atm[bea->GetId()].cistrans[0]+="\\";
+														if (g==2) atm[ena->GetId()].cistrans[1]+="\\";
+													}
+													else {
+                                                    	if (g==0) atm[bea->GetId()].cistrans[0]+="/";
+														if (g==2) atm[ena->GetId()].cistrans[1]+="/";
+													}
+												}
+												if (1) {
+                                                    if (g==0 && atm[A.refs.at(g)].name!="H" && atm[bea->GetId()].cistrans[0]=="" && atm[bea->GetId()].cistrans[1]=="") {
+                                                        OBAtom *ty=NULL;
+                                                        ty=mol[0].GetAtomById(A.refs.at(g));
+														if (bea->IsConnected(ty)) {
+															if (0) {
+																if (!flip) atm[bea->GetId()].cistrans[0]+="/";
+																else atm[bea->GetId()].cistrans[0]+="\\";
+															}
+															if (1) {
+                                                                int beanum=bea->GetId();
+                                                                for (int u1=0;u1<Hpos.size();u1++) {
+                                                                    if (bea->GetId()>Hpos.at(u1)) beanum--;
+                                                                }
+                                                                atm[beanum].cistrans[0]+="/";
+
+																if (0) atm[bea->GetId()].cistrans[0]+="/";
+															}
+														}
+														ty=NULL;
+													}
+                                                    if (g==2 && atm[A.refs.at(g)].name!="H" && atm[ena->GetId()].cistrans[0]=="" && atm[ena->GetId()].cistrans[1]=="") {
+                                                        OBAtom *ty=NULL;
+                                                        ty=mol[0].GetAtomById(A.refs.at(g));
+														if (ena->IsConnected(ty)) {
+															if (0) {
+																if (!flip) atm[ena->GetId()].cistrans[1]+="/";
+																else atm[ena->GetId()].cistrans[1]+="\\";
+															}
+															if (1) {
+                                                                int enanum=ena->GetId();
+                                                                for (int u1=0;u1<Hpos.size();u1++) {
+                                                                    if (ena->GetId()>Hpos.at(u1)) enanum--;
+                                                                }
+                                                                atm[enanum].cistrans[1]+="/";
+
+																if (0) atm[ena->GetId()].cistrans[1]+="/";
+															}
+														}
+														ty=NULL;
+													}
+												}
+											}
+
+											if (0 && atm[A.refs.at(g)].cistrans[0]=="") atm[A.refs.at(g)].cistrans[0]="\\";
+											if (0) atm[bea->GetId()].cistrans[0]+="\\";
+
+                                            if (0) {
+                                                atm[A.refs.at(g)].cistrans[0]+="\\";
+												if (atm[bea->GetId()].cistrans[0]=="") {
+                                                	atm[bea->GetId()].cistrans[0]+="\\";
+												}
+                                            }
+
+										}
+									}
+							
+									ct++;
+									ct=ct%2;
+									
+									//ctcenter.push_back(A.refs.at(g));
+								}
+
+								if (0) {
+									ctcenter.push_back(bea->GetId());
+									ctcenter.push_back(ena->GetId());
+								}
+
+							}
+
+                            if (0) {
+                                for (int g=0;g<A.refs.size();g++) {
+                                    if (!ct) {
+										if (A.refs.at(g)<natom) atm[A.refs.at(g)].cistrans[0]+="/";
+									}
+                                    else {
+										if (A.refs.at(g-1)>=natom) atm[A.refs.at(g)].cistrans[0]+="\\";
+									}
+
+                                    ct++;
+                                    ct=ct%2;
+
+                                    //ctcenter.push_back(A.refs.at(g));
+                                }
+
+                                //ctcenter.push_back(bea->GetId());
+                                //ctcenter.push_back(ena->GetId());
+                            }
+							flip++;
+							flip=flip%2;
+						}
+					//}
+					}
+				}
+			}
+		}
+
+		if (0) {
+			for (int k=0;k<2;k++) {
+				for (int g=0;g<natom;g++) {
+					if (atm[g].cistrans[k]!="") {
+						vector<int> ct(2,0);
+						for (int g1=0;g1<atm[g].cistrans[k].length();g1++) {
+							if (atm[g].cistrans[k][g1]=='/') ct.at(0)++;
+							else if (atm[g].cistrans[k][g1]=='\\') ct.at(1)++;
+						}
+						if (ct.at(1)>ct.at(0)) {
+							atm[g].cistrans[k]="";
+							for (int g2=0;g2<(ct.at(1)-ct.at(0));g2++) atm[g].cistrans[k]+="\\";
+						}
+						else if (ct.at(1)<ct.at(0)) {
+							atm[g].cistrans[k]="";
+							for (int g2=0;g2<(ct.at(0)-ct.at(1));g2++) atm[g].cistrans[k]+="/";
+						}
+						else atm[g].cistrans[k]="";
+					}
+				}
+			}
+		}
+
+
+		if (1) {
+	    FOR_ATOMS_OF_MOL(atom, mol) {
+    	    if (atom->GetAtomicNum()==6 && facade.HasTetrahedralStereo(atom->GetId())) {
+            	OBTetrahedralStereo *tr=NULL;
+            	tr=facade.GetTetrahedralStereo(atom->GetId());
+            	bool go=1;
+            	OBTetrahedralStereo::Config A=tr->GetConfig(OBStereo::Clockwise,OBStereo::ViewFrom);
+            	//cout << "S1C " << A.from+1 << " " << A.towards+1 << " " << A.center+1 << " " << A.winding << " " << A.view << " " << A.specified << endl;
+            	//for (int g=0;g<A.refs.size();g++) cout << "SSC " << A.refs.at(g)+1 << endl;
+            	if (A.from<A.center) {
+                	for (int g=0;g<A.refs.size();g++) {
+                    	if (A.from>A.refs.at(g)) {
+                        	go=0;
+                        	break;
+                    	}
+                    	if (A.center>A.refs.at(g)) {
+                        	go=0;
+                        	break;
+                    	}
+                	}
+            	}
+            	else go=0;
+            	if (go) {
+                	for (int g=0;g<A.refs.size();g++) {
+                    	for (int g1=g+1;g1<A.refs.size();g1++) {
+                        	if (A.refs.at(g)>A.refs.at(g1)) {
+                            	go=0;
+                            	break;
+                        	}
+                    	}
+                	}
+            	}
+
+            	if (go) {
+                	//cout << "S1C " << A.from+1 << " " << A.towards+1 << " " << A.center+1 << " " << A.winding << " " << A.view << " " << A.specified << endl;
+                	//for (int g=0;g<A.refs.size();g++) cout << "SSC " << A.refs.at(g)+1 << endl;
+					atm[A.center].chirality=2;
+            	}
+            	if (!go) {
+                	//OBTetrahedralStereo::Config B=tr->GetConfig(OBStereo::AntiClockwise,OBStereo::ViewFrom);
+                	//cout << "S1AnC " << B.from+1 << " " << B.towards+1 << " " << B.center+1 << " " << B.winding << " " << B.view << " " << B.specified << endl;
+                	//for (int g=0;g<B.refs.size();g++) cout << "SSAnC " << B.refs.at(g)+1 << endl;
+					atm[A.center].chirality=1;
+            	}
+
+				//if (tr!=NULL) {
+				//	delete tr;
+				//	tr=NULL;
+				//}
+        	}
+    	}
+		}
+        //if (tr!=NULL) {
+        //    delete tr;
+        //	tr=NULL;
+        //}
+
+		//mol.DestroyAtom(atom);
+		//atom=NULL;
+
+		//if (bond!=NULL) {
+		//	delete bond;
+		//	bond=NULL;
+		//}
+		//free(bond);
+		//mol.DestroyBond(bond);
+
+
+		// store the atoms in an array first
+		//std::vector<OBAtom*> deleteAtoms;
+		//FOR_ATOMS_OF_MOL (a, mol) {
+		//	deleteAtoms.push_back(&*a);
+		//}
+		
+		// now we delete them
+		//for (unsigned int i=0; i < deleteAtoms.size(); i++) {
+		//	mol.DeleteAtom(deleteAtoms[i]);
+		//}
+	}
+
+	//if (0) {
+	//	ifstream inf1((para.smidir+"gg.txt").c_str());
+	//	a++;
+	//	inf1 >> ws;
+	//	for (i=0;i<natom;i++) atm[i].nbnd=0;
+	//	while (inf1.is_open() && !inf1.eof()) {
+	//		inf1 >> j >> ws >> k >> ws >> l >> ws;
+	//		connect[j-1][k-1]=connect[k-1][j-1]=l;
+	//		atm[j-1].nbnd+=l;
+	//		atm[k-1].nbnd+=l;
+	//		if (j==a || k==a) s+=l;
+	//	}
+	//	inf1.close();
+	//}
+
+	return 1;
 }
+
+
+int MOLECULE::add(int pt, int id, int bnd) {
+	if (pt<0 || pt>=Cindex.size()) return 0;
+	if (bnd>3 || bnd<=0) return 0;
+	if (!data->a[Mindex.at(pt)].bd[bnd-1]) return 0;
+	if (!data->a[id].bd[bnd-1]) return 0;
+
+    // Ensure the bonds of atom P(n) are OK if M(n) is changed to atom(id) and use a $bnd2par bond to connect P(n)
+    if (1) {
+        bool totbndchk=0;
+        bool bndchk=0;
+
+        int bndsum=0; // max available # of bonds of element(id) (calc. from pool)
+        vector<int> ordcount(6,0);
+        if (Rindex.at(pt)>=1) {
+			bndsum+=Rindex.at(pt);
+			ordcount.at(Rindex.at(pt)-1)+=1;
+		}
+        if (Cyindex.at(pt)) {
+            int yi=(int)log10(Cyindex.at(pt))+1;
+            bndsum+=yi;
+            ordcount.at(0)+=yi;
+        }
+        for (int k1=0;k1<Cindex.size();k1++) {
+            if (Pindex.at(k1)==Cindex.at(pt)) {
+                bndsum+=Rindex.at(k1);
+                ordcount.at(Rindex.at(k1)-1)+=1;
+            }
+        }
+		bndsum+=bnd;
+		ordcount.at(bnd-1)+=1;
+
+        int maxbnd=0; // max available # of bonds for atom C(n) (calc. from pool)
+        for (int k2=0;k2<6;k2++) {
+            maxbnd+=data->a[Mindex.at(pt)].order.at(k2);
+        }
+        /*
+        if (bndsum<=maxbnd) totbndchk=1;
+        else {
+            totbndchk=0;
+            return 0;
+        }
+        */
+
+        for (int k2=0;k2<3;k2++) {  // chk if "the bond orders of k1 after connecting with k" match the definition of atom k1 in pool
+            if (ordcount.at(k2)>data->a[Mindex.at(pt)].bd[k2]) { // orig ordcount.at(k2)>data.a[Mindex.at(k1)].order.at(k2)
+                bndchk=0;
+                return 0;
+            }
+            else if (k2>=2 && ordcount.at(k2)<=data->a[Mindex.at(pt)].bd[k2]) { // orig k2>=5 && ordcount.at(k2)<=data.a[Mindex.at(k1)].order.at(k2)
+                bndchk=1;
+            }
+        }
+
+    }
+
+	Pindex.push_back(Cindex.at(pt));
+	Cindex.push_back(Cindex.size()+1);
+	Mindex.push_back(id);
+	Rindex.push_back(bnd);
+	Cyindex.push_back(0);
+	//ctsisomer.push_back("");
+	ctsisomer.at(0).push_back("");
+	ctsisomer.at(1).push_back("");
+	if (para.protect) protect.push_back(0);
+	
+	//reset();
+	//chk_cistrans(); //20200806
+	mds2smi();
+
+	/*
+	int i,j,n=0;
+	for (i=0;i<data.a[Mindex.at(pt)].norder;i++) {
+		for (j=0;j<data.a[id].norder;j++) {
+			if (Bindex[pt].at(i)==data.a[id].order[j]) { //at 
+				Pindex.push_back(Cindex.at(pt));
+				Cindex.push_back(Cindex.size()+1);
+				Mindex.push_back(id);
+				Rindex.push_back(Bindex[pt].at(i)); //at
+				Cyindex.push_back(0);
+				if (para.protect) protect.push_back(0);
+				n=1;
+				break;
+			}
+		}
+		if (n) break;
+	}
+	if (n==0) {
+		//ofstream log("molecule.log",ios::app);
+		//log<<"Warning : "<<"for "<<smiles<<", it can't excute addition at this point "<<pt<<" with this atom (id), "<<id<<"."<<endl;
+		//log.close();
+		reset();
+		return 0;
+	}
+	reset();
+	*/
+	return 1;
+}
+
+
+int MOLECULE::subtract(int n,int mode) {
+	// mode 1: subtract an atom
+	// mode 2: subtract all atoms between Cindex=n and the end of the corresponding branch
+	int i,j,k;
+	//vector<int> ref,pr;
+
+	//long double time1=time(NULL);
+
+	if (n>=Cindex.size()) return 0;
+	if (n<=0) {
+		//ofstream log("molecule.log",ios::app);
+		//log<<"Warning : This molecule would be empty because of point, "<<n<<endl;
+		//log.close();
+		return 0;
+	}
+	/*
+    if (para.protect) pr.push_back(protect.at(n));
+    if (para.protect) {
+        for (i=0;i<pr.size();i++) {
+            if (pr.at(i)) return 0;
+        }
+    }
+	*/
+
+	//ref.push_back(Cindex.at(n));
+	//ref.push_back(n);  // wrong? 20190721
+
+    if (1) if (para.protect && protect.at(n)) return 0;   // terminate if it would subtract protected atom
+    if (1) if (data->a[Mindex.at(n)].chg) return 0;  // terminate if it would subtract charged atom
+
+
+	vector<int> Merge_C(0);
+	if (mode==1) {  //20200131
+		bool totbndchk=0,bndchk=0;
+		int k1=Pindex.at(n)-1;
+		if (k1>=0) {
+			Merge_C.push_back(Cindex.at(k1));
+			totbndchk=0;
+			bndchk=0;
+
+			int bndsum=Rindex.at(k1);  // # of bonds of atom k1 if atom j is deleted and k1 is connected with each of the descendant atom k
+			vector<int> ordcount(6,0); // count # of bonds atom k1 will use for the connection with atom k (in each bond order respectively)
+			if (k1>=1) ordcount.at(Rindex.at(k1)-1)+=1;  //20200712
+			for (k=0;k<Cindex.size();k++) { 
+				if (Pindex.at(k)==Cindex.at(n)) { // For each descendant atom k of atom j // orig Pindex.at(k)==Cindex.at(j)
+					Merge_C.push_back(Cindex.at(k));
+					bndsum+=Rindex.at(k);
+					ordcount.at(Rindex.at(k)-1)+=1;
+				}
+				if (Pindex.at(k)==Cindex.at(k1) && k!=n) {
+                	bndsum+=Rindex.at(k);
+                	ordcount.at(Rindex.at(k)-1)+=1;
+				}
+			}
+
+			int maxbnd=0; // max available # of bonds for parental atom k1 (calc. from pool)
+			for (int k2=0;k2<6;k2++) { 
+				maxbnd+=data->a[Mindex.at(k1)].order.at(k2);
+			}
+			/*
+			if (bndsum<=maxbnd) totbndchk=1;
+			else totbndchk=0;
+			*/
+
+			for (int k2=0;k2<3;k2++) {  // chk if "the bond orders of k1 after connecting with k" match the definition of atom k1 in pool
+				if (ordcount.at(k2)>data->a[Mindex.at(k1)].bd[k2]) { // orig ordcount.at(k2)>data.a[Mindex.at(k1)].order.at(k2)
+					bndchk=0;
+					break;
+				}
+				else if (k2>=2 && ordcount.at(k2)<=data->a[Mindex.at(k1)].bd[k2]) { // orig k2>=5 && ordcount.at(k2)<=data.a[Mindex.at(k1)].order.at(k2)
+					bndchk=1;
+				}
+			}
+
+			if (!bndchk) return 0;
+
+			//if (bndchk) break; // orig totbndchk && bndchk
+			//else {
+				//cout << "Failed subtraction: (totbndchk, bndchk) = (" << totbndchk << ", " << bndchk << ")" << endl;
+				//cout << "Failed subtraction: bndchk = " << bndchk << endl;
+				//return 0;
+			//}
+		}
+	}
+
+	//int Csize=Cindex.size();
+	//for (i=0;i<ref.size();i++) {
+		//for (j=0;j<Csize;j++) {
+			//if (ref.at(i)==Cindex.at(j)) {
+				//if (1) ring_no_chk(j);
+                for (k=0;k<Cindex.size();k++) {  // 20200131 prevent unpaired ring number
+					if (1) { //20200509
+						if (Cyindex.at(n) && Cyindex.at(k) && k!=n) { // orig Cyindex.at(j) && Cyindex.at(k) && k!=j
+                    		int digits=(int)log10(Cyindex.at(n))+1;
+							int digits1=(int)log10(Cyindex.at(k))+1;
+                    		for (int ap=1;ap<=digits;ap++) {
+								int w=Cyindex.at(n)/(int)pow(10,ap-1);
+                        		w=w%10;
+								for (int bp=1;bp<=digits1;bp++) {
+									int w1=Cyindex.at(k)/(int)pow(10,bp-1);
+									w1=w1%10;
+									if (w1==w) {
+										Cyindex.at(k)=Cyindex.at(k)%(int)pow(10,bp-1)+(Cyindex.at(k)/(int)pow(10,bp))*(int)pow(10,bp-1);
+									}
+								}
+                    		}
+						}
+						
+					}
+                }
+                Mindex.erase(Mindex.begin()+n);
+                Cindex.erase(Cindex.begin()+n);
+                Pindex.erase(Pindex.begin()+n);
+                Rindex.erase(Rindex.begin()+n);
+				Cyindex.erase(Cyindex.begin()+n);	
+				//ctsisomer.erase(ctsisomer.begin()+n);
+				ctsisomer.at(0).erase(ctsisomer.at(0).begin()+n);
+				ctsisomer.at(1).erase(ctsisomer.at(1).begin()+n);
+				if (para.protect) protect.erase(protect.begin()+n);
+				//Csize=Cindex.size();
+			//}
+		//}
+	//}
+	if (1) {
+		if (Merge_C.size()>=2) {
+			for (k=1;k<Merge_C.size();k++) {
+				for (i=0;i<Cindex.size();i++) {
+					if (Cindex.at(i)==Merge_C.at(k)) {
+						Pindex.at(i)=-2;
+						break;
+					}
+				}
+			}
+		}
+
+    	for (i=0;i<Cindex.size();i++) {
+        	if (Cindex.at(i)!=(i+1)) {
+				j=Cindex.at(i);
+				Cindex.at(i)=i+1;
+				if (Merge_C.size()>=2) {
+					for (k=0;k<Merge_C.size();k++) {
+						if (j==Merge_C.at(k)) {
+							Merge_C.at(k)=Cindex.at(i);
+							break;
+						}
+					}
+				}
+                for (k=0;k<Cindex.size();k++) { //k=i orig
+                    if (Pindex.at(k)==j) Pindex.at(k)=Cindex.at(i);
+                }
+        	}
+    	}
+
+		if (Merge_C.size()>=2) {
+			for (k=1;k<Merge_C.size();k++) {
+				Pindex.at(Merge_C.at(k)-1)=Merge_C.at(0);
+			}
+		}
+		
+	}
+
+	//vector<int>().swap(ref);
+	//vector<int>().swap(pr);
+	vector<int>().swap(Merge_C);
+
+	del_unpaired_ring_no();
+	decyc_small_ring(5);
+
+	//reset();
+	//chk_cistrans(); //20200806
+	mds2smi();
+
+    //time1=time(NULL)-time1;
+    //cout << "SUBTRACTION FINISHED: " << setprecision(10) << setw(15) << time1 << endl;
+
+	return 1;
+}
+
+
+int MOLECULE::exchange(int n,int id,int bnd2par,int bnd2des) {
+	
+    if (n<=0 || n>=Cindex.size()) return 0;
+    int i,j,k,M,P,C,R,bd[3];
+    M=Mindex.at(n);
+    P=Pindex.at(n);
+    C=Cindex.at(n);
+    R=Rindex.at(n);
+
+    if (para.protect) {
+        if (protect.at(n)) return 0;
+        if (P>0) if (protect.at(P-1)) return 0;
+    }
+    if (bnd2par>3 || bnd2par<=0) return 0;
+    if (bnd2des>3 || bnd2des<=0) return 0;
+    if (data->a[id].chg!=data->a[Mindex.at(n)].chg) return 0;
+
+
+	if (P>0) if (!data->a[Mindex.at(P-1)].bd[bnd2par-1]) return 0;
+    if (!data->a[id].bd[bnd2par-1]) return 0;
+    if (!data->a[id].bd[bnd2des-1]) return 0;
+    for (int k1=0;k1<Cindex.size();k1++) {
+        if (Pindex.at(k1)==Cindex.at(n)) {
+			if (!data->a[Mindex.at(k1)].bd[bnd2des-1]) return 0;
+        }
+    }
+
+    
+    //reset();
+    //vector<int> tmp;
+
+
+	// Ensure the bonds of atom P(n) are OK if M(n) is changed to atom(id) and use a $bnd2par bond to connect P(n)
+	if (1) {
+        bool totbndchk=0;
+        bool bndchk=0;
+
+	    int id_bndsum=0; // max available # of bonds of element(id) (calc. from pool)
+		id_bndsum+=bnd2par;
+		vector<int> id_ordcount(6,0);
+		id_ordcount.at(bnd2par-1)+=1;
+		if (Cyindex.at(n)) {
+			int yi=(int)log10(Cyindex.at(n))+1;
+			id_bndsum+=yi;
+			id_ordcount.at(0)+=yi;
+		}
+    	for (int k1=0;k1<Cindex.size();k1++) {
+        	if (Pindex.at(k1)==Cindex.at(n)) {
+				id_bndsum+=bnd2des;
+				id_ordcount.at(bnd2des-1)+=1;
+			}
+		}
+
+        int id_maxbnd=0; // max available # of bonds for atom C(n) (calc. from pool)
+        for (int k2=0;k2<6;k2++) {
+            id_maxbnd+=data->a[id].order.at(k2); 
+        }
+		/*
+        if (id_bndsum<=id_maxbnd) totbndchk=1;
+        else {
+			totbndchk=0;
+			return 0;
+		}
+		*/
+
+        for (int k2=0;k2<3;k2++) {  // chk if "the bond orders of k1 after connecting with k" match the definition of atom k1 in pool
+            if (id_ordcount.at(k2)>data->a[id].bd[k2]) { // orig ordcount.at(k2)>data.a[Mindex.at(k1)].order.at(k2)
+                bndchk=0;
+				return 0;
+            }
+            else if (k2>=2 && id_ordcount.at(k2)<=data->a[id].bd[k2]) { // orig k2>=5 && ordcount.at(k2)<=data.a[Mindex.at(k1)].order.at(k2)
+                bndchk=1;
+            }
+        }
+
+	}
+
+	// Ensure the bonds of atom P(n) are OK if M(n) is changed to atom(id) and use a $bnd2par bond to connect P(n)
+	if (P>0) {
+    	bool totbndchk=0;
+        bool bndchk=0;
+
+        int bndsum=Rindex.at(P-1);  // # of bonds of atom P(n) if atom M(n) is changed to atom(id) and a $bnd2par bond of atom(id) is used to connected with P(n).
+        vector<int> ordcount(6,0); // count # of bonds atom k1 will use for the connection with atom k (in each bond order respectively)
+        if (Rindex.at(P-1)>0) ordcount.at(Rindex.at(P-1)-1)+=1;  //20200712 // bnd P(n) to P(P(n))
+        if (Cyindex.at(P-1)) {
+            int yi=(int)log10(Cyindex.at(P-1))+1;
+            bndsum+=yi;
+            ordcount.at(0)+=yi;
+        }
+        for (k=0;k<Cindex.size();k++) {
+            if (Pindex.at(k)==Cindex.at(P-1) && k!=n) {
+                bndsum+=Rindex.at(k);
+                ordcount.at(Rindex.at(k)-1)+=1;
+            }
+        }
+		bndsum+=bnd2par;
+		ordcount.at(bnd2par-1)+=1;
+
+        int maxbnd=0; // max available # of bonds for atom P(n) (calc. from pool)
+        for (int k2=0;k2<6;k2++) {
+            maxbnd+=data->a[Mindex.at(P-1)].order.at(k2);
+        }
+		/*
+        if (bndsum<=maxbnd) totbndchk=1;
+        else {
+			totbndchk=0;
+			return 0;
+		}
+		*/
+
+        for (int k2=0;k2<3;k2++) {  // chk if "the bond orders of P(n) after connecting with atom(id)" match the definition of atom P(n) in pool
+        	if (ordcount.at(k2)>data->a[Mindex.at(P-1)].bd[k2]) { // orig ordcount.at(k2)>data.a[Mindex.at(k1)].order.at(k2)
+        		bndchk=0;
+				return 0;
+        	}
+        	else if (k2>=2 && ordcount.at(k2)<=data->a[Mindex.at(P-1)].bd[k2]) { // orig k2>=5 && ordcount.at(k2)<=data.a[Mindex.at(k1)].order.at(k2)
+            	bndchk=1;
+        	}
+    	}
+
+        //if (!totbndchk || !bndchk) {
+            //cout << "Failed exchange: (totbndchk, bndchk) = (" << totbndchk << ", " << bndchk << ")" << endl;
+            //return 0;
+        //}
+	}
+
+    // Ensure the bonds of atom des(n) are OK if M(n) is changed to atom(id) and use a $bnd2des bond to connect des(n)
+	if (1) {
+    	for (int k1=0;k1<Cindex.size();k1++) {
+        	if (Pindex.at(k1)==Cindex.at(n)) { // For the descendant atoms C(k1) of atom C(n)
+            	bool totbndchk=0;
+            	bool bndchk=0;
+
+            	int bndsum=bnd2des;  // # of bonds of atom C(k1) if atom C(n) is changed to atom(id) and is connected with C(k1) with a $bnd2des bond.
+            	vector<int> ordcount(6,0); // count # of bonds atom C(k1) will use after connecting with atom C(n) (in each bond order respectively)
+        		ordcount.at(bnd2des-1)+=1;  //20200712
+	        	if (Cyindex.at(k1)) {
+    	        	int yi=(int)log10(Cyindex.at(k1))+1;
+        	    	bndsum+=yi;
+            		ordcount.at(0)+=yi;
+        		}
+            	for (k=0;k<Cindex.size();k++) { // For each des(k1) atom
+                    if (Pindex.at(k)==Cindex.at(k1)) {
+                        bndsum+=Rindex.at(k); // calc. the total # of bonds des(k1) atoms used to connect with C(k1).
+                        ordcount.at(Rindex.at(k)-1)+=1;
+                    }
+                }
+
+                int maxbnd=0; // max available # of bonds for C(k1) (calc. from pool)
+                for (int k2=0;k2<6;k2++) {
+                    maxbnd+=data->a[Mindex.at(k1)].order.at(k2);
+                }
+				/*
+                if (bndsum<=maxbnd) totbndchk=1;
+                else {
+					totbndchk=0;
+					return 0;
+				}
+				*/
+
+                for (int k2=0;k2<3;k2++) {  // chk if "the bond orders of k1 after connecting with des(k1) atoms" match the definition of atom k1 in pool
+                    if (ordcount.at(k2)>data->a[Mindex.at(k1)].bd[k2]) { // orig ordcount.at(k2)>data.a[Mindex.at(k1)].order.at(k2)
+                        bndchk=0;
+						return 0;
+                    }
+                    else if (k2>=2 && ordcount.at(k2)<=data->a[Mindex.at(k1)].bd[k2]) { // orig k2>=5 && ordcount.at(k2)<=data.a[Mindex.at(k1)].order.at(k2)
+                        bndchk=1;
+                    }
+                }
+
+            }
+        }
+
+    }
+
+
+	Mindex.at(n)=id;
+	Rindex.at(n)=bnd2par;
+    for (int k1=0;k1<Cindex.size();k1++) {
+        if (Pindex.at(k1)==Cindex.at(n)) {
+			Rindex.at(k1)=bnd2des;
+		}
+	}
+
+	//reset();
+
+    del_unpaired_ring_no(); //20200627
+    decyc_small_ring(5);
+
+    //reset();
+	//chk_cistrans(); //20200806
+	mds2smi();
+
+	return 1;
+
+}
+
+int MOLECULE::rechg() {
+	int i=0,j=0;
+	chg=0;
+	for (j=0;j<Cindex.size();j++) {
+		chg+=data->a[Mindex.at(j)].chg;
+	}
+	return 1;
+}
+
+
+int MOLECULE::print() {
+	int i;
+	//if (para.protect) prct();
+
+	cout << setfill(' ');
+	cout<<"natom : "<<setw(4)<<left<<Cindex.size()<<endl;
+	cout<<"Pindex : ";
+	for (i=0;i<Cindex.size();i++) cout<<setw(4)<<left<<Pindex.at(i)<<" ";
+	cout<<endl;
+	cout<<"Cindex : ";
+	for (i=0;i<Cindex.size();i++) cout<<setw(4)<<left<<Cindex.at(i)<<" ";
+	cout<<endl;
+	cout<<"Rindex : ";
+	for (i=0;i<Cindex.size();i++) cout<<setw(4)<<left<<Rindex.at(i)<<" ";
+	cout<<endl;
+	cout<<"Mindex : ";
+	for (i=0;i<Cindex.size();i++) cout<<setw(4)<<left<<Mindex.at(i)<<" ";
+	cout<<endl;
+	cout<<"Cyindex : ";
+	for (i=0;i<Cindex.size();i++) cout<<setw(4)<<left<<Cyindex.at(i)<<" ";
+	cout<<endl;
+    cout<<"ctsisomer_start : ";
+    for (i=0;i<ctsisomer.at(0).size();i++) {
+        if (ctsisomer.at(0).at(i)!="") cout<<setw(4)<<left<<setfill(' ')<<ctsisomer.at(0).at(i)<<" ";
+        else cout<<setw(4)<<left<<setfill(' ')<<"N/A"<<" ";
+    }
+    cout<<endl;
+    cout<<"ctsisomer_end : ";
+    for (i=0;i<ctsisomer.at(1).size();i++) {
+        if (ctsisomer.at(1).at(i)!="") cout<<setw(4)<<left<<setfill(' ')<<ctsisomer.at(1).at(i)<<" ";
+        else cout<<setw(4)<<left<<setfill(' ')<<"N/A"<<" ";
+    }
+    cout<<endl;
+
+
+    cout<<"if_circle : "<<setw(4)<<left<<setfill(' ')<<if_circle<<endl;
+	return 1;
+}		
+
+int MOLECULE::print(ofstream &ouf) {
+	int i;
+	//if (para.protect) prct();
+
+	ouf << setfill(' ');
+	ouf<<"natom : "<<setw(4)<<left<<Cindex.size()<<endl;
+	ouf<<"Pindex : ";
+	for (i=0;i<Cindex.size();i++) ouf<<setw(4)<<left<<Pindex.at(i)<<" ";
+	ouf<<endl;
+	ouf<<"Cindex : ";
+	for (i=0;i<Cindex.size();i++) ouf<<setw(4)<<left<<Cindex.at(i)<<" ";
+	ouf<<endl;
+	ouf<<"Rindex : ";
+	for (i=0;i<Cindex.size();i++) ouf<<setw(4)<<left<<Rindex.at(i)<<" ";
+	ouf<<endl;
+	ouf<<"Mindex : ";
+	for (i=0;i<Cindex.size();i++) ouf<<setw(4)<<left<<Mindex.at(i)<<" ";
+	ouf<<endl;
+	ouf<<"Cyindex : ";
+	for (i=0;i<Cindex.size();i++) ouf<<setw(4)<<left<<Cyindex.at(i)<<" ";
+	ouf<<endl;
+	if (para.protect) {
+		ouf<<"protect : ";
+		for (i=0;i<protect.size();i++) ouf<<setw(4)<<left<<protect.at(i)<<" ";
+		ouf<<endl;
+	}
+    ouf<<"ctsisomer_start : ";
+    for (i=0;i<ctsisomer.at(0).size();i++) {
+        if (ctsisomer.at(0).at(i)!="") ouf<<setw(4)<<left<<setfill(' ')<<ctsisomer.at(0).at(i)<<" ";
+        else ouf<<setw(4)<<left<<setfill(' ')<<"N/A"<<" ";
+    }
+    ouf<<endl;
+    ouf<<"ctsisomer_end : ";
+    for (i=0;i<ctsisomer.at(1).size();i++) {
+        if (ctsisomer.at(1).at(i)!="") ouf<<setw(4)<<left<<setfill(' ')<<ctsisomer.at(1).at(i)<<" ";
+        else ouf<<setw(4)<<left<<setfill(' ')<<"N/A"<<" ";
+    }
+    ouf<<endl;
+
+
+    ouf<<"if_circle : "<<setw(4)<<left<<setfill(' ')<<if_circle<<endl;
+
+	return 1;
+}
+
+int MOLECULE::prct() {
+	prct(0,Cindex.size());
+	return 1;
+}
+
+int MOLECULE::prct(int a, int b) {
+
+	//long double time1=time(NULL);
+
+	if (a>Cindex.size() || b>Cindex.size() || a<0 || b<0 || Cindex.size()==0) return 0;
+	int i=0,j=0;
+	int count=0;
+	if (para.protect) {
+		for (i=0;i<protect.size();i++) {
+			if (protect.at(i)) count++;
+		}
+	}
+	bool go=1;
+	if (count/(double)Cindex.size()>0.5) go=0;
+	if (para.protect) { // para.protect && go
+		if (0) { // double bonds
+			protect.resize(0);
+			protect.resize(Cindex.size(),0); //20190801
+
+			for (i=a;i<b;i++) {
+				if (Rindex.at(i)==2) { //e.g. CC=CC
+					protect.at(i)=1; // i = C3
+					for (int k1=a;k1<b;k1++) {
+						if (Pindex.at(i)==Cindex.at(k1)) {
+							protect.at(k1)=1; // k1 = C2
+							for (int k2=a;k2<b;k2++) {
+								if (Pindex.at(k1)==Cindex.at(k2)) protect.at(k2)=1;  // k2 = C1
+							}
+						}
+						if (Pindex.at(k1)==Cindex.at(i)) protect.at(k1)=1;; // k1 = C4
+					}
+				}
+			}
+		}
+
+		if (0) { // whole molecule
+			protect.resize(0);
+			protect.resize(Cindex.size(),0); //20190801
+			for (i=a;i<b;i++) protect.at(i)=1;
+		}
+
+		if (1 && Cindex.size()>0) { // charged atom
+			protect.resize(0);
+			protect.resize(Cindex.size(),0); //20190801
+			//for (i=a;i<b;i++) protect.at(i)=0;
+
+			for (i=0;i<Cindex.size();i++) {
+				if (data->a[Mindex.at(i)].chg) {
+					protect.at(i)=1;
+					for (j=a;j<b;j++) {
+						//if ( abs(Cindex.at(i)-Cindex.at(j))<=1 ) protect.at(j)=1;
+						if (Cindex.at(j)==Pindex.at(i) || Cindex.at(i)==Pindex.at(j)) protect.at(j)=1;
+					}
+				}
+			}
+		}
+
+		if (1 && Cindex.size()>0) { // ring
+			if (0) {
+				protect.resize(0);
+				protect.resize(Cindex.size(),0); //20190801
+			}
+
+			if (0) {
+				for (i=a;i<b;i++) {
+					int a=0,pos1=-1,pos2=-2;
+					if (Cyindex.at(i)>0) {
+						a=Cyindex.at(i);
+						pos1=i;
+						for (j=i+1;j<b;j++) {
+							if (Cyindex.at(j)==a) {
+								pos2=j;
+								break;
+							}
+						}
+						if (pos2>pos1) {
+							for (int k=pos1;k<=pos2;k++) protect.at(k)=1;
+						}
+					}
+				}
+			}
+
+			if (1) {
+				vector<int> C_ringmember(0);
+				for (int k1=if_circle;k1>=1;k1--) {
+					C_ringmember.resize(0);
+					int rep_quota=2;
+					for (int k2=Cyindex.size()-1;k2>=0;k2--) {
+						if (Cyindex.at(k2)) {
+							int digits=(int)log10(Cyindex.at(k2))+1;
+							for (int k3=1;k3<=digits;k3++) {
+								int w=Cyindex.at(k2)/(int)pow(10,k3-1);
+								w=w%10;
+								if (w==k1) {
+									int compa=Cindex.at(k2);
+									int cont=0;
+									while (compa>=1 && cont<=Cyindex.size()) {
+										if (1) C_ringmember.push_back(compa);
+
+										if (compa>=1) {
+											if (Pindex.at(compa-1)>=1) compa=Cindex.at(Pindex.at(compa-1)-1);
+											else break;
+											cont++;
+										}
+										else break;
+									} 
+								}
+							}
+						}
+					}
+					if (C_ringmember.size()>0) {
+						for (int k2=0;k2<C_ringmember.size()-1;k2++) {
+							for (int k3=k2+1;k3<C_ringmember.size();k3++) {
+								if (C_ringmember.at(k2)==C_ringmember.at(k3) && rep_quota<=0) {
+									C_ringmember.at(k2)=C_ringmember.at(k3)=-1;
+								}
+								else if (C_ringmember.at(k2)==C_ringmember.at(k3) && rep_quota>0) rep_quota--;
+							}
+						}
+						for (int k2=0;k2<C_ringmember.size();k2++) {
+							if (C_ringmember.at(k2)!=-1) protect.at(C_ringmember.at(k2)-1)=1;
+						}
+					}
+				}
+				vector<int>().swap(C_ringmember);
+			}
+
+		}
+	}
+
+    //time1=time(NULL)-time1;
+    //cout << "PROTECTION FINISHED: " << setprecision(10) << setw(15) << time1 << endl;
+
+	return 1;
+}
+
+
+int MOLECULE::decyc_small_ring(int size) {
+    vector<int> C_ringmember(0);
+	
+    for (int k1=if_circle;k1>=1;k1--) {
+        C_ringmember.resize(0);
+        int rep_quota=1;
+        for (int k2=Cyindex.size()-1;k2>=0;k2--) {
+            if (Cyindex.at(k2)) {
+                int digits=(int)log10(Cyindex.at(k2))+1;
+                for (int k3=1;k3<=digits;k3++) {
+                    int w=Cyindex.at(k2)/(int)pow(10,k3-1);
+                    w=w%10;
+                    if (w==k1) {
+                    	int compa=Cindex.at(k2);
+                        int cont=0;
+                        while (compa>1 && cont<=Cyindex.size()) {
+                            if (1) C_ringmember.push_back(compa);
+
+                            if (compa>=1) {
+                                if (Pindex.at(compa-1)>=1) compa=Cindex.at(Pindex.at(compa-1)-1);
+                                else break;
+                                cont++;
+                            }
+                            else break;
+                        }
+						if (compa==1) if (1) C_ringmember.push_back(compa);
+                    }
+                }
+        	}
+        }
+        if (C_ringmember.size()>0) {
+            for (int k2=0;k2<C_ringmember.size()-1;k2++) {
+                for (int k3=k2+1;k3<C_ringmember.size();k3++) {
+					if (C_ringmember.at(k2)!=-1 && C_ringmember.at(k3)!=-1) {
+                    	if (C_ringmember.at(k2)==C_ringmember.at(k3) && rep_quota<=0) {
+                        	C_ringmember.at(k2)=C_ringmember.at(k3)=-1;
+                    	}
+                    	else if (C_ringmember.at(k2)==C_ringmember.at(k3) && rep_quota>0) {
+							C_ringmember.at(k3)=-1;
+							rep_quota--;
+						}
+					}
+                }
+            }
+        }
+		int num_rmember=0;
+		if (C_ringmember.size()>0) {
+        	for (int k2=0;k2<C_ringmember.size();k2++) {
+            	if (C_ringmember.at(k2)!=-1) num_rmember++;
+        	}
+			if (num_rmember<size) {
+				for (int k2=0;k2<Cyindex.size();k2++) {
+					if (Cyindex.at(k2)) {
+						int digits=(int)log10(Cyindex.at(k2))+1;
+                		for (int k3=1;k3<=digits;k3++) {
+                    		int w=Cyindex.at(k2)/(int)pow(10,k3-1);
+                    		w=w%10;
+                    		if (w==k1) {
+								Cyindex.at(k2)=Cyindex.at(k2)%(int)pow(10,k3-1)+(Cyindex.at(k2)/(int)pow(10,k3))*(int)pow(10,k3-1);						
+							}
+						}
+					}
+				}
+				if_circle--;
+			}
+		}
+    }
+    vector<int>().swap(C_ringmember);
+	
+
+	return 1;
+
+}
+
+
+int MOLECULE::del_unpaired_ring_no(){
+	int k;
+    vector<int> freq(if_circle,0);
+	if (if_circle) {
+	    for (k=0;k<Cyindex.size();k++) {  // 20200131 prevent unpaired ring number
+	        if (Cyindex.at(k)) {
+	            int digits=(int)log10(Cyindex.at(k))+1;
+	            for (int ap=1;ap<=digits;ap++) {
+	                int w=Cyindex.at(k)/(int)pow(10,ap-1);
+	                w=w%10;
+	                if (w<=if_circle) freq.at(w-1)++;
+					else Cyindex.at(k)=Cyindex.at(k)%(int)pow(10,ap-1)+(Cyindex.at(k)/(int)pow(10,ap))*(int)pow(10,ap-1);
+	            }
+	        }
+	    }
+	    for (k=freq.size()-1;k>=0;k--) {
+	        if (freq.at(k)%2) {
+	            for (int k1=0;k1<Cyindex.size();k1++) {
+					if (Cyindex.at(k1)) {
+						int digits=(int)log10(Cyindex.at(k1))+1;
+						for (int ap=1;ap<=digits;ap++) {
+		                    int w=Cyindex.at(k1)/(int)pow(10,ap-1);
+		                    w=w%10;
+	                		if (w==k+1) Cyindex.at(k1)=Cyindex.at(k1)%(int)pow(10,ap-1)+(Cyindex.at(k1)/(int)pow(10,ap))*(int)pow(10,ap-1);
+						}
+					}
+	            }
+				if_circle--;
+	        }
+	    }
+	}
+	vector<int>().swap(freq);
+
+	return 1;
+}
+
+
+int MOLECULE::canonicalize_SMILES() {
+	if (0) { //system code for obabel
+		ofstream out((para.smidir+"tmp.smi").c_str());
+		out << molesmi << endl;
+		out.close();
+		// /home/akitainu/bin/openbabel-install/bin/obabel
+		system(("ssh cluster \" /home/software/programs/openbabel-openbabel-2-4-1/build/bin/obabel  -ismi "+para.smidir+"tmp.smi -osmi -O "+para.smidir+"tmp.smi --gen3D --canonical \"").c_str());
+		//system(("  /home/akitainu/bin/openbabel-install/bin/obabel  -ismi "+para.smidir+"tmp.smi  -osmi -O "+para.smidir+"tmp.smi  --gen3D  --canonical  > /dev/null ").c_str());
+	
+		molesmi="null";
+		ifstream inf((para.smidir+"tmp.smi").c_str());
+		inf >> molesmi >> ws;
+		inf.close();
+		smiles=molesmi;
+	}
+
+    stringstream nu("");
+    if (0) {
+        stringstream ss(molesmi);
+        stringstream ss_out("");
+
+        OBConversion conv(&ss, &ss_out);
+        if(conv.SetInAndOutFormats("SMI","MOL"))
+        {
+            //conv.AddOption("h", OBConversion::GENOPTIONS);
+            conv.AddOption("gen3D", OBConversion::GENOPTIONS);
+            conv.AddOption("3", OBConversion::OUTOPTIONS);
+            conv.AddOption("canonical", OBConversion::GENOPTIONS);
+            //conv.AddOption("minimize", OBConversion::GENOPTIONS);
+            //conv.AddOption("ff", OBConversion::GENOPTIONS,"uff");
+            //conv.AddOption("steps", OBConversion::GENOPTIONS,"1");
+            //conv.AddOption("canonical", OBConversion::GENOPTIONS);
+            //obErrorLog.StopLogging();
+            obErrorLog.SetOutputLevel(obMessageLevel::obError);
+            //obErrorLog.SetOutputLevel(obMessageLevel::obWarning);
+            obErrorLog.SetOutputStream(&cout);
+            conv.Convert();
+            //cout << molesmi << endl;
+        }
+        //smiles=molesmi=ss_out.str();
+        //ss_out >> molesmi >> ws;
+        //smiles=molesmi;
+        nu << ss_out.str();
+    }
+
+    if (0) {
+        stringstream ss(nu.str());
+        stringstream ss_out("");
+
+        OBConversion conv(&ss, &ss_out);
+        if(conv.SetInAndOutFormats("MOL","SMI"))
+        {
+            //conv.AddOption("h", OBConversion::GENOPTIONS);
+            conv.AddOption("gen3D", OBConversion::GENOPTIONS);
+            //conv.AddOption("3", OBConversion::OUTOPTIONS);
+            //conv.AddOption("minimize", OBConversion::GENOPTIONS);
+            //conv.AddOption("ff", OBConversion::GENOPTIONS,"uff");
+            //conv.AddOption("steps", OBConversion::GENOPTIONS,"1");
+            conv.AddOption("canonical", OBConversion::GENOPTIONS);
+            //conv.AddOption("c", OBConversion::OUTOPTIONS);
+            //obErrorLog.StopLogging();
+            obErrorLog.SetOutputLevel(obMessageLevel::obError);
+            //obErrorLog.SetOutputLevel(obMessageLevel::obWarning);
+            obErrorLog.SetOutputStream(&cout);
+            conv.Convert();
+            //cout << molesmi << endl;
+        }
+        //smiles=molesmi=ss_out.str();
+        ss_out >> molesmi >> ws;
+        smiles=molesmi;
+        //nu << ss_out.str();
+    }
+
+
+	if (1) {
+		stringstream ss(molesmi);
+    	stringstream ss_out("");
+
+    	OBConversion conv(&ss, &ss_out);
+    	if(conv.SetInAndOutFormats("SMI","SMI"))
+    	{
+        	//conv.AddOption("h", OBConversion::GENOPTIONS);
+        	conv.AddOption("gen3D", OBConversion::GENOPTIONS);
+			//conv.AddOption("gen2D", OBConversion::GENOPTIONS);
+        	conv.AddOption("canonical", OBConversion::GENOPTIONS);
+            obErrorLog.SetOutputLevel(obMessageLevel::obError);
+            //obErrorLog.SetOutputLevel(obMessageLevel::obWarning);
+            obErrorLog.SetOutputStream(&cout);
+        	conv.Convert();
+    	}
+		//smiles=molesmi=ss_out.str();
+		ss_out >> molesmi >> ws;
+		smiles=molesmi;
+	}
+
+	return 1;
+}
+
