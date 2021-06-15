@@ -69,19 +69,19 @@
   EPOCH						1
 
 #Initial guess molecules/ILs
-  #CHEMICAL_IUPUTLIST					MARIL.txt
-  #CHEMICAL_IUPUTLIST                   MARIL1.txt
-  #CHEMICAL_IUPUTLIST                   MARIL2.txt
-  #CHEMICAL_IUPUTLIST                   MARIL3.txt
-  CHEMICAL_IUPUTLIST                   MARIL4.txt
-  #CHEMICAL_IUPUTLIST                   MARIL5.txt
+  #CHEMICAL_IUPUTLIST					./INPUT_CHEMICALS/MARIL.txt
+  #CHEMICAL_IUPUTLIST                   ./INPUT_CHEMICALS/MARIL1.txt
+  #CHEMICAL_IUPUTLIST                   ./INPUT_CHEMICALS/MARIL2.txt
+  #CHEMICAL_IUPUTLIST                   ./INPUT_CHEMICALS/MARIL3.txt
+  CHEMICAL_IUPUTLIST                    ./INPUT_CHEMICALS/MARIL4.txt
+  #CHEMICAL_IUPUTLIST                   ./INPUT_CHEMICALS/MARIL5.txt
 
 #Output Directory
-  OUTPUT_DIR							/fileserver/tom61212/MARSIL-paper/mds/
+  OUTPUT_DIR							./mds/
 
 #output mds in OUTPUT_DIR?
   IF_OUTPUT_MDS							0
   #IF_OUTPUT_MDS                         1
 
 #Route of Obabel executable file
-  OBABEL_ROUTE							/home/software/programs/openbabel-openbabel-2-4-1/build/bin/obabel
+  #OBABEL_ROUTE							OF NO USE
