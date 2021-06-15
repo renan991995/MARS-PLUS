@@ -1,9 +1,0 @@
-natom : 12  
-Pindex : 0    1    2    3    4    4    5    5    6    6    8    8    
-Cindex : 1    2    3    4    5    6    7    8    9    10   11   12   
-Rindex : -1   2    1    1    2    1    1    1    1    1    2    1    
-Mindex : 2    2    1    2    2    59   1    2    5    1    2    5    
-Cyindex : 0    0    0    0    0    0    0    0    0    0    0    0    
-ctsisomer_start : N/A  N/A  N/A  /    N/A  N/A  N/A  N/A  N/A  N/A  N/A  N/A  
-ctsisomer_end : N/A  N/A  N/A  N/A  /    N/A  N/A  N/A  N/A  N/A  N/A  N/A  
-if_circle : 0   
