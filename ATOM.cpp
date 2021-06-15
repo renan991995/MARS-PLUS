@@ -47,11 +47,15 @@ void DEATOM::find_r() {
 }
 
 void POOL::set_up() {
-	num=70;
+	num=72;
 	int i,j,k;
 	
 	a.resize(num);
-	for (i=0;i<num;i++) a.at(i).order.resize(6);
+	for (i=0;i<num;i++) {
+		a.at(i).order.resize(6);
+		//a.at(i).cybnd.resize(0);
+		//a.at(i).cypos.resize(0);
+	}
 	for (i=0;i<num;i++) {
 		a.at(i).nh=0;
 		for (j=0;j<6;j++) a.at(i).order.at(j)=0;
@@ -207,7 +211,7 @@ void POOL::set_up() {
 	a[8].bd[1]=1;
 	a[8].ang0=115.0*f;
 	a[8].atm="N";
-	a[8].probability=0.2*0.25;
+	a[8].probability=-1; //0.2*0.25; //-1
 
 	a[9].id=9;
 	a[9].name="N(#)";
@@ -288,7 +292,7 @@ void POOL::set_up() {
 	a[14].bd[0]=1;
 	a[14].ang0=0;
 	a[14].atm="I";
-	a[14].probability=0;
+	a[14].probability=0.1*0.05; //-1
 	
 	a[15].id=15;
 	a[15].name="[NH0+](-)(-)(-)(-)";
@@ -578,7 +582,7 @@ void POOL::set_up() {
 	a[35].probability=0.005;
 
 	a[36].id=36; //GG
-	a[36].name="C(-)(-)(-)([N+]1C=CN(C)C=1)";
+	a[36].name="C(-)(-)(-)([N+]%99999C=CN(C)C=%99999)";
     a[36].order[0]=a[36].order[1]=a[36].order[2]=1;
     a[36].nbond=10;
     a[36].norder=3;
@@ -587,12 +591,16 @@ void POOL::set_up() {
     a[36].type=1;
     a[36].bd[0]=3;
     a[36].index=2;
+	//a[36].cybnd.resize(1,1);
+	//a[36].cypos.resize(2,vector<int>(1,0));
+	//a[36].cypos.at(0).at(0)=15;
+	//a[36].cypos.at(1).at(0)=25;
     a[36].ang0=109.5*f;
     a[36].atm="C";
     a[36].probability=0.005;
 
     a[37].id=37; //GG
-    a[37].name="C(-)(-)(-)([N+]1C=CN(C)C(C)=1)";
+    a[37].name="C(-)(-)(-)([N+]%99999C=CN(C)C(C)=%99999)";
     a[37].order[0]=a[37].order[1]=a[37].order[2]=1;
     a[37].nbond=10;
     a[37].norder=3;
@@ -601,12 +609,16 @@ void POOL::set_up() {
     a[37].type=1;
     a[37].bd[0]=3;
     a[37].index=2;
+	//a[37].cybnd.resize(1,1);
+    //a[37].cypos.resize(2,vector<int>(1,0));
+    //a[37].cypos.at(0).at(0)=15;
+    //a[37].cypos.at(1).at(0)=28;
     a[37].ang0=109.5*f;
     a[37].atm="C";
     a[37].probability=0.005;
 
     a[38].id=38;
-    a[38].name="C(-)(-)(-)(N1C=C[N+](C)=C1)";
+    a[38].name="C(-)(-)(-)(N%99999C=C[N+](C)=C%99999)";
     a[38].order[0]=a[38].order[1]=a[38].order[2]=1;
     a[38].nbond=10;
     a[38].norder=3;
@@ -615,12 +627,16 @@ void POOL::set_up() {
     a[38].type=1;
     a[38].bd[0]=3;
     a[38].index=2;
+	//a[38].cybnd.resize(1,1);
+    //a[38].cypos.resize(2,vector<int>(1,0));
+    //a[38].cypos.at(0).at(0)=12;
+    //a[38].cypos.at(1).at(0)=25;
     a[38].ang0=109.5*f;
     a[38].atm="C";
     a[38].probability=0.005;
 
     a[39].id=39; //GG
-    a[39].name="C(-)(-)(-)([N+]1=CC=CC(C)=C1)";
+    a[39].name="C(-)(-)(-)([N+]%99999=CC=CC(C)=C%99999)";
     a[39].order[0]=a[39].order[1]=a[39].order[2]=1;
     a[39].nbond=10;
     a[39].norder=3;
@@ -629,12 +645,16 @@ void POOL::set_up() {
     a[39].type=1;
     a[39].bd[0]=3;
     a[39].index=2;
+	//a[39].cybnd.resize(1,1);
+    //a[39].cypos.resize(2,vector<int>(1,0));
+    //a[39].cypos.at(0).at(0)=15;
+    //a[39].cypos.at(1).at(0)=27;
     a[39].ang0=109.5*f;
     a[39].atm="C";
     a[39].probability=0.005;
 
     a[40].id=40; //GG
-    a[40].name="C(-)(-)(-)(C1=C[N+](C)=CC=C1)";
+    a[40].name="C(-)(-)(-)(C%99999=C[N+](C)=CC=C%99999)";
     a[40].order[0]=a[40].order[1]=a[40].order[2]=1;
     a[40].nbond=10;
     a[40].norder=3;
@@ -643,12 +663,16 @@ void POOL::set_up() {
     a[40].type=1;
     a[40].bd[0]=3;
     a[40].index=2;
+	//a[40].cybnd.resize(1,1);
+    //a[40].cypos.resize(2,vector<int>(1,0));
+    //a[40].cypos.at(0).at(0)=12;
+    //a[40].cypos.at(1).at(0)=27;
     a[40].ang0=109.5*f;
     a[40].atm="C";
     a[40].probability=0.005;
 
     a[41].id=41;
-    a[41].name="C(-)(1=[NH+]C=CC=C1)";
+    a[41].name="C(-)(%99999=[NH+]C=CC=C%99999)";
     a[41].order[0]=1;
     a[41].nbond=4;
     a[41].norder=1;
@@ -657,12 +681,16 @@ void POOL::set_up() {
     a[41].type=3;
     a[41].bd[0]=1;
     a[41].index=2;
+	//a[41].cybnd.resize(1,1);
+    //a[41].cypos.resize(2,vector<int>(1,0));
+    //a[41].cypos.at(0).at(0)=5;
+    //a[41].cypos.at(1).at(0)=18;
     a[41].ang0=120.0*f;
     a[41].atm="C";
     a[41].probability=0.005;
 
     a[42].id=42; 
-    a[42].name="[NH0+](-)(1=CC=CC=C1)";
+    a[42].name="[NH0+](-)(%99999=CC=CC=C%99999)";
     a[42].order[0]=1;
     a[42].nbond=9;
     a[42].norder=1;
@@ -671,6 +699,10 @@ void POOL::set_up() {
     a[42].type=3;
     a[42].bd[0]=1;
     a[42].index=7;
+	//a[42].cybnd.resize(1,1);
+    //a[42].cypos.resize(2,vector<int>(1,0));
+    //a[42].cypos.at(0).at(0)=10;
+    //a[42].cypos.at(1).at(0)=19;
     a[42].ang0=120.0*f;
     a[42].atm="N";
     a[42].probability=0.005;
@@ -780,13 +812,17 @@ void POOL::set_up() {
     a[50].probability=0.005;
 
     a[51].id=51;
-    a[51].name="S(c(cc1)ccc1C)(=O)(=O)([O-])"; // Cc1ccc(cc1)S(=O)(=O)[O-]
+    a[51].name="S(c(cc%99999)ccc%99999C)(=O)(=O)([O-])"; // Cc1ccc(cc1)S(=O)(=O)[O-]
     a[51].nbond=28; //1
     a[51].norder=0;
     a[51].chg=-1;
     a[51].rb=0.82;
     a[51].type=1;
     a[51].index=28; //0
+	//a[51].cybnd.resize(1,1);
+    //a[51].cypos.resize(2,vector<int>(1,0));
+    //a[51].cypos.at(0).at(0)=6;
+    //a[51].cypos.at(1).at(0)=11;
     a[51].ang0=109.5*f;
     a[51].atm="S";
     a[51].probability=0.005;
@@ -1029,6 +1065,50 @@ void POOL::set_up() {
     a[69].ang0=90.0*f;
     a[69].atm="P";
     a[69].probability=0.00001;
+
+    a[70].id=70;
+    a[70].name="*(-)"; //lone pair or pseudo-atom
+    a[70].nbond=4;
+    a[70].order[0]=1;
+    a[70].order[1]=0;
+    a[70].order[2]=0;
+    a[70].order[3]=0;
+    a[70].bd[0]=1;
+    a[70].norder=1;
+    a[70].rb=0.37;
+    a[70].ang0=0.0;
+    a[70].atm="Xx";
+    a[70].probability=-1;
+
+    a[71].id=71;
+    a[71].name="N(=)(-)(*)";
+    a[71].order[0]=2;
+    a[71].order[1]=1;
+    a[71].order[2]=a[71].order[3]=0;
+    a[71].nbond=7;
+    a[71].norder=2;
+    a[71].rb=0.74;
+    a[71].type=4;
+    a[71].bd[0]=1;
+    a[71].bd[1]=1;
+    a[71].ang0=115.0*f;
+    a[71].atm="N";
+    a[71].probability=0.2*0.25; //0.2*0.25;//-1;
+
+    //a[72].id=72;
+    //a[72].name="N(-)(-)(*)";
+    //a[72].order[0]=2;
+    //a[72].order[1]=0;
+    //a[72].order[2]=a[72].order[3]=0;
+    //a[72].nbond=7;
+    //a[72].norder=2;
+    //a[72].rb=0.74;
+    //a[72].type=4;
+    //a[72].bd[0]=1;
+    //a[72].bd[1]=0;
+    //a[72].ang0=115.0*f;
+    //a[72].atm="N";
+    //a[72].probability=-1;//0.2*0.25;//-1;
 
 
 	return;

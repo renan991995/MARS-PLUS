@@ -33,19 +33,39 @@ class PARAMETER {
 			gssize=0;
 			ion=0;		
 			protect=0;
-			operation="";
+			enumeration=0;
+			operation="All";
 			obabel="";
+			round=1;
+			epoch=1;
+			outdir=smidir+"mds/";
+			ifwritemds=0;
+			glbouf.close();
+			glbouf1.close();
+			stat.close();
 		}
-		~PARAMETER() {}
+		~PARAMETER() {
+			glbouf.close();
+			glbouf1.close();
+			stat.close();
+		}
 		int gssize;
 		string guess;
 		string out_route;
 		string operation;
 		string obabel;
-		int ion;
-		int protect;
+		bool ion;
+		bool protect;
+		bool enumeration;
+		bool ifwritemds;
+		int round;
+		int epoch;
 		string smidir;
 		string pwd;	
+		string outdir;
+		ofstream glbouf;
+		ofstream glbouf1;
+		ofstream stat;
 };
 
 

@@ -47,13 +47,13 @@ void exhaustive_combination(IL &A, IL &B) {
 					for (int b1=1;b1<4;b1++) {
 					bool go1=0;
 					if (!cat_taboo.at(i).at(j)) {
-						if (A.ion[0].combine(B.ion[0],i,j,b)) go1=1;
+						if (A.ion[0].combination(B.ion[0],i,j,b)) go1=1;
 						else cat_taboo.at(i).at(j)=1;
 					}
 					//else cat_taboo.at(i).at(j)=1;
 
 					if (!an_taboo.at(i1).at(j1)) {
-						if (A.ion[1].combine(B.ion[1],i1,j1,b1)) go1=1;
+						if (A.ion[1].combination(B.ion[1],i1,j1,b1)) go1=1;
 						else an_taboo.at(i1).at(j1)=1;
 					}
 					//else an_taboo.at(i1).at(j1)=1;
@@ -315,14 +315,14 @@ void exhaustive_subtraction(IL &A) {
         << setw(17) << left << "cat_subtr_pt" << " "
         << setw(17) << left << "an_subtr_pt" << endl;
 
-	for (i=1;i<A.ion[0].Cindex.size();i++) {
-		for (j=1;j<A.ion[1].Cindex.size();j++) {
+	for (i=0;i<A.ion[0].Cindex.size();i++) {
+		for (j=0;j<A.ion[1].Cindex.size();j++) {
 			int ACi=A.ion[0].Cindex.at(i);
 			int ACj=A.ion[1].Cindex.at(j);
 
             bool go1=0;
-            if (A.ion[0].subtract(i,1)) go1=1;
-            if (A.ion[1].subtract(j,1)) go1=1;
+            if (A.ion[0].subtraction(i,1)) go1=1;
+            if (A.ion[1].subtraction(j,1)) go1=1;
 
 			if (go1) {
 				A.mds2smi();
@@ -420,13 +420,13 @@ void exhaustive_addition(IL &A) {
 							for (int b1=1;b1<4;b1++) {
             				bool go1=0;
 							if (!cat_taboo.at(i).at(j).at(b)) {
-            					if (A.ion[0].add(i,j,b)) go1=1;
+            					if (A.ion[0].addition(i,j,b)) go1=1;
 								else cat_taboo.at(i).at(j).at(b)=1;
 							}
 							//else cat_taboo.at(i).at(j).at(b)=1;
 
 							if (!an_taboo.at(i1).at(j1).at(b1)) {
-            					if (A.ion[1].add(i1,j1,b1)) go1=1;
+            					if (A.ion[1].addition(i1,j1,b1)) go1=1;
 								else an_taboo.at(i1).at(j1).at(b1)=1;
                             }
                             //else an_taboo.at(i1).at(j1).at(b1)=1;
@@ -503,15 +503,149 @@ void exhaustive_addition(IL &A) {
 
 }
 
+void exhaustive_insertion(IL &A) {
+    int count=0,i=0,j=0,k=0,m=0;
+    string smi1_cat=A.ion[0].molesmi,smi1_an=A.ion[1].molesmi;
 
-void exhaustive_exchange(IL &A) {
+    IL *buf=new IL [1];
+    buf[0].replace(A);
+
+    ofstream out((para.smidir+"insertion_IL.txt").c_str());
+    mark(out);
+
+    out << "IL: " << (smi1_cat+"."+smi1_an)  << endl;
+    A.print(out);
+    out << endl;
+
+    out << setw(7) << left << "No." << " "
+        << setw(65) << left << "IL_ins" << " "
+        << setw(17) << left << "cat_ins_pt" << " "
+        << setw(17) << left << "cat_ins_id" << " "
+        << setw(30) << left << "cat_ins_name" << " "
+        << setw(17) << left << "cat_bnd2par" << " "
+        << setw(17) << left << "cat_bnd2des" << " "
+        << setw(17) << left << "an_ins_pt" << " "
+        << setw(17) << left << "an_ins_id" << " "
+        << setw(30) << left << "an_ins_name" << " "
+        << setw(17) << left << "an_bnd2par" << " "
+        << setw(17) << left << "an_bnd2des" << endl;
+
+    vector< vector< vector<bool> > > cat_taboo(A.ion[0].Cindex.size(),vector< vector<bool> > (A.ion[0].data->num,vector<bool> (3,0)));
+    vector< vector< vector<bool> > > an_taboo(A.ion[1].Cindex.size(),vector< vector<bool> > (A.ion[1].data->num,vector<bool> (3,0)));
+
+    for (i=1;i<A.ion[0].Cindex.size();i++) {
+        for (j=1;j<A.ion[0].data->num;j++) {
+            if (A.ion[0].data->a[j].probability>0) {
+                for (k=1;k<4;k++) {
+                    for (m=1;m<4;m++) {
+                        if (A.ion[0].data->a[m].probability>0) {
+                            for (int i1=1;i1<A.ion[1].Cindex.size();i1++) {
+                                for (int j1=1;j<A.ion[1].data->num;j1++) {
+                                    if (A.ion[1].data->a[j1].probability>0) {
+                                        for (int k1=1;k1<4;k1++) {
+                                            for (int m1=1;m1<4;m++) {
+                                                if (A.ion[1].data->a[m1].probability>0) {
+                                                    int ACi=A.ion[0].Cindex.at(i);
+                                                    int ACi1=A.ion[1].Cindex.at(i1);
+
+                                                    bool go1=0;
+                                                    if (!cat_taboo.at(i).at(j).at(m-1)) {
+                                                        if (A.ion[0].insertion(i,j,k,m)) go1=1;
+                                                        else cat_taboo.at(i).at(j).at(m-1)=1;
+                                                    }
+
+                                                    if (!an_taboo.at(i1).at(j1).at(m1-1)) {
+                                                        if (A.ion[1].insertion(i1,j1,k1,m1)) go1=1;
+                                                        else an_taboo.at(i1).at(j1).at(m1-1)=1;
+                                                    }
+
+                                                    if (go1) {
+                                                        A.mds2smi();
+                                                        if (0) {
+                                                            A.ion[0].smiles=A.ion[0].molesmi;
+                                                            A.ion[1].smiles=A.ion[1].molesmi;
+                                                            A.input();
+                                                        }
+                                                        if (1) A.canonicalize_SMILES();
+
+                                                        A.molesmi=A.ion[0].molesmi+"."+A.ion[1].molesmi;
+                                                        //out<<A.molesmi<<endl;
+
+                                                        //system(("ls "+para.smidir+"mds/ | grep -Fw \""+A.molesmi+"_\" > ./tmp1 2> /dev/null").c_str());
+                                                        system(("grep -Fw \""+A.molesmi+"\" "+para.smidir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+                                                        ifstream inf("./tmp1");
+                                                        inf >> ws;
+
+                                                        if (inf.eof()) {
+                                                            count++;
+                                                            cout << "EXHAUSTIVE EXCHANGE: " << (smi1_cat+"."+smi1_an) << " {CAT: " << j << " " << A.ion[0].data->a[j].name << " , bnd2par " << k << " , bnd2des " << m << " ; "
+                                                                                                                        << " AN: " << j1 << " " << A.ion[1].data->a[j1].name << " , bnd2par " << k << " , bnd2des " << m1 << " } -> " << A.molesmi << " {No. " << count << " }" << endl;
+
+                                                            out << setw(7) << left << count << " "
+                                                                << setw(65) << left << A.molesmi << " "
+                                                                << setw(17) << left << ACi << " "
+                                                                << setw(17) << left << A.ion[0].data->a[j].id << " "
+                                                                << setw(30) << left << A.ion[0].data->a[j].name << " "
+                                                                << setw(17) << left << k << " "
+                                                                << setw(17) << left << m << " "
+                                                                << setw(17) << left << ACi1 << " "
+                                                                << setw(17) << left << A.ion[1].data->a[j1].id << " "
+                                                                << setw(30) << left << A.ion[1].data->a[j1].name << " "
+                                                                << setw(17) << left << k1 << " "
+                                                                << setw(17) << left << m1 << endl;
+
+                                                            ofstream outs((para.smidir+"mds/"+A.molesmi+"_ins_IL.enc").c_str());
+                                                            A.print(outs);
+                                                            outs.close();
+
+                                                            outs.open((para.smidir+"mds/DATLIST.txt").c_str(),ios::app);
+                                                            outs << setw(50) << left << A.molesmi << "   " << left << (para.smidir+"mds/"+A.molesmi+"_ins_IL.enc") << endl;
+                                                            outs.close();
+                                                        }
+                                                        inf.close();
+                                                        if (0) {
+                                                            A.ion[0].smiles=smi1_cat;
+                                                            A.ion[1].smiles=smi1_an;
+                                                            A.input();
+                                                        }
+                                                        if (1) {
+                                                            A.replace(buf[0]);
+                                                            A.reset();
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    out.close();
+
+    delete [] buf;
+    buf=NULL;
+
+    vector< vector< vector<bool> > >().swap(cat_taboo);
+    vector< vector< vector<bool> > >().swap(an_taboo);
+
+}
+
+
+
+void exhaustive_change_ele(IL &A) {
 	int count=0,i=0,j=0,k=0,m=0;
 	string smi1_cat=A.ion[0].molesmi,smi1_an=A.ion[1].molesmi;
 	
     IL *buf=new IL [1];
     buf[0].replace(A);
 
-	ofstream out((para.smidir+"exchange_IL.txt").c_str());
+	ofstream out((para.smidir+"change_ele_IL.txt").c_str());
 	mark(out);
 
     out << "IL: " << (smi1_cat+"."+smi1_an)  << endl;
@@ -519,15 +653,15 @@ void exhaustive_exchange(IL &A) {
     out << endl;
 
 	out << setw(7) << left << "No." << " "
-		<< setw(65) << left << "IL_exc" << " "
-		<< setw(17) << left << "cat_exc_pt" << " "
-		<< setw(17) << left << "cat_exc_id" << " "
-		<< setw(30) << left << "cat_exc_name" << " "
+		<< setw(65) << left << "IL_chele" << " "
+		<< setw(17) << left << "cat_chele_pt" << " "
+		<< setw(17) << left << "cat_chele_id" << " "
+		<< setw(30) << left << "cat_chele_name" << " "
 		<< setw(17) << left << "cat_bnd2par" << " "
 		<< setw(17) << left << "cat_bnd2des" << " "
-        << setw(17) << left << "an_exc_pt" << " "
-        << setw(17) << left << "an_exc_id" << " "
-        << setw(30) << left << "an_exc_name" << " "
+        << setw(17) << left << "an_chele_pt" << " "
+        << setw(17) << left << "an_chele_id" << " "
+        << setw(30) << left << "an_chele_name" << " "
         << setw(17) << left << "an_bnd2par" << " "
         << setw(17) << left << "an_bnd2des" << endl;
 
@@ -551,12 +685,12 @@ void exhaustive_exchange(IL &A) {
 
                             						bool go1=0;
 													if (!cat_taboo.at(i).at(j).at(m-1)) {
-                            							if (A.ion[0].exchange(i,j,k,m)) go1=1;
+                            							if (A.ion[0].change_ele(i,j,k,m)) go1=1;
 														else cat_taboo.at(i).at(j).at(m-1)=1;
 													}
 
 													if (!an_taboo.at(i1).at(j1).at(m1-1)) {
-	                            						if (A.ion[1].exchange(i1,j1,k1,m1)) go1=1;
+	                            						if (A.ion[1].change_ele(i1,j1,k1,m1)) go1=1;
                                                         else an_taboo.at(i1).at(j1).at(m1-1)=1;
                                                     }
 
@@ -579,7 +713,7 @@ void exhaustive_exchange(IL &A) {
 
 														if (inf.eof()) {
 															count++;
-															cout << "EXHAUSTIVE EXCHANGE: " << (smi1_cat+"."+smi1_an) << " {CAT: " << j << " " << A.ion[0].data->a[j].name << " , bnd2par " << k << " , bnd2des " << m << " ; " 
+															cout << "EXHAUSTIVE CHANGE_ELE: " << (smi1_cat+"."+smi1_an) << " {CAT: " << j << " " << A.ion[0].data->a[j].name << " , bnd2par " << k << " , bnd2des " << m << " ; " 
 																														<< " AN: " << j1 << " " << A.ion[1].data->a[j1].name << " , bnd2par " << k << " , bnd2des " << m1 << " } -> " << A.molesmi << " {No. " << count << " }" << endl;
 
 						                                	out << setw(7) << left << count << " "
@@ -595,12 +729,12 @@ void exhaustive_exchange(IL &A) {
 						                                    	<< setw(17) << left << k1 << " "
 						                                    	<< setw(17) << left << m1 << endl;
 
-															ofstream outs((para.smidir+"mds/"+A.molesmi+"_exc_IL.enc").c_str());
+															ofstream outs((para.smidir+"mds/"+A.molesmi+"_chele_IL.enc").c_str());
 															A.print(outs);
 															outs.close();
 
 								                            outs.open((para.smidir+"mds/DATLIST.txt").c_str(),ios::app);
-								                            outs << setw(50) << left << A.molesmi << "   " << left << (para.smidir+"mds/"+A.molesmi+"_exc_IL.enc") << endl;
+								                            outs << setw(50) << left << A.molesmi << "   " << left << (para.smidir+"mds/"+A.molesmi+"_chele_IL.enc") << endl;
 								                            outs.close();
 														}
 														inf.close();
@@ -665,8 +799,10 @@ void exhaustive_cyclization(IL &A) {
 
 	for (i=0;i<A.ion[0].Cindex.size();i++) {
 		for (j=i+1;j<A.ion[0].Cindex.size();j++) {
+			for (int k=1;k<=3;k++) {
 			for (int i1=0;i<A.ion[1].Cindex.size();i1++) {
 				for (int j1=i1+1;j1<A.ion[1].Cindex.size();j1++) {
+					for (int k1=1;k1<=3;k1++) {
 					int ACi=A.ion[0].Cindex.at(i);
 					int ACj=A.ion[0].Cindex.at(j);
 					int ACi1=A.ion[1].Cindex.at(i1);
@@ -674,13 +810,13 @@ void exhaustive_cyclization(IL &A) {
 
                     bool go1=0;
 					if (!cat_taboo.at(i).at(j)) {
-                    	if (A.ion[0].ring(i,j)) go1=1;
+                    	if (A.ion[0].cyclization(i,j,k)) go1=1;
 						else cat_taboo.at(i).at(j)=1;
 					}
 					//else cat_taboo.at(i).at(j)=1;
 
                     if (!an_taboo.at(i1).at(j1)) {
-                		if (A.ion[1].ring(i1,j1)) go1=1;
+                		if (A.ion[1].cyclization(i1,j1,k1)) go1=1;
                         else an_taboo.at(i1).at(j1)=1;
                     }
                     //else an_taboo.at(i1).at(j1)=1;
@@ -734,7 +870,9 @@ void exhaustive_cyclization(IL &A) {
 							A.reset();
 						}
 					}
+					}
 				}
+			}
 			}
 		}
 	}
@@ -750,7 +888,7 @@ void exhaustive_cyclization(IL &A) {
 }
 
 
-void swit(IL &A,IL &B) {
+void comp_swap(IL &A,IL &B) {
 	int count=0,i=0,j=0;
 	string smi1_cat=A.ion[0].molesmi,smi1_an=A.ion[1].molesmi;
 	string smi2_cat=B.ion[0].molesmi,smi2_an=B.ion[1].molesmi;
@@ -770,8 +908,8 @@ void swit(IL &A,IL &B) {
     out << endl;
 
     out << setw(7) << left << "No." << " "
-        << setw(65) << left << "IL1_swit" << " "
-		<< setw(65) << left << "IL2_swit"<< endl;
+        << setw(65) << left << "IL1_swap" << " "
+		<< setw(65) << left << "IL2_swap"<< endl;
 
 	swap(A.ion[1],B.ion[1]);
 	A.reset();
@@ -805,13 +943,13 @@ void swit(IL &A,IL &B) {
     inf >> ws;
 
     if (inf.eof()) {
-        ofstream outs((para.smidir+"mds/"+A.molesmi+"_swit_IL.enc").c_str());
+        ofstream outs((para.smidir+"mds/"+A.molesmi+"_swap_IL.enc").c_str());
     	A.print(outs);
         outs.close();
         go=1;
 
         outs.open((para.smidir+"mds/DATLIST.txt").c_str(),ios::app);
-        outs << setw(50) << left << A.molesmi << "   " << left << (para.smidir+"mds/"+A.molesmi+"_swit_IL.enc") << endl;
+        outs << setw(50) << left << A.molesmi << "   " << left << (para.smidir+"mds/"+A.molesmi+"_swap_IL.enc") << endl;
         outs.close();
     }
     inf.close();
@@ -823,13 +961,13 @@ void swit(IL &A,IL &B) {
     inf >> ws;
 
     if (inf.eof()) {
-        ofstream outs((para.smidir+"mds/"+B.molesmi+"_swit_IL.enc").c_str());
+        ofstream outs((para.smidir+"mds/"+B.molesmi+"_swap_IL.enc").c_str());
         B.print(outs);
         outs.close();
         go=1;
 
         outs.open((para.smidir+"mds/DATLIST.txt").c_str(),ios::app);
-        outs << setw(50) << left << B.molesmi << "   " << left << (para.smidir+"mds/"+B.molesmi+"_swit_IL.enc") << endl;
+        outs << setw(50) << left << B.molesmi << "   " << left << (para.smidir+"mds/"+B.molesmi+"_swap_IL.enc") << endl;
         outs.close();
     }
     inf.close();

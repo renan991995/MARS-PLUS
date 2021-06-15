@@ -13,7 +13,7 @@ set(filename
 		UTILITY.cpp			UTILITY.h
 		MOLECULE.cpp		MOLECULE.h
 		IL.cpp				IL.h
-		ATOM.cpp			ATOM.h
+		ELEMENTS.cpp		ELEMENTS.h
 		MATRIX.cpp			MATRIX.h
 		OPT.cpp				OPT.h
 		PARAMETER.h

@@ -39,14 +39,34 @@
 
 
 #Appearance of ions
-  #ION					0
-  ION					1
+  #IF_ION					0
+  IF_ION					1
 
+#SMILES enumeration
+  IF_ENUMERATION			0
+  #IF_ENUMERATION          1
 
 #Proctection
-  PROTECT				0
-  #PROTECT				1
+  #IF_PROTECT				0
+  IF_PROTECT				1
 
+#Molecular operations
+  OPERATIONS				All
+  #OPERATIONS                Crossover
+  #OPERATIONS                Combination
+  #OPERATIONS                Addition
+  #OPERATIONS                Subtraction
+  #OPERATIONS                Exchange_ele
+  #OPERATIONS                Exchange_bnd
+  #OPERATIONS                Cistrans_inversion
+  #OPERATIONS                Chirality_inversion
+  #OPERATIONS                Insertion
+  #OPERATIONS                Cyclization
+  #OPERATIONS                Decyclization
+  #OPERATIONS                Component_switch
+
+#Epoch
+  EPOCH						1
 
 #Initial guess molecules/ILs
   #CHEMICAL_IUPUTLIST					MARIL.txt
@@ -56,6 +76,12 @@
   CHEMICAL_IUPUTLIST                   MARIL4.txt
   #CHEMICAL_IUPUTLIST                   MARIL5.txt
 
+#Output Directory
+  OUTPUT_DIR							/fileserver/tom61212/MARSIL-paper/mds/
+
+#output mds in OUTPUT_DIR?
+  IF_OUTPUT_MDS							0
+  #IF_OUTPUT_MDS                         1
 
 #Route of Obabel executable file
   OBABEL_ROUTE							/home/software/programs/openbabel-openbabel-2-4-1/build/bin/obabel

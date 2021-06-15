@@ -11,11 +11,15 @@
 #define MOLECULE_H
 #include <openbabel/obconversion.h>
 #include <openbabel/mol.h>
+#include <openbabel/bond.h>
+#include <openbabel/bondtyper.h>
+#include <openbabel/ring.h>
 #include <openbabel/atom.h>
 #include <openbabel/data.h>
 #include <openbabel/data_utilities.h>
 #include <openbabel/obiter.h>
-#include <openbabel/chiral.h>
+//#include <openbabel/chiral.h>
+#include <openbabel/distgeom.h>
 #include <openbabel/stereo/stereo.h>
 #include <openbabel/stereo/cistrans.h>
 #include <openbabel/stereo/squareplanar.h>
@@ -24,6 +28,9 @@
 #include <openbabel/stereo/tetrahedral.h>
 #include <openbabel/builder.h>
 #include <openbabel/typer.h>
+#include <openbabel/tokenst.h>
+#include <openbabel/oberror.h>
+//#include <openbabel/stereo/bindings.h>
 #include <sys/types.h>
 #include <dirent.h>
 #include <cerrno>
@@ -39,7 +46,7 @@
 #include <cstdio> 
 #include <cctype>
 #include <sstream>
-#include "ATOM.h"
+#include "ELEMENTS.h"
 #include "MATRIX.h"
 #include "OPT.h"
 #include "PARAMETER.h"
@@ -166,9 +173,9 @@ class MOLECULE : public CALCflag
 			ionic="";
 			parent=-1;
 			if_circle=0;
-			dist=NULL;
+			//dist=NULL;
 			connect=NULL;
-			order=NULL;
+			//order=NULL;
 			atm=NULL;
 
 			natom=0;
@@ -176,6 +183,7 @@ class MOLECULE : public CALCflag
 			Cindex.resize(0);
 			Mindex.resize(0);
 			Cyindex.resize(0);
+			Cybnd.resize(0);
 			Rindex.resize(0);
 			protect.resize(0);
 			Bindex.resize(0);
@@ -189,6 +197,9 @@ class MOLECULE : public CALCflag
 		}
 
 		~MOLECULE() {
+			//data=NULL;
+			//connect=NULL;
+			//atm=NULL;
 			clean();
 			empty();
 		}
@@ -196,34 +207,37 @@ class MOLECULE : public CALCflag
 		int print(); 
 		int print(ofstream &ouf);
 		int replace(MOLECULE &);
-		int ring(int,int);
+		int cyclization(int,int,int);
 		void mds2smi(bool ct_on=1);
-		int subtract(int,int);
-		int add(int,int,int);
-		int add();
+		int subtraction(int,int,bool cistrans=0);
+		int insertion(int,int,int,int,bool cistrans=0);
+		int addition(int,int,int,bool cistrans=0);
+		//int addition();
 		void reset();
 		void clear();
 		void empty();
 		void clean();
 		void wipe();
 		void outmds(ostream &outs=cout);
-		int exchange(int,int,int,int);
+		int change_ele(int,int,int,int,bool cistrans=0);
+		int change_bnd(int,int,int,int,bool cistrans=0);
 		void read(string);
 		void smi2gjf(); //OBMol &mol
 		void chir_and_stereo(OBMol &mol);
 		void init();
 		void input(bool ct_on=1);
 		void check_bnd(); //OBMol &mol
-		void smi2cod();
+		void smi2mds();
 		void report();
 		int rd_nps(); //OBMol &mol
-		int crossover(MOLECULE &, int, int);
-		int combine(MOLECULE &, int, int, int);												// give a exact point to combine
+		int crossover(MOLECULE &, int, int,bool cistrans=0);
+		int combination(MOLECULE &, int, int, int);												// give a exact point to combine
 		//void recode(int);
         int prct(int,int);
         int prct();
 		double prob();
 		int del_unpaired_ring_no();
+		int decyclization(int);
 		int decyc_small_ring(int);
 		int canonicalize_SMILES();
 		int rechg();
@@ -231,13 +245,16 @@ class MOLECULE : public CALCflag
 		//int change_stereo();
 		//int change_cistrans();
 		int change_cistrans(int pos,int he);
-		//int change_stereo(int pos);
+		//int change_stereo(int pos,int he);
+		int change_chirality(int pos,int spec=-1);
 		vector<int> Pindex; 															// parent index
 		vector<int> Cindex; 															// child index
 		vector<int> Mindex; 															// molecule index
 		vector<int> Rindex;
-		vector<int> Cyindex;
+		//vector<int> Cyindex;
+		vector< vector<int> > Cyindex;
 		vector<int> protect;
+		vector<int> Cybnd;
 		//vector<int> Bindex[1024]; 														// to measure bond to 0, do not output.
 		//vector<int> atomsmi[1024];
 		//vector< vector<string> > ctsisomer;
@@ -252,9 +269,9 @@ class MOLECULE : public CALCflag
         string molesmi;                                 								// smiles representation
 		string ionic;
 		int natom;
-		double **dist;
+		//double **dist;
 		int **connect;
-		int **order;
+		//int **order;
 		DEATOM *atm;
 		int parent;
 		int if_circle;

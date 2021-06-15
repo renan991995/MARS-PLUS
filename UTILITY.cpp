@@ -18,10 +18,14 @@ void rd_para(char **&argv){
         }
         if (tmp=="OBABEL_ROUTE") inf >> para.obabel >> ws;
         else if (tmp=="CHEMICAL_IUPUTLIST") inf >> para.guess >> ws;
-        else if (tmp=="EXHAUSTIVE_OPERATIONS") inf >> para.operation >> ws;
-        else if (tmp=="ION") inf >> para.ion >> ws;
+        else if (tmp=="OPERATIONS") inf >> para.operation >> ws;
+        else if (tmp=="IF_ION") inf >> para.ion >> ws;
         else if (tmp=="OUTFILE") inf >> para.out_route >> ws;
-        else if (tmp=="PROTECT") inf >> para.protect >> ws;
+        else if (tmp=="IF_PROTECT") inf >> para.protect >> ws;
+		else if (tmp=="IF_ENUMERATION") inf >> para.enumeration >> ws;
+		else if (tmp=="OUTPUT_DIR") inf >> para.outdir >> ws;
+		else if (tmp=="IF_OUTPUT_MDS") inf >> para.ifwritemds >> ws;
+		else if (tmp=="EPOCH") inf >> para.epoch >> ws;
     }
     inf.close();
 
@@ -70,8 +74,8 @@ void rd_ILs(IL *&gsion,POOL *pol){
             inf >> cation >> ws >> anion >> ws;
             if (anion!="" && anion[0]!='#' && cation!="" && cation[0]!='#') {
                 cout << "Current step : read ionic liquid " << (i+1) << " , " << cation << " " << anion << endl;
-                gsion[i].ion[0].smiles=cation;
-                gsion[i].ion[1].smiles=anion;
+                gsion[i].ion[0].smiles=gsion[i].ion[0].molesmi=cation;
+                gsion[i].ion[1].smiles=gsion[i].ion[1].molesmi=anion;
                 gsion[i].ion[0].input();
                 gsion[i].ion[1].input();
                 if (para.protect) gsion[i].prct();
@@ -124,7 +128,7 @@ void rd_mols(MOLECULE *&gs,POOL *pol){
             inf >> smi >> ws;
             if (smi!="" && smi[0]!='#') {
                 cout << "Current step : read molecule " << (i+1) << " , " << smi << endl;
-                gs[i].smiles=smi;
+                gs[i].smiles=gs[i].molesmi=smi;
                 gs[i].input();
                 if (para.protect) gs[i].prct();
                 i++;
@@ -138,6 +142,166 @@ void rd_mols(MOLECULE *&gs,POOL *pol){
         }
         inf.close();		
 	}
+}
+
+int cal_nmol(string r_inputlist) {
+    string smi="";
+    ifstream inf((r_inputlist).c_str());
+    int nmol=0;
+    inf >> ws;
+    while (inf.is_open() && !inf.eof()) {
+    	smi="";
+		int cur=inf.tellg();
+        inf >> smi >> ws;
+        if (smi!="" && smi[0]!='#') nmol++;
+		else {
+            inf.seekg(cur);
+            getline(inf,smi);
+            inf >> ws;
+		}
+    }
+    inf.close();
+
+	return nmol;
+}
+
+int cal_nIL(string r_inputlist) {
+    string smi="",smi1="";
+    ifstream inf((r_inputlist).c_str());
+    int nmol=0;
+    inf >> ws;
+    while (inf.is_open() && !inf.eof()) {
+        smi="";
+        int cur=inf.tellg();
+        inf >> smi >> ws >> smi1 >> ws;
+        if (smi!="") {
+			if (smi[0]!='#') {
+				inf.seekg(cur);
+				inf >> smi >> ws >> smi1 >> ws;
+				nmol++;
+			}
+	        else {
+    	        inf.seekg(cur);
+        	    getline(inf,smi);
+            	inf >> ws;
+        	}
+		}
+        else {
+            inf.seekg(cur);
+            getline(inf,smi);
+            inf >> ws;
+        }
+    }
+    inf.close();
+
+    return nmol;
+}
+
+
+string rd_1molsmi(string r_inputlist,int num) {
+	string smi="";
+    ifstream inf((r_inputlist).c_str());
+	inf >> ws;
+    for (int i=0;i<=num;i++) {
+		if (inf.eof()) break;
+        smi="";
+		int cur=inf.tellg();
+        inf >> smi >> ws;
+        if (smi=="" || smi[0]=='#') {
+            inf.seekg(cur);
+            getline(inf,smi);
+            inf >> ws;
+			i--;
+			smi="";
+        }
+    }
+    inf.close();
+
+	cout << "Current step : read molecule " << (num+1) << " , " << smi << endl;
+
+	return smi;
+
+}
+
+void rd_1ILsmi(string r_inputlist,int numcat,int numan,string &catsmi,string &ansmi) {
+    string smi="",smi1="";
+    ifstream inf((r_inputlist).c_str());
+    inf >> ws;
+    for (int i=0;i<=numcat;i++) {
+        if (inf.eof()) break;
+        smi="";
+		smi1="";
+        int cur=inf.tellg();
+        inf >> smi >> ws >> smi1 >> ws;
+        if (smi=="" || smi[0]=='#') {
+            inf.seekg(cur);
+            getline(inf,smi);
+            inf >> ws;
+            i--;
+            smi="";
+			smi1="";
+        }
+    }
+    inf.close();
+
+	catsmi=smi;
+
+	cout << "Current step : read cation " << (numcat+1) << " , " << catsmi << endl;
+
+	smi="";
+    smi1="";
+
+    inf.open((r_inputlist).c_str());
+    inf >> ws;
+    for (int i=0;i<=numan;i++) {
+        if (inf.eof()) break;
+        smi="";
+        smi1="";
+        int cur=inf.tellg();
+        inf >> smi >> ws >> smi1 >> ws;
+        if (smi=="" || smi[0]=='#') {
+            inf.seekg(cur);
+            getline(inf,smi);
+            inf >> ws;
+            i--;
+            smi="";
+            smi1="";
+        }
+    }
+    inf.close();
+
+    ansmi=smi1;
+
+	cout << "Current step : read anion " << (numan+1) << " , " << ansmi << endl;
+
+    return;
+
+}
+
+void clearlog() {
+	system("rm ./combination.txt 2> /dev/null");
+	system("rm ./crossover.txt 2> /dev/null");
+	system("rm ./addition.txt 2> /dev/null");
+	system("rm ./subtraction.txt 2> /dev/null");
+	system("rm ./insertion.txt 2> /dev/null");
+	system("rm ./cyclization.txt 2> /dev/null");
+	system("rm ./decyclization.txt 2> /dev/null");
+	system("rm ./exchangeatm.txt 2> /dev/null");
+	system("rm ./exchangebnd.txt 2> /dev/null");
+	system("rm ./changect.txt 2> /dev/null");
+	system("rm ./changeenan.txt 2> /dev/null");
+
+    system("rm ./combination_IL.txt 2> /dev/null");
+    system("rm ./crossover_IL.txt 2> /dev/null");
+    system("rm ./addition_IL.txt 2> /dev/null");
+    system("rm ./subtraction_IL.txt 2> /dev/null");
+    system("rm ./insertion_IL.txt 2> /dev/null");
+    system("rm ./cyclization_IL.txt 2> /dev/null");
+    system("rm ./decyclization_IL.txt 2> /dev/null");
+    system("rm ./exchangeatm_IL.txt 2> /dev/null");
+    system("rm ./exchangebnd_IL.txt 2> /dev/null");
+    system("rm ./changect_IL.txt 2> /dev/null");
+    system("rm ./changeenan_IL.txt 2> /dev/null");
 }
 
 
@@ -210,12 +374,13 @@ int getdir(string dir, vector<string> &filenames, string fileextention) {
 //make dat list
 int mk_datlist() {
 	string Ldir=para.smidir+"mds/DATLIST.txt";
+	//string Ldir=para.outdir+"DATLIST.txt";
 
     ofstream LIS(Ldir.c_str());
     DIR *dp=NULL;     //declare a pointer for a directory
     struct dirent *dirp=NULL;
-    if ((dp = opendir((para.smidir+"mds/").c_str())) == NULL) {
-        cout << "Error(" << errno << ") opening " << (para.smidir+"mds/") << endl;
+    if ((dp = opendir((para.smidir+"mds/").c_str())) == NULL) { //para.smidir+"mds/"  //para.outdir
+        cout << "Error(" << errno << ") opening " << (para.smidir+"mds/") << endl; //(para.smidir+"mds/")  //para.outdir
         return errno;
     }
     while ((dirp = readdir(dp)) != NULL) {     //If dirent pointer is not NULL
@@ -223,7 +388,7 @@ int mk_datlist() {
         if (getExt(name)=="enc" && name!=".enc" && name!="enc") {
 			string SMI="";
 			for (int i=0;i<name.find_first_of('_');i++) SMI+=name[i];
-            if (SMI!="" && SMI!="null") LIS << setw(50) << left << SMI << "   " << left << (para.smidir+"mds/"+name) << endl;
+            if (SMI!="" && SMI!="null") LIS << setw(50) << left << SMI << "   " << left << (para.smidir+"mds/"+name) << endl; //(para.smidir+"mds/"+name)  //para.outdir+name
         }
     }
     dirp=NULL;
@@ -236,3 +401,182 @@ int mk_datlist() {
     return 0;
 }
 
+
+int smi2mol(string SMI,OBMol &mol) {
+    stringstream ss1("");
+    if (1) {
+        stringstream ss("");
+        ss << SMI;
+        OpenBabel::OBConversion conv(&ss,&ss1);
+        if (conv.SetInAndOutFormats("SMI","MOL")) {
+            conv.AddOption("gen3D", OpenBabel::OBConversion::GENOPTIONS);
+            //conv.AddOption("align", OBConversion::GENOPTIONS);
+            //conv.AddOption("canonical", OpenBabel::OBConversion::GENOPTIONS);
+            conv.AddOption("3", OpenBabel::OBConversion::OUTOPTIONS);
+            conv.Convert();
+            //cout <<"ss1: " << endl
+            //  << ss1.str() << endl;
+        }
+    }
+    if (1) {
+        OpenBabel::OBConversion conv(&ss1);
+        conv.SetInFormat("MOL");
+        conv.Read(&mol);
+    }
+
+    return 1;
+}
+
+
+string mol2smi(OBMol &mol) {
+    stringstream ss1("");
+    stringstream ss("");
+    stringstream buf("");
+    for (unsigned int i=0;i<mol.NumHvyAtoms();i++) {
+        if (i<=mol.NumHvyAtoms()-2) buf << (i+1) << "-";
+        else buf << (i+1);
+    }
+
+    if (1) {
+        OpenBabel::OBConversion conv;
+        //conv.SetInFormat("MOL");
+        //conv.Read(&mol);
+        conv.SetOutFormat("MOL");
+        conv.AddOption("3", OpenBabel::OBConversion::OUTOPTIONS);
+        conv.Write(&mol,&ss1);
+        //cout <<"ss1: " << endl
+        //   << ss1.str() << endl;
+    }
+    if (1) {
+        OpenBabel::OBConversion conv(&ss1,&ss);
+        if (conv.SetInAndOutFormats("MOL","SMI")) {
+            conv.AddOption("o", OpenBabel::OBConversion::OUTOPTIONS , buf.str().c_str());
+            //conv.AddOption("gen3D", OpenBabel::OBConversion::GENOPTIONS);
+            //conv.AddOption("align", OBConversion::GENOPTIONS);
+            //conv.AddOption("canonical", OpenBabel::OBConversion::GENOPTIONS);
+            //conv.AddOption("3", OpenBabel::OBConversion::OUTOPTIONS);
+            conv.Convert();
+            //cout <<"ss: " << ss.str() << endl;
+
+        }
+    }
+    //if (1) {
+    //    OBConversion conv(&ss1);
+    //    conv.SetInFormat("MOL");
+    //    conv.Read(&mol);
+    //}
+
+    return ss.str();
+}
+
+int SMI_Enumerator(string SMI) {
+    OBMol mol;
+    smi2mol(SMI,mol);
+
+    string mm=SMI;
+    for (int q=0;q<mm.length();q++) {
+        if (mm[q]=='/') mm[q]='u';
+        if (mm[q]=='\\') mm[q]='d';
+    }
+
+	//ofstream ouf1(para.smidir+"mds/"+mm+".synonyms");
+	ofstream ouf1(para.outdir+mm+".synonyms");
+
+	ouf1 << "Original SMILES: " << SMI << endl;
+
+    vector<int> nonH_ord(0);
+    vector<int> H_ord(0);
+    vector<int> ord(0);
+    vector<string> memo(0);
+    memo.push_back(SMI);
+    unsigned int natom=0;
+
+    FOR_ATOMS_OF_MOL(atom, mol) {
+        if (atom->GetAtomicNum()!=1 && atom->GetAtomicNum()!=0) {
+            nonH_ord.push_back(atom->GetIdx()); //atom->GetIdx()
+            natom++;
+        }
+        else if (atom->GetAtomicNum()==1 || atom->GetAtomicNum()==0) {
+            H_ord.push_back(atom->GetIdx()); //atom->GetIdx()
+        }
+    }
+    nonH_ord.reserve(nonH_ord.size());
+    H_ord.reserve(H_ord.size());
+
+    ord.resize(0);
+    ord.reserve(nonH_ord.size()+H_ord.size());
+    if (0) {
+        if (1) {
+            sort(nonH_ord.begin(),nonH_ord.end());
+            do {
+                ord.resize(0);
+                for (unsigned int i=0;i<nonH_ord.size();i++) ord.push_back(nonH_ord.at(i));
+                for (unsigned int i=0;i<H_ord.size();i++) ord.push_back(H_ord.at(i));
+
+                mol.RenumberAtoms(ord);
+                string buf=mol2smi(mol);
+
+                //cout << buf << endl;
+                ouf1 << buf << endl;
+            } while ( next_permutation(nonH_ord.begin(),nonH_ord.end()) ); //ord.begin(),ord.end()
+        }
+        if (0) {
+            for (unsigned int i=0;i<(nonH_ord.size()+H_ord.size());i++) ord.push_back(i+1);
+            do {
+                mol.RenumberAtoms(ord);
+
+                cout << mol2smi(mol) << endl;
+            } while ( next_permutation(nonH_ord.begin(),nonH_ord.end()) ); //ord.begin(),ord.end()
+
+        }
+    }
+    if (1) {
+        long long unsigned int N_arrange=tgamma(nonH_ord.size()+1),ct=0,n_repeat=0;
+        unsigned int digits = 0;
+        if (nonH_ord.size()>=2) digits = log10(N_arrange)+1;
+        if (0) {
+            for (unsigned int i=0;i<(nonH_ord.size()+H_ord.size());i++) ord.push_back(i+1);
+        }
+
+        for (long long unsigned int i=1;i<=N_arrange;i++) {
+            if (1) {
+                random_shuffle(nonH_ord.begin(),nonH_ord.end());
+                ord.resize(0);
+                for (unsigned int j=0;j<nonH_ord.size();j++) ord.push_back(nonH_ord.at(j));
+                for (unsigned int j=0;j<H_ord.size();j++) ord.push_back(H_ord.at(j));
+            }
+            if (0) {
+                random_shuffle(ord.begin(),ord.end());
+            }
+
+            mol.RenumberAtoms(ord);
+            string buf=mol2smi(mol);
+
+            for (unsigned int j=0;j<memo.size();j++) {
+                if (memo.at(j)==buf) {
+                    //i--;
+                    //i=memo.size()-1;
+                    n_repeat++;
+                    break;
+                }
+                else if (memo.at(j)!=buf && j>=memo.size()-1) {
+                    memo.push_back(buf);
+                    //cout << setw(digits+1) << (ct+1) << " " << setw(80) << buf ;
+                    ouf1 << setw(digits+1) << (ct+1) << " " << setw(80) << buf ;
+                    ct++;
+                    //mol.RenumberAtoms(ori_ord);
+                    n_repeat=0;
+
+                    if (0) for (unsigned int k=0;k<memo.size();k++) cout << memo.at(k) << endl;
+                }
+            }
+
+            if (n_repeat>=pow(nonH_ord.size(),3)) break;
+        }
+    }
+
+    ouf1.close();
+
+
+	return 1;
+}

@@ -15,7 +15,7 @@
 #include <cstdio> 
 #include <cctype>
 #include <sstream>
-#include "ATOM.h"
+#include "ELEMENTS.h"
 #include "MOLECULE.h"
 #include "MATRIX.h"
 #include "OPT.h"
@@ -67,12 +67,12 @@ class IL {
 		
 		int pair();
 		int crossover(IL &il,int pp, int jj,int pp1, int jj1);
-		int add(int pt, int id, int b,int pt1, int id1, int b1);
-		int subtract(int n,int mode,int n1,int mode1);
-		int combine(IL &il, int k,int p,int b,int k1,int p1,int b1);
-		int exchange(int n,int id,int id2,int bond,int n_1,int id_1,int id2_1,int bond_1);
-		int exchange1(int n,int id,int bnd2par,int bnd2des,int n_1,int id_1,int bnd2par_1,int bnd2des_1);
-		int ring(int pt1,int pt2,int pt1_1,int pt2_1);
+		int addition(int pt, int id, int b,int pt1, int id1, int b1);
+		int subtraction(int n,int mode,int n1,int mode1);
+		int combination(IL &il, int k,int p,int b,int k1,int p1,int b1);
+		int change_bnd(int n,int id,int id2,int bond,int n_1,int id_1,int id2_1,int bond_1);
+		int change_ele(int n,int id,int bnd2par,int bnd2des,int n_1,int id_1,int bnd2par_1,int bnd2des_1);
+		int cyclization(int pt1,int pt2,int bnd,int pt1_1,int pt2_1,int bnd_1);
 		int mds2smi();
 		int replace(IL &);
 		int reset();
@@ -80,6 +80,8 @@ class IL {
 		int input();
 		int print(ofstream &outs);
 		int canonicalize_SMILES();
+        int change_chirality(int pos1,int pos2);
+        int change_cistrans(int pos1,int w1,int pos2,int w2);
 };
 
 

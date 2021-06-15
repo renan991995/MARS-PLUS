@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -N MARS-IL-API2
+#PBS -N MARSIL-paper
 #PBS -q workq
 #PBS -l nodes=cn17:ppn=1
 #PBS -o error.out
@@ -21,7 +21,8 @@ cd $PBS_O_WORKDIR
 
 ######################################################################
 
-rm  -r  ./CMakeFiles  ./cmake_install.cmake  ./CMakeCache.txt  ./*.o   ./molecule.log  2> /dev/null
+rm  -r  ./CMakeFiles  ./cmake_install.cmake  ./CMakeCache.txt  ./*.o   ./molecule.log   2> /dev/null
+rm ./*mds ./*mol ./mds/*enc ./mds/*synonyms  2> /dev/null
 #mycmk='/home/akitainu/bin/cmake-install/cmake-2.6.4/bin/cmake'
 #mymk='/home/akitainu/bin/make-install/make-3.81/bin/make'
 mycmk='/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake'

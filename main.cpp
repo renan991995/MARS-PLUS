@@ -1,4 +1,4 @@
-#include "ATOM.h"
+#include "ELEMENTS.h"
 #include "MOLECULE.h"
 #include "MATRIX.h"
 #include "OPT.h"
@@ -27,6 +27,7 @@ int main(int argc, char **argv) {
 		exit(1);
 	}
 	rd_para(argv);
+	clearlog();
 	
     MOLECULE *gs=NULL;
 	IL *gsion=NULL;
@@ -35,140 +36,502 @@ int main(int argc, char **argv) {
 	data.set_up();
     
 	mk_datlist(); 
+
+	para.stat.open("./stat.txt");
    
 	if (!para.ion) {
 		cout<<"Read the molecules."<<endl;    
-		rd_mols(gs,&data);
-		string smi1=gs[0].molesmi,smi2=gs[1].molesmi;
 
-        cout<<"Do exhaustive exchange"<<endl;
-        exhaustive_exchange(gs[0]);
+		if (1) {
 
-		gs[0].smiles=smi1;  gs[0].input();
-		gs[1].smiles=smi2;  gs[1].input();
-        cout<<"Do exhaustive addition"<<endl;
-        exhaustive_addition(gs[0]);
+			stringstream num(""),num1("");
+
+			while (para.round<=para.epoch) {
+
+				int nmol=0; //=para.gssize;
+				if (gs!=NULL) {
+					delete [] gs;
+					gs=NULL;
+				}
+                gs=new MOLECULE [2];
+                gs[0].data=&data;
+                gs[1].data=&data;
+
+	            num.str("");
+		        num << para.round-1;
+
+				if (para.round==1) nmol=cal_nmol(para.guess);
+				else nmol=cal_nmol(("./mol_op-"+num.str()+".txt"));
+
+                num1.str("");
+                num1 << para.round;
+				para.glbouf.open("./mol_op-"+num1.str()+".txt");
+				for (int i=0;i<nmol;i++) {
+					string smi="";//gs[0].molesmi;
+
+					if (para.round==1) smi=rd_1molsmi(para.guess,i);
+					else smi=rd_1molsmi(("./mol_op-"+num.str()+".txt"),i);
+
+					if (para.operation=="Exchange_ele" || para.operation=="All") {
+						gs[0].molesmi=gs[0].smiles=smi;   gs[0].input();
+            			cout<<"Do exhaustive exchange"<<endl;
+            			exhaustive_change_ele(gs[0]);
+					}
+
+					if (para.operation=="Exchange_bnd" || para.operation=="All") {
+                    	gs[0].molesmi=gs[0].smiles=smi;   gs[0].input();
+                    	cout<<"Do exhaustive exchangebnd"<<endl;
+                    	exhaustive_change_bnd(gs[0]);
+					}
+
+					if (para.operation=="Addition" || para.operation=="All") {
+						gs[0].molesmi=gs[0].smiles=smi;   gs[0].input();
+            			cout<<"Do exhaustive addition"<<endl;
+            			exhaustive_addition(gs[0]);
+					}
+
+					if (para.operation=="Insertion" || para.operation=="All") {
+						gs[0].molesmi=gs[0].smiles=smi;   gs[0].input();
+            			cout<<"Do exhaustive insertion"<<endl;
+            			exhaustive_insertion(gs[0]);
+					}
+
+					if (para.operation=="Subtraction" || para.operation=="All") {
+						gs[0].molesmi=gs[0].smiles=smi;   gs[0].input();
+            			cout<<"Do exhaustive subtraction"<<endl;
+            			exhaustive_subtraction(gs[0]);
+					}
+
+					if (para.operation=="Cistrans_inversion" || para.operation=="All") {
+                    	gs[0].molesmi=gs[0].smiles=smi;   gs[0].input();
+                    	cout<<"Do exhaustive cis-trans inversion"<<endl;
+                    	exhaustive_change_cistrans(gs[0]);
+					}
+
+					if (para.operation=="Chirality_inversion" || para.operation=="All") {
+                    	gs[0].molesmi=gs[0].smiles=smi;   gs[0].input();
+                    	cout<<"Do exhaustive chirality inversion"<<endl;
+                    	exhaustive_change_chirality(gs[0]);
+					}
+
+					if (para.operation=="Cyclization" || para.operation=="All") {
+						gs[0].molesmi=gs[0].smiles=smi;   gs[0].input();
+            			cout<<"Do exhaustive cyclization"<<endl;
+            			exhaustive_cyclization(gs[0]);
+					}
+
+					if (para.operation=="Decyclization" || para.operation=="All") {
+						gs[0].molesmi=gs[0].smiles=smi;   gs[0].input();
+            			cout<<"Do exhaustive decyclization"<<endl;
+            			exhaustive_decyclization(gs[0]);
+					}
+
+                    for (int j=i;j<nmol;j++) {
+                        string smi2=""; //gs[1].molesmi;
+
+	                    if (para.round==1) smi2=rd_1molsmi(para.guess,j);
+    	                else smi2=rd_1molsmi(("./mol_op-"+num.str()+".txt"),j);
+
+						if (para.operation=="Crossover" || para.operation=="All") {
+							gs[0].molesmi=gs[0].smiles=smi; gs[0].input();
+                        	gs[1].molesmi=gs[1].smiles=smi2; gs[1].input();
+                        	cout<<"Do exhaustive crossover"<<endl;
+                        	exhaustive_crossover(gs[0],gs[1]);
+						}
+
+						if (para.operation=="Combination" || para.operation=="All") {
+                        	gs[0].molesmi=gs[0].smiles=smi; gs[0].input();
+                        	gs[1].molesmi=gs[1].smiles=smi2; gs[1].input();
+                        	cout<<"Do exhaustive combination"<<endl;
+                        	exhaustive_combination(gs[0],gs[1]);
+						}
+                    }
+
+				}
+				para.glbouf.close();
+
+				para.round++;
+
+			}
+
+		}
+
+		if (0) {
+			rd_mols(gs,&data);
+			string smi1=gs[0].molesmi,smi2=gs[1].molesmi;
+
+            gs[0].molesmi=smi1;  gs[0].input();
+            gs[1].molesmi=smi2;  gs[1].input();
+        	cout<<"Do exhaustive change_rmr"<<endl;
+        	exhaustive_change_ele(gs[0]);
+
+            gs[0].molesmi=smi1;  gs[0].input();
+            gs[1].molesmi=smi2;  gs[1].input();
+            cout<<"Do exhaustive change_bnd"<<endl;
+            exhaustive_change_bnd(gs[0]);
+
+			gs[0].molesmi=smi1;  gs[0].input();
+			gs[1].molesmi=smi2;  gs[1].input();
+        	cout<<"Do exhaustive addition"<<endl;
+        	exhaustive_addition(gs[0]);
 	    
-        gs[0].smiles=smi1;  gs[0].input();
-        gs[1].smiles=smi2;  gs[1].input();
-		cout<<"Do exhaustive combination"<<endl;
-		exhaustive_combination(gs[0],gs[1]);
+            gs[0].molesmi=smi1;  gs[0].input();
+            gs[1].molesmi=smi2;  gs[1].input();
+        	cout<<"Do exhaustive insertion"<<endl;
+        	exhaustive_insertion(gs[0]);
+
+            gs[0].molesmi=smi1;  gs[0].input();
+            gs[1].molesmi=smi2;  gs[1].input();
+			cout<<"Do exhaustive combination"<<endl;
+			exhaustive_combination(gs[0],gs[1]);
     	
-        gs[0].smiles=smi1;  gs[0].input();
-        gs[1].smiles=smi2;  gs[1].input();
-		cout<<"Do exhaustive crossover"<<endl;
-		exhaustive_crossover(gs[0],gs[1]);
+            gs[0].molesmi=smi1;  gs[0].input();
+            gs[1].molesmi=smi2;  gs[1].input();
+			cout<<"Do exhaustive crossover"<<endl;
+			exhaustive_crossover(gs[0],gs[1]);
 		
-        gs[0].smiles=smi1;  gs[0].input();
-        gs[1].smiles=smi2;  gs[1].input();
-		cout<<"Do exhaustive subtraction"<<endl;
-		exhaustive_subtraction(gs[0]);
+            gs[0].molesmi=smi1;  gs[0].input();
+            gs[1].molesmi=smi2;  gs[1].input();
+			cout<<"Do exhaustive subtraction"<<endl;
+			exhaustive_subtraction(gs[0]);
 		
-		
-		//cout<<"Do exhaustive addition"<<endl;
-		//exhaustive_addition(gs[0]);
-		
-		
-		//cout<<"Do exhaustive exchange"<<endl;
-		//exhaustive_exchange(gs[0]);
-				
-        gs[0].smiles=smi1;  gs[0].input();
-        gs[1].smiles=smi2;  gs[1].input();
-		cout<<"Do exhaustive cyclization"<<endl;
-		exhaustive_cyclization(gs[0]);
-		
+            gs[0].molesmi=smi1;  gs[0].input();
+            gs[1].molesmi=smi2;  gs[1].input();
+			cout<<"Do exhaustive cyclization"<<endl;
+			exhaustive_cyclization(gs[0]);
+
+            gs[0].molesmi=smi1;  gs[0].input();
+            gs[1].molesmi=smi2;  gs[1].input();
+        	cout<<"Do exhaustive decyclization"<<endl;
+        	exhaustive_decyclization(gs[0]);		
 	
-        gs[0].smiles=smi1;  gs[0].input();
-        gs[1].smiles=smi2;  gs[1].input();
-		cout<<"Make benzene, c1ccccc1 from methane, C"<<endl;
-		CH4_to_Bz(gs[0]);
-	
+			//cout<<"Make benzene from methane (path 1)"<<endl;
+			//CH4_to_Bz_path1(gs[0]);
+
+        	//cout<<"Make benzene from methane (path 2)"<<endl;
+        	//CH4_to_Bz_path2(gs[0]);
+
+        	//cout<<"Make aspirin from methane"<<endl;
+        	//CH4_to_aspirin(gs[0]);
+
+			//cout<<"Make alpha-carotene from methane (path 1)"<<endl;
+			//CH4_to_alpha_carotene_path1(gs[0]);
+
+			//cout<<"Make alpha-carotene from methane (path 2)"<<endl;
+			//CH4_to_alpha_carotene_path2(gs[0]);
+		}
 	
 		cout<<"Mission completed!"<<endl;
-		cout<<"See the result for each txt file. (combination.txt, crossover.txt, addition.txt, subtraction.txt, circle.txt, and benzene.txt)"<<endl;		
+		cout<<"See the result for each txt file. (combination.txt, crossover.txt, addition.txt, subtraction.txt, circle.txt, aspirin.txt, and benzene.txt)"<<endl;		
 	}
 	
+
 	if (para.ion) {
-		cout<<"Read the ILs."<<endl;    
-		rd_ILs(gsion,&data);
-		string smi1_cat=gsion[0].ion[0].molesmi,smi1_an=gsion[0].ion[1].molesmi;    
-		string smi2_cat=gsion[1].ion[0].molesmi,smi2_an=gsion[1].ion[1].molesmi;
-
-        cout<<"Do exhaustive combination"<<endl;
-        exhaustive_combination1(gsion[0],gsion[1]);
-
-        gsion[0].ion[0].smiles=smi1_cat;    gsion[0].ion[1].smiles=smi1_an;
-        gsion[1].ion[0].smiles=smi2_cat;    gsion[1].ion[1].smiles=smi2_an;
-        gsion[0].input();                    gsion[1].input();
-        cout<<"Do exhaustive change of cis/trans"<<endl;
-        exhaustive_changect1(gsion[0]);
-
-		gsion[0].ion[0].smiles=smi1_cat;    gsion[0].ion[1].smiles=smi1_an;
-		gsion[1].ion[0].smiles=smi2_cat;    gsion[1].ion[1].smiles=smi2_an;
-		gsion[0].input();					 gsion[1].input();
-		cout<<"Do switch"<<endl;
-		swit(gsion[0],gsion[1]);
-
-        gsion[0].ion[0].smiles=smi1_cat;    gsion[0].ion[1].smiles=smi1_an;
-        gsion[1].ion[0].smiles=smi2_cat;    gsion[1].ion[1].smiles=smi2_an;
-        gsion[0].input();                    gsion[1].input();
-        cout<<"Do exhaustive crossover"<<endl;
-        exhaustive_crossover1(gsion[0],gsion[1]);
-
-        gsion[0].ion[0].smiles=smi1_cat;    gsion[0].ion[1].smiles=smi1_an;
-        gsion[1].ion[0].smiles=smi2_cat;    gsion[1].ion[1].smiles=smi2_an;
-        gsion[0].input();                    gsion[1].input();
-        cout<<"Do exhaustive subtraction"<<endl;
-        exhaustive_subtraction1(gsion[0]);
-
-        //gsion[0].ion[0].smiles=smi1_cat;    gsion[0].ion[1].smiles=smi1_an;
-        //gsion[1].ion[0].smiles=smi2_cat;    gsion[1].ion[1].smiles=smi2_an;
-        //gsion[0].input();                    gsion[1].input();
-        //cout<<"Do exhaustive combination"<<endl;
-        //exhaustive_combination1(gsion[0],gsion[1]);
-
-        gsion[0].ion[0].smiles=smi1_cat;    gsion[0].ion[1].smiles=smi1_an;
-        gsion[1].ion[0].smiles=smi2_cat;    gsion[1].ion[1].smiles=smi2_an;
-        gsion[0].input();                    gsion[1].input();		
-		cout<<"Do exhaustive addition"<<endl;
-		exhaustive_addition1(gsion[0]);
 		
-		
-        gsion[0].ion[0].smiles=smi1_cat;    gsion[0].ion[1].smiles=smi1_an;
-        gsion[1].ion[0].smiles=smi2_cat;    gsion[1].ion[1].smiles=smi2_an;
-        gsion[0].input();                    gsion[1].input();		
-		cout<<"Do exhaustive exchange"<<endl;
-		exhaustive_exchange1(gsion[0]);
-		
-		
-        gsion[0].ion[0].smiles=smi1_cat;    gsion[0].ion[1].smiles=smi1_an;
-        gsion[1].ion[0].smiles=smi2_cat;    gsion[1].ion[1].smiles=smi2_an;
-        gsion[0].input();                    gsion[1].input();		
-		cout<<"Do exhaustive cyclization"<<endl;
-		exhaustive_cyclization1(gsion[0]);
-		
+        cout<<"Read the ILs."<<endl;
 
-		//cout<<"Make benzene, c1ccccc1 from methane, C"<<endl;
-		//CH4_to_Bz(gs[0]);
+		if (1) {
+
+			stringstream num(""),num1("");
+            while (para.round<=para.epoch) {
+
+				int ncat=0,nan=0;
+                if (gsion!=NULL) {
+                    delete [] gsion;
+                    gsion=NULL;
+                }
+                gsion=new IL [2];
+                gsion[0].ion[0].data=&data;
+				gsion[0].ion[1].data=&data;
+                gsion[1].ion[0].data=&data;
+                gsion[1].ion[1].data=&data;
+
+                num.str("");
+                num << para.round-1;
+
+				if (para.round==1) ncat=cal_nIL(para.guess);
+				else ncat=cal_nmol(("./cat_op-"+num.str()+".txt"));
+
+                if (para.round==1) nan=cal_nIL(para.guess);
+                else nan=cal_nmol(("./an_op-"+num.str()+".txt"));
+
+                num1.str("");
+                num1 << para.round;
+                para.glbouf.open("./cat_op-"+num1.str()+".txt");
+				para.glbouf1.open("./an_op-"+num1.str()+".txt");
+
+                for (int i=0;i<ncat;i++) { 
+					for (int j=0;j<nan;j++) {
+                    	string smicat="",smian=""; //gsion[0].ion[0].molesmi //gsion[0].ion[1].molesmi
+
+						if (para.round==1) rd_1ILsmi(para.guess,i,j,smicat,smian);
+						else {
+							smicat=rd_1molsmi(("./cat_op-"+num.str()+".txt"),i);
+							smian=rd_1molsmi(("./an_op-"+num.str()+".txt"),j);
+						}
+
+						if (para.operation=="Cistrans_inversion" || para.operation=="All") {
+		            		gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
+							gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
+							gsion[0].input();
+            				cout<<"Do exhaustive change_cistrans"<<endl;
+            				exhaustive_change_cistrans1(gsion[0]);
+            				//system("rm ./mds/* 2> /dev/null");
+						}
+
+						if (para.operation=="Chirality_inversion" || para.operation=="All") {
+            				gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
+							gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
+							gsion[0].input();
+            				cout<<"Do exhaustive change_chirality"<<endl;
+            				exhaustive_change_chirality1(gsion[0]);
+            				//system("rm ./mds/* 2> /dev/null");
+						}
+
+						if (para.operation=="Subtraction" || para.operation=="All") {
+                        	gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
+                        	gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
+							gsion[0].input();
+            				cout<<"Do exhaustive subtraction"<<endl;
+            				exhaustive_subtraction1(gsion[0]);
+            				//system("rm ./mds/* 2> /dev/null");
+						}
+
+						if (para.operation=="Combination" || para.operation=="All") {
+                        	gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
+                        	gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
+							gsion[0].input();
+            				cout<<"Do exhaustive addition"<<endl;
+            				exhaustive_addition1(gsion[0]);
+            				//system("rm ./mds/* 2> /dev/null");
+						}
+
+						if (para.operation=="Insertion" || para.operation=="All") {
+                        	gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
+                        	gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
+							gsion[0].input();
+                        	cout<<"Do exhaustive insertion"<<endl;
+                        	exhaustive_insertion1(gsion[0]);
+                        	//system("rm ./mds/* 2> /dev/null");
+						}
+
+						if (para.operation=="Exchange_ele" || para.operation=="All") {
+                        	gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
+                        	gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
+							gsion[0].input();
+            				cout<<"Do exhaustive change_ele"<<endl;
+            				exhaustive_change_ele1(gsion[0]);
+            				//system("rm ./mds/* 2> /dev/null");
+						}
+
+						if (para.operation=="Exchange_bnd" || para.operation=="All") {
+                        	gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
+                        	gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
+							gsion[0].input();
+                        	cout<<"Do exhaustive change_bnd"<<endl;
+                        	exhaustive_change_bnd1(gsion[0]);
+                        	//system("rm ./mds/* 2> /dev/null");
+						}
+
+						if (para.operation=="Cyclization" || para.operation=="All") {
+                        	gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
+                        	gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
+							gsion[0].input();
+			            	cout<<"Do exhaustive cyclization"<<endl;
+            				exhaustive_cyclization1(gsion[0]);
+            				//system("rm ./mds/* 2> /dev/null");
+						}
+
+						if (para.operation=="Decyclization" || para.operation=="All") {
+                        	gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
+                        	gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
+							gsion[0].input();
+                        	cout<<"Do exhaustive decyclization"<<endl;
+                        	exhaustive_decyclization1(gsion[0]);
+                        	//system("rm ./mds/* 2> /dev/null");
+						}
+
+						for (int k=i+1;k<ncat;k++) {
+							for (int l=j+1;l<nan;l++) {
+
+		                        string smicat2="",smian2=""; //gsion[1].ion[0].molesmi //gsion[1].ion[0].molesmi
+
+		                        if (para.round==1) rd_1ILsmi(para.guess,k,l,smicat2,smian2);
+        		                else {
+                		            smicat2=rd_1molsmi(("./cat_op-"+num.str()+".txt"),k);
+                        		    smian2=rd_1molsmi(("./an_op-"+num.str()+".txt"),l);
+                        		}
+
+								if (para.operation=="Crossover" || para.operation=="All") {
+					            	gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;    gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
+            						gsion[1].ion[0].molesmi=gsion[1].ion[0].smiles=smicat2;   gsion[1].ion[1].molesmi=gsion[1].ion[1].smiles=smian2;
+            						gsion[0].input();
+									gsion[1].input();
+        		                	cout<<"Do exhaustive crossover"<<endl;
+                		        	exhaustive_crossover1(gsion[0],gsion[1]);
+								}
+
+								if (para.operation=="Combination" || para.operation=="All") {
+                                	gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;    gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
+                                	gsion[1].ion[0].molesmi=gsion[1].ion[0].smiles=smicat2;   gsion[1].ion[1].molesmi=gsion[1].ion[1].smiles=smian2;
+                                    gsion[0].input();
+                                    gsion[1].input();
+                        			cout<<"Do exhaustive combination"<<endl;
+                        			exhaustive_combination1(gsion[0],gsion[1]);
+								}
+							}
+						}
+					}
+
+                }
+                para.glbouf.close();
+				para.glbouf1.close();
+
+                para.round++;
+
+            }
+
+        }
+
+		if (0) {
+			rd_ILs(gsion,&data);
+
+			string smi1_cat=gsion[0].ion[0].molesmi,smi1_an=gsion[0].ion[1].molesmi;    
+			string smi2_cat=gsion[1].ion[0].molesmi,smi2_an=gsion[1].ion[1].molesmi;
+
+            gsion[0].ion[0].molesmi=smi1_cat;    gsion[0].ion[1].molesmi=smi1_an;
+            gsion[1].ion[0].molesmi=smi2_cat;    gsion[1].ion[1].molesmi=smi2_an;
+			gsion[0].input();                    gsion[1].input();
+        	cout<<"Do exhaustive combination"<<endl;
+        	exhaustive_combination1(gsion[0],gsion[1]);
+			//system("rm ./mds/* 2> /dev/null");
+
+            gsion[0].ion[0].molesmi=smi1_cat;    gsion[0].ion[1].molesmi=smi1_an;
+            gsion[1].ion[0].molesmi=smi2_cat;    gsion[1].ion[1].molesmi=smi2_an;
+            gsion[0].input();                    gsion[1].input();
+            cout<<"Do exhaustive crossover"<<endl;
+            exhaustive_crossover1(gsion[0],gsion[1]);
+            //system("rm ./mds/* 2> /dev/null");
+
+            gsion[0].ion[0].molesmi=smi1_cat;    gsion[0].ion[1].molesmi=smi1_an;
+            gsion[1].ion[0].molesmi=smi2_cat;    gsion[1].ion[1].molesmi=smi2_an;
+        	gsion[0].input();                    gsion[1].input();
+        	cout<<"Do exhaustive change_cistrans"<<endl;
+        	exhaustive_change_cistrans1(gsion[0]);
+			//system("rm ./mds/* 2> /dev/null");
+
+        	gsion[0].ion[0].molesmi=smi1_cat;    gsion[0].ion[1].molesmi=smi1_an;
+        	gsion[1].ion[0].molesmi=smi2_cat;    gsion[1].ion[1].molesmi=smi2_an;
+        	gsion[0].input();                    gsion[1].input();
+        	cout<<"Do exhaustive change_chirality"<<endl;
+        	exhaustive_change_chirality1(gsion[0]);
+			//system("rm ./mds/* 2> /dev/null");
+
+            gsion[0].ion[0].molesmi=smi1_cat;    gsion[0].ion[1].molesmi=smi1_an;
+            gsion[1].ion[0].molesmi=smi2_cat;    gsion[1].ion[1].molesmi=smi2_an;
+			gsion[0].input();					 gsion[1].input();
+			cout<<"Do exhaustive component_swap"<<endl;
+			comp_swap(gsion[0],gsion[1]);
+			//system("rm ./mds/* 2> /dev/null");
+
+            gsion[0].ion[0].molesmi=smi1_cat;    gsion[0].ion[1].molesmi=smi1_an;
+            gsion[1].ion[0].molesmi=smi2_cat;    gsion[1].ion[1].molesmi=smi2_an;
+        	gsion[0].input();                    gsion[1].input();
+        	cout<<"Do exhaustive subtraction"<<endl;
+        	exhaustive_subtraction1(gsion[0]);
+			//system("rm ./mds/* 2> /dev/null");
+
+            gsion[0].ion[0].molesmi=smi1_cat;    gsion[0].ion[1].molesmi=smi1_an;
+            gsion[1].ion[0].molesmi=smi2_cat;    gsion[1].ion[1].molesmi=smi2_an;
+        	gsion[0].input();                    gsion[1].input();		
+			cout<<"Do exhaustive addition"<<endl;
+			exhaustive_addition1(gsion[0]);
+			//system("rm ./mds/* 2> /dev/null");
+
+            gsion[0].ion[0].molesmi=smi1_cat;    gsion[0].ion[1].molesmi=smi1_an;
+            gsion[1].ion[0].molesmi=smi2_cat;    gsion[1].ion[1].molesmi=smi2_an;
+            gsion[0].input();                    gsion[1].input();
+            cout<<"Do exhaustive insertion"<<endl;
+            exhaustive_insertion1(gsion[0]);
+            //system("rm ./mds/* 2> /dev/null");
+
+            gsion[0].ion[0].molesmi=smi1_cat;    gsion[0].ion[1].molesmi=smi1_an;
+            gsion[1].ion[0].molesmi=smi2_cat;    gsion[1].ion[1].molesmi=smi2_an;		
+        	gsion[0].input();                    gsion[1].input();		
+			cout<<"Do exhaustive change_ele"<<endl;
+			exhaustive_change_ele1(gsion[0]);
+			//system("rm ./mds/* 2> /dev/null");
+
+            gsion[0].ion[0].molesmi=smi1_cat;    gsion[0].ion[1].molesmi=smi1_an;
+            gsion[1].ion[0].molesmi=smi2_cat;    gsion[1].ion[1].molesmi=smi2_an;
+            gsion[0].input();                    gsion[1].input();
+            cout<<"Do exhaustive change_bnd"<<endl;
+            exhaustive_change_bnd1(gsion[0]);
+            //system("rm ./mds/* 2> /dev/null");
+
+		
+            gsion[0].ion[0].molesmi=smi1_cat;    gsion[0].ion[1].molesmi=smi1_an;
+            gsion[1].ion[0].molesmi=smi2_cat;    gsion[1].ion[1].molesmi=smi2_an;
+	       	gsion[0].input();                    gsion[1].input();		
+			cout<<"Do exhaustive cyclization"<<endl;
+			exhaustive_cyclization1(gsion[0]);
+			//system("rm ./mds/* 2> /dev/null");
+
+            gsion[0].ion[0].molesmi=smi1_cat;    gsion[0].ion[1].molesmi=smi1_an;
+            gsion[1].ion[0].molesmi=smi2_cat;    gsion[1].ion[1].molesmi=smi2_an;
+            gsion[0].input();                    gsion[1].input();
+            cout<<"Do exhaustive decyclization"<<endl;
+            exhaustive_decyclization1(gsion[0]);
+
+			//cout<<"Make benzene, c1ccccc1 from methane, C"<<endl;
+			//CH4_to_Bz(gs[0]);
 	
-	
-		cout<<"Mission completed!"<<endl;
-		cout<<"See the result for each txt file. (combination-IL.txt, crossover-IL.txt, addition-IL.txt, subtraction-IL.txt, circle-IL.txt, and benzene-IL.txt)"<<endl;		
-
-		for (int i=0;i<para.gssize;i++) {
-			for (int j=0;j<gsion[i].nsubcomp;j++) {
-				if (gsion[i].ion[j].data!=NULL) {
-					delete gsion[i].ion[j].data;
-					gsion[i].ion[j].data=NULL;
-				}
-			}
+			cout<<"Mission completed!"<<endl;
+			cout<<"See the result for each txt file. (combination-IL.txt, crossover-IL.txt, addition-IL.txt, subtraction-IL.txt, circle-IL.txt, and benzene-IL.txt)"<<endl;
 		}
 	}
 
-    
+ 
+	para.stat.close();
+
+
+	if (1) {
+        if (gs!=NULL) {
+            delete [] gs;
+            gs=NULL;
+        }
+        gs=new MOLECULE [1];
+        gs[0].data=&data;
+
+        cout<<"Make benzene from methane (path 1)"<<endl;
+        CH4_to_Bz_path1(gs[0]);
+
+        cout<<"Make benzene from methane (path 2)"<<endl;
+        CH4_to_Bz_path2(gs[0]);
+
+        cout<<"Make aspirin from methane"<<endl;
+        CH4_to_aspirin(gs[0]);
+
+        cout<<"Make alpha-carotene from methane (path 1)"<<endl;
+        CH4_to_alpha_carotene_path1(gs[0]);
+
+        cout<<"Make alpha-carotene from methane (path 2)"<<endl;
+        CH4_to_alpha_carotene_path2(gs[0]);
+
+        cout<<"Make alpha-carotene from methane (path 3)"<<endl;
+        CH4_to_alpha_carotene_path3(gs[0]);
+
+	}
+
+
+
+
+	//gs[0].data=gs[1].data=NULL;   
 	delete [] gs;
     gs=NULL;
     
+	//gsion[0].ion[0].data=gsion[0].ion[1].data=NULL;
+	//gsion[1].ion[0].data=gsion[1].ion[1].data=NULL;
     delete [] gsion;
     gsion=NULL;
     

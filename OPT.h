@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <iostream>
 #include "MATRIX.h"
-#include "ATOM.h"
+#include "ELEMENTS.h"
 #include <fstream>
 #include <string>
 using namespace std;

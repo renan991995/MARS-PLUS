@@ -1,0 +1,14 @@
+Initialization C
+addition(0,2,1) CC
+addition(1,6,2) CC=O
+addition(1,5,1) CC(=O)O
+addition(3,2,1) COC(=O)C
+addition(4,2,2) CC(=O)OC=C
+addition(5,2,1) C/C=C/OC(=O)C
+addition(6,6,2) O=C/C=C/OC(=O)C
+addition(6,5,1) CC(=O)O/C=C/C(=O)O
+addition(5,2,1) CC(=O)O/C=C(/C(=O)O)\C
+addition(9,2,2) C=C/C(=C\OC(=O)C)/C(=O)O
+addition(10,2,1) C/C=C/C(=COC(=O)C)C(=O)O
+addition(11,2,2) C=C/C=C/C(=COC(=O)C)C(=O)O
+cyclization(4,12,1) CC(=O)Oc1ccccc1C(=O)O

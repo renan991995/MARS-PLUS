@@ -39,6 +39,8 @@ class ATOM
 	public:
 		ATOM() {
 			order.resize(0);
+			//cybnd.resize(0);
+			//cypos.resize(0);
 			//order=NULL;
 			name=atm="";
 			index=2;
@@ -55,6 +57,8 @@ class ATOM
 		}
 		~ATOM() {
 			order.clear();
+			//cybnd.clear();
+			//cypos.clear();
 			//vector<int>().swap(order);
 		}
 		int id;
@@ -65,6 +69,8 @@ class ATOM
 		int nh;
 		int bd[3];
 		int type;
+		//vector<int> cybnd;
+		//vector< vector<int> > cypos;
 		int index;
 		double rb;
 		double probability;
@@ -113,15 +119,15 @@ class POOL
             if(a.size()) {
                 for (int r1=0;r1<num;r1++) {
                     if(a.at(r1).order.size()) {
-                        a.at(r1).order.clear();
+                        a.at(r1).order.resize(0);
                         //vector<int>().swap(a.at(r1).order);
                     }
                 }
-                a.clear();
+                a.resize(0);
                 //vector<ATOM>().swap(a);
             }
 
-            vector<ATOM>().swap(a);
+            //vector<ATOM>().swap(a);
 		}
 		int num;
 		//ATOM *a; //  types of atoms

@@ -15,7 +15,7 @@
 #include <cstdio> 
 #include <cctype>
 #include <sstream>
-#include "ATOM.h"
+#include "ELEMENTS.h"
 #include "MATRIX.h"
 #include "OPT.h"
 #include "PARAMETER.h"
@@ -30,8 +30,12 @@ void exhaustive_combination1(IL &A, IL &B);
 void exhaustive_crossover1(IL &A, IL &B);
 void exhaustive_subtraction1(IL &A);
 void exhaustive_addition1(IL &A);
-void exhaustive_exchange1(IL &A);
+void exhaustive_change_ele1(IL &A);
+void exhaustive_change_bnd1(IL &A);
+void exhaustive_insertion1(IL &A);
 void exhaustive_cyclization1(IL &A);
-void exhaustive_changect1(IL &A);
+void exhaustive_change_cistrans1(IL &A);
+void exhaustive_change_chirality1(IL &A);
+void exhaustive_decyclization1(IL &A);
 
 #endif

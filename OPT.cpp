@@ -1,6 +1,6 @@
 #include "OPT.h"
 #include "MATRIX.h"
-#include "ATOM.h"
+#include "ELEMENTS.h"
 #include <iostream>
 #include <cmath>
 #include <cstdlib>
