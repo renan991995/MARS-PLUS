@@ -477,6 +477,7 @@ int SMI_Enumerator(string SMI) {
     for (int q=0;q<mm.length();q++) {
         if (mm[q]=='/') mm[q]='u';
         if (mm[q]=='\\') mm[q]='d';
+		if (mm[q]=='*') mm[q]='x';
     }
 
 	//ofstream ouf1(para.smidir+"mds/"+mm+".synonyms");
