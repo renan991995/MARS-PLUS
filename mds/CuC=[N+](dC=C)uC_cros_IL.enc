@@ -1,0 +1,12 @@
+SMILES : C/C=[N+](\C=C)/C
+natom : 6   
+Pindex : 0    1    2    2    4    3    
+Cindex : 1    2    3    4    5    6    
+Rindex : 0    1    2    1    2    1    
+Mindex : 1    16   2    2    2    1    
+Cyindex : 0    0    0    0    0    0    
+protect : 0    1    0    0    0    0    
+ctsisomer_start : _    /    _    /    _    _    
+ctsisomer_end : _    _    /    _    /    _    
+if_circle : 0   
+Cybnd : 

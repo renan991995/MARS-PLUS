@@ -1,0 +1,17 @@
+Original SMILES: CC[B-](C#N)(C#N)C#N
+      1                                                            N#C[B-](C#N)(CC)C#N	
+      2                                                            N#C[B-](C#N)(C#N)CC	
+      3                                                          C([B-](C#N)(C#N)CC)#N	
+      4                                                          C(#N)[B-](C#N)(CC)C#N	
+      5                                                          [B-](C#N)(C#N)(CC)C#N	
+      6                                                          C(C)[B-](C#N)(C#N)C#N	
+      7                                                            CC[B-](C#N)(C#N)C#N	
+      8                                                          C(#N)[B-](C#N)(C#N)CC	
+      9                                                          C([B-](C#N)(C#N)C#N)C	
+     10                                                            N#C[B-](CC)(C#N)C#N	
+     11                                                          C(#N)[B-](CC)(C#N)C#N	
+     12                                                          [B-](CC)(C#N)(C#N)C#N	
+     13                                                          C([B-](CC)(C#N)C#N)#N	
+     14                                                          C([B-](C#N)(CC)C#N)#N	
+     15                                                          [B-](C#N)(C#N)(C#N)CC	
+     16                                                          [B-](C#N)(CC)(C#N)C#N	

@@ -1,0 +1,17 @@
+Original SMILES: S=P[B-](C#N)(C#N)C#N
+      1                                                         C([B-](C#N)(C#N)P=S)#N	
+      2                                                           N#C[B-](C#N)(C#N)P=S	
+      3                                                           N#C[B-](P=S)(C#N)C#N	
+      4                                                         C(#N)[B-](C#N)(C#N)P=S	
+      5                                                         C(#N)[B-](C#N)(P=S)C#N	
+      6                                                           S=P[B-](C#N)(C#N)C#N	
+      7                                                         C([B-](P=S)(C#N)C#N)#N	
+      8                                                         P(=S)[B-](C#N)(C#N)C#N	
+      9                                                         [B-](C#N)(P=S)(C#N)C#N	
+     10                                                         C([B-](C#N)(P=S)C#N)#N	
+     11                                                         [B-](P=S)(C#N)(C#N)C#N	
+     12                                                           N#C[B-](C#N)(P=S)C#N	
+     13                                                         P([B-](C#N)(C#N)C#N)=S	
+     14                                                         C(#N)[B-](P=S)(C#N)C#N	
+     15                                                         [B-](C#N)(C#N)(C#N)P=S	
+     16                                                         [B-](C#N)(C#N)(P=S)C#N	

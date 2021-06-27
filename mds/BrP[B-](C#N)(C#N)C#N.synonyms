@@ -1,0 +1,17 @@
+Original SMILES: BrP[B-](C#N)(C#N)C#N
+      1                                                           N#C[B-](C#N)(C#N)PBr	
+      2                                                         C(#N)[B-](C#N)(PBr)C#N	
+      3                                                           BrP[B-](C#N)(C#N)C#N	
+      4                                                           N#C[B-](PBr)(C#N)C#N	
+      5                                                         C([B-](C#N)(PBr)C#N)#N	
+      6                                                         C(#N)[B-](C#N)(C#N)PBr	
+      7                                                         P(Br)[B-](C#N)(C#N)C#N	
+      8                                                         P([B-](C#N)(C#N)C#N)Br	
+      9                                                           N#C[B-](C#N)(PBr)C#N	
+     10                                                         C([B-](C#N)(C#N)PBr)#N	
+     11                                                         C([B-](PBr)(C#N)C#N)#N	
+     12                                                         [B-](C#N)(C#N)(PBr)C#N	
+     13                                                         [B-](PBr)(C#N)(C#N)C#N	
+     14                                                         C(#N)[B-](PBr)(C#N)C#N	
+     15                                                         [B-](C#N)(C#N)(C#N)PBr	
+     16                                                         [B-](C#N)(PBr)(C#N)C#N	
