@@ -6022,6 +6022,7 @@ int MOLECULE::change_ele(int n,int id,int bnd2par,int bnd2des,bool cistrans) {
 	}
 
 	if (1) {
+		if (isnotend) {
 		if (R!=2 && bnd2par==2 && bnd2des!=2) {
 			if (P>0) {
 				if (ctsisomer.at(0).at(n)=="" && ctsisomer.at(1).at(n)=="") {
@@ -6051,6 +6052,7 @@ int MOLECULE::change_ele(int n,int id,int bnd2par,int bnd2des,bool cistrans) {
 					}
 				}
 			}
+		}
 		}
 	}
 
