@@ -4865,9 +4865,14 @@ int MOLECULE::addition(int pt, int id, int bnd, bool cistrans) {
 	if (!data->a[Mindex.at(pt)].bd[bnd-1]) return 0;
 	if (!data->a[id].bd[bnd-1]) return 0;
 
-	int chgg=0;
-	for (int i=0;i<Cindex.size();i++) chgg+=data->a[Mindex.at(i)].chg;
-	if (data->a[id].chg*chgg<0) return 0;
+    int chgg=0;
+    for (int i=0;i<Cindex.size();i++) chgg+=data->a[Mindex.at(i)].chg;
+    if (para.ion) {
+        if (data->a[id].chg*chgg<0) return 0;
+    }
+    else {
+        else if (data->a[id].chg!=0) return 0;
+    }
 
 	bool isnotend=0;
 
@@ -5094,11 +5099,17 @@ int MOLECULE::insertion(int n,int id,int bnd2par,int bnd2des,bool cistrans) {
 
     int chgg=0;
     for (int i=0;i<Cindex.size();i++) chgg+=data->a[Mindex.at(i)].chg;
-    if (data->a[id].chg*chgg<0) return 0;
-    else if (data->a[id].chg*chgg>=0 && data->a[id].chg!=0) {
-        if (data->a[id].index<=2 && data->a[Mindex.at(n)].index>=7) return 0;
-        if (data->a[id].index>=7 && data->a[Mindex.at(n)].index<=7) return 0;
+    if (para.ion) {
+        if (data->a[id].chg*chgg<0) return 0;
+        else if (data->a[id].chg*chgg>=0 && data->a[id].chg!=0) {
+            if (data->a[id].index<=2 && data->a[Mindex.at(n)].index>=7) return 0;
+            if (data->a[id].index>=7 && data->a[Mindex.at(n)].index<=7) return 0;
+        }
     }
+    else {
+        if (data->a[id].chg!=0) return 0;
+    }
+
 
     /*
     if (P>0) if (!data->a[Mindex.at(P-1)].bd[bnd2par-1]) return 0;
