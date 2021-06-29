@@ -4871,7 +4871,7 @@ int MOLECULE::addition(int pt, int id, int bnd, bool cistrans) {
         if (data->a[id].chg*chgg<0) return 0;
     }
     else {
-        else if (data->a[id].chg!=0) return 0;
+        if (data->a[id].chg!=0) return 0;
     }
 
 	bool isnotend=0;
