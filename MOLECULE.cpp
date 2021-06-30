@@ -1815,7 +1815,21 @@ void MOLECULE::mds2smi(bool ct_on)
 
 			if (x[n]==' ') {
 				//string nu=string(1,kk[ct]); //string(1,data->a[Mindex.at(i)].name[ct]);
-				x[n]=kk[ct] ;//nu[0]; //data->a[Mindex.at(i)].name[j];
+                if (M==71) {
+                    bool usepibnd=1;
+                    for (int p=0;p<Bindex.at(i).size();p++) {
+                        if (Bindex.at(i).at(p)==2) {
+                            usepibnd=0;
+                            break;
+                        }
+                    }
+                    if (usepibnd) x[n]=kk[ct];
+                    else {
+                        if (j<atomsmi.at(i).size()-3) x[n]=kk[ct];
+                        else x[n]=' ';
+                    }
+                }
+                else x[n]=kk[ct]; //nu[0]; //data->a[Mindex.at(i)].name[j];
 				//if (ct<data->a.at(M).nbond-3*num_3blanks-num_1blank) { // j<data->a[M].nbond
 					//if (((ct-tmp)%3)==0 && ct>data->a[Mindex.at(i)].index && data->a[Mindex.at(i)].index<data->a[Mindex.at(i)].nbond) { 
 						//x[n]=nu[0]; //data->a[Mindex.at(i)].name[j];
