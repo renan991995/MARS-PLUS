@@ -48,7 +48,7 @@ void exhaustive_combination1(IL &A, IL &B) {
 				for (int b=1;b<4;b++) {
 	        		if (A.ion[s].combination(B.ion[s],i,j,b)) {
 					
-	        			A.ion[s].mds2smi();
+	        			//A.ion[s].mds2smi();
 						if (0) {
 							A.ion[s].smiles=A.ion[s].molesmi;
 							A.ion[s].input();
@@ -196,14 +196,14 @@ void exhaustive_crossover1(IL &A, IL &B) {
 
 				if (A.ion[s].crossover(B.ion[s],i,j)) {
 
-					A.ion[s].mds2smi();
+					//A.ion[s].mds2smi();
 					if (0) {
 	            		A.ion[s].smiles=A.ion[s].molesmi;
 						A.ion[s].input();
 					}
 					if (1) A.ion[s].canonicalize_SMILES();
 
-					B.ion[s].mds2smi();
+					//B.ion[s].mds2smi();
 					if (0) {
 	            		B.ion[s].smiles=B.ion[s].molesmi;
 						B.ion[s].input();
@@ -385,7 +385,7 @@ void exhaustive_subtraction1(IL &A) {
 			int ACi=A.ion[s].Cindex.at(i);
 
 			if (A.ion[s].subtraction(i,1)) {
-				A.ion[s].mds2smi();
+				//A.ion[s].mds2smi();
 				if (0) {
             		A.ion[s].smiles=A.ion[s].molesmi;
 					A.ion[s].input();
@@ -510,7 +510,7 @@ void exhaustive_addition1(IL &A) {
     				int ACi=A.ion[s].Cindex.at(i);
 					for (int b=1;b<4;b++) {
 						if (A.ion[s].addition(i,j,b)) {
-							A.ion[s].mds2smi();
+							//A.ion[s].mds2smi();
 							if (0) {
 		            			A.ion[s].smiles=A.ion[s].molesmi;
 								A.ion[s].input();
@@ -647,7 +647,7 @@ void exhaustive_insertion1(IL &A) {
                             int APi=A.ion[s].Pindex.at(i);
 
                             if (A.ion[s].insertion(i,j,k,m)) {
-                                A.mds2smi();
+                                //A.mds2smi();
                                 if (0) {
                                     A.ion[s].smiles=A.ion[s].molesmi;
                                     A.ion[s].input();
@@ -800,7 +800,7 @@ void exhaustive_change_bnd1(IL &A) {
 								int obnd=A.ion[s].Rindex.at(i);
 
                             	if (A.ion[s].change_bnd(i,j,k,m)) {
-                                	A.mds2smi();
+                                	//A.mds2smi();
                                 	if (0) {
                                     	A.ion[s].smiles=A.ion[s].molesmi;
                                     	A.ion[s].input();
@@ -949,7 +949,7 @@ void exhaustive_change_ele1(IL &A) {
                         	//int APi=A.ion[s].Pindex.at(i);
 
                         	if (A.ion[s].change_ele(i,j,k,m)) {
-                            	A.mds2smi();
+                            	//A.mds2smi();
                             	if (0) {
                                 	A.ion[s].smiles=A.ion[s].molesmi;
                                 	A.ion[s].input();
@@ -1089,7 +1089,7 @@ void exhaustive_cyclization1(IL &A) {
 				int ACj=A.ion[s].Cindex.at(j);
 
 				if (A.ion[s].cyclization(i,j,k)) {
-					A.ion[s].mds2smi();
+					//A.ion[s].mds2smi();
 					if (0) {
         				A.ion[s].smiles=A.ion[s].molesmi;
 						A.ion[s].input();			
@@ -1219,7 +1219,7 @@ void exhaustive_change_cistrans1(IL &A) {
 				string ACTe=A.ion[s].ctsisomer.at(1).at(i);
 
                 if (A.ion[s].change_cistrans(i,w)) {
-                    A.ion[s].mds2smi();
+                    //A.ion[s].mds2smi();
                     if (0) {
                         A.ion[s].smiles=A.ion[s].molesmi;
                         A.ion[s].input();
@@ -1358,7 +1358,7 @@ void exhaustive_change_chirality1(IL &A) {
 
 			for (j=0;j<stereoC.size();j++) {
             	if (A.ion[s].change_chirality(i,stereoC.at(j))) {
-                	A.ion[s].mds2smi();
+                	//A.ion[s].mds2smi();
                 	if (0) {
                     	A.ion[s].smiles=A.ion[s].molesmi;
                     	A.ion[s].input();
@@ -1485,7 +1485,7 @@ void exhaustive_decyclization1(IL &A) {
         	int cycnum=i;
         	int cybnd=A.ion[s].Cybnd.at(cycnum-1);
         	if (A.ion[s].decyclization(i)) {
-                A.ion[s].mds2smi();
+                //A.ion[s].mds2smi();
                 if (0) {
                     A.ion[s].smiles=A.ion[s].molesmi;
                     A.ion[s].input();

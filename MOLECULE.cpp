@@ -6114,6 +6114,13 @@ int MOLECULE::decyclization(int ringnum) {
 
 	if_circle--;
 
+    del_unpaired_ring_no(); //20200627
+    decyc_small_ring(5);
+
+    //chk_cistrans(0,Cindex.size()-1);
+    mds2smi();
+
+
     return 1;
 
 }

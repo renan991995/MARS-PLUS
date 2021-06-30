@@ -34,7 +34,7 @@ void exhaustive_combination(MOLECULE &A, MOLECULE &B) {
             int BCj=B.Cindex.at(j);
 			for (int b=1;b<4;b++) {
         		if (A.combination(B,i,j,b)) {
-        			A.mds2smi();
+        			//A.mds2smi();
 					A.canonicalize_SMILES();
             		A.smiles=A.molesmi;   
 				         	
@@ -141,12 +141,12 @@ void exhaustive_crossover(MOLECULE &A, MOLECULE &B) {
 
 			if (A.crossover(B,i,j)) {
 				//count++;
-				A.mds2smi();
+				//A.mds2smi();
 				A.canonicalize_SMILES();
 				A.smiles=A.molesmi;  
 				//A.input();
 				
-				B.mds2smi();
+				//B.mds2smi();
 				B.canonicalize_SMILES();
 				B.smiles=B.molesmi;  
 				//B.input();
@@ -284,7 +284,7 @@ void exhaustive_subtraction(MOLECULE &A) {
 		int ACi=A.Cindex.at(i);
 		if (A.subtraction(i,1)) {
 			//count++;
-			A.mds2smi();
+			//A.mds2smi();
 			A.canonicalize_SMILES();
 			A.smiles=A.molesmi;  
 			//A.input();
@@ -376,7 +376,7 @@ void exhaustive_addition(MOLECULE &A) {
 				for (int b=1;b<4;b++) {
 					if (A.addition(i,j,b)) {
 						//count++;
-						A.mds2smi();
+						//A.mds2smi();
 						A.canonicalize_SMILES();
 						A.smiles=A.molesmi;  
 						//A.input();
@@ -474,7 +474,7 @@ void exhaustive_insertion(MOLECULE &A) {
                 	for (k=1;k<=3;k++) {
                         if (A.insertion(i,j,m,k)) {
                             //count++;
-                            A.mds2smi();
+                            //A.mds2smi();
                             A.canonicalize_SMILES();
                             A.smiles=A.molesmi;
                             //A.input();
@@ -590,7 +590,7 @@ void exhaustive_change_bnd(MOLECULE &A) {
                     	for (m=1;m<=3;m++) {
                             if (A.change_bnd(i,j,k,m)) {
                                 //count++;
-                                A.mds2smi();
+                                //A.mds2smi();
                                 A.canonicalize_SMILES();
                                 A.smiles=A.molesmi;
                                 //A.input();
@@ -698,7 +698,7 @@ void exhaustive_change_ele(MOLECULE &A) {
 					for (m=1;m<=3;m++) {
 						if (A.change_ele(i,j,k,m)) {
 							//count++;
-							A.mds2smi();
+							//A.mds2smi();
 							A.canonicalize_SMILES();
 							A.smiles=A.molesmi;  
 							//A.print();
@@ -799,7 +799,7 @@ void exhaustive_cyclization(MOLECULE &A) {
 			for (int k=1;k<=3;k++) {
 				if (A.cyclization(i,j,k)) {
 					//count++;
-					A.mds2smi();
+					//A.mds2smi();
 					A.canonicalize_SMILES();
 					A.smiles=A.molesmi;  
 					//A.input();
@@ -892,7 +892,7 @@ void exhaustive_decyclization(MOLECULE &A) {
 		int cybnd=A.Cybnd.at(cycnum-1);
         if (A.decyclization(i)) {
             //count++;
-            A.mds2smi();
+            //A.mds2smi();
             A.canonicalize_SMILES();
             A.smiles=A.molesmi;
             //A.input();
@@ -987,7 +987,7 @@ void exhaustive_change_cistrans(MOLECULE &A) {
             string ACTe=A.ctsisomer.at(1).at(i);
 
             if (A.change_cistrans(i,w)) {
-                A.mds2smi();
+                //A.mds2smi();
                 if (0) {
                     A.smiles=A.molesmi;
                     A.input();
@@ -1100,7 +1100,7 @@ void exhaustive_change_chirality(MOLECULE &A) {
 
         for (j=0;j<stereoC.size();j++) {
             if (A.change_chirality(i,stereoC.at(j))) {
-                A.mds2smi();
+                //A.mds2smi();
                 if (0) {
                     A.smiles=A.molesmi;
                     A.input();
@@ -1203,14 +1203,14 @@ void CH4_to_Bz_path1(MOLECULE &A) { //MOLECULE &A
 	out<<"Initialization "<<A.molesmi<<endl;
 
 	A.addition(0,2,1); //CC
-	A.mds2smi();
+	//A.mds2smi();
 	A.canonicalize_SMILES();
 	A.smiles=A.molesmi;  
 	//A.input();
 	out<<"addition(0,2,1) "<<A.molesmi<<endl;
 
     A.change_ele(0,2,1,2); 
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
@@ -1218,7 +1218,7 @@ void CH4_to_Bz_path1(MOLECULE &A) { //MOLECULE &A
 
 	/*
     A.change_bnd(1,2,2,2); //C=C
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
@@ -1226,35 +1226,35 @@ void CH4_to_Bz_path1(MOLECULE &A) { //MOLECULE &A
 	*/
 
 	A.addition(1,2,1); //C=CC
-	A.mds2smi();
+	//A.mds2smi();
 	A.canonicalize_SMILES();
 	A.smiles=A.molesmi;  
 	//A.input();
 	out<<"addition(1,2,1) "<<A.molesmi<<endl;
 	
 	A.addition(2,2,2); //C=CC=C
-	A.mds2smi();
+	//A.mds2smi();
 	A.canonicalize_SMILES();
 	A.smiles=A.molesmi;  
 	//A.input();
 	out<<"addition(2,2,2) "<<A.molesmi<<endl;
 	
 	A.addition(3,2,1); //C=CC=CC
-	A.mds2smi();
+	//A.mds2smi();
 	A.canonicalize_SMILES();
 	A.smiles=A.molesmi;  
 	//A.input();
 	out<<"addition(3,2,1) "<<A.molesmi<<endl;
 	
 	A.addition(4,2,2); //C=CC=CC=C
-	A.mds2smi();
+	//A.mds2smi();
 	A.canonicalize_SMILES();
 	A.smiles=A.molesmi;  
 	//A.input();
 	out<<"addition(4,2,2) "<<A.molesmi<<endl;
 	
 	A.cyclization(0,5,1); //C1=CC=CC=C1
-	A.mds2smi();
+	//A.mds2smi();
 	A.canonicalize_SMILES();
 	A.smiles=A.molesmi;  
 	//A.input();
@@ -1287,7 +1287,7 @@ void CH4_to_Bz_path2(MOLECULE &A) { //MOLECULE &A
     out<<A.molesmi<<endl;
 
     A.addition(0,2,1); //CC
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
@@ -1295,7 +1295,7 @@ void CH4_to_Bz_path2(MOLECULE &A) { //MOLECULE &A
 
 	/*
     A.change_ele(0,2,1,2); //C=C
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
@@ -1303,42 +1303,42 @@ void CH4_to_Bz_path2(MOLECULE &A) { //MOLECULE &A
 	*/
     
     A.change_bnd(1,2,2,2); //C=C
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out<<"change_bnd(1,2,2,2) "<<A.molesmi<<endl;
 
     A.addition(1,2,1); //C=CC
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
 	out<<"addition(1,2,1) "<<A.molesmi<<endl;
 
     A.addition(2,2,2); //C=CC=C
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out<<"addition(2,2,2) "<<A.molesmi<<endl;
 
     A.addition(3,2,1); //C=CC=CC
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out<<"addition(3,2,1) "<<A.molesmi<<endl;
 
     A.addition(4,2,2); //C=CC=CC=C
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out<<"addition(4,2,2) "<<A.molesmi<<endl;
 
     A.cyclization(0,5,1); //C1=CC=CC=C1
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
@@ -1372,91 +1372,91 @@ void CH4_to_aspirin(MOLECULE &A) {
 	out<<"Initialization "<<A.molesmi<<endl;
 
     A.addition(0,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
 	//A.input();
     out << "addition(0,2,1) " << A.molesmi << endl;
 
     A.addition(1,6,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(1,6,2) " << A.molesmi << endl;
 
     A.addition(1,5,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(1,5,1) " << A.molesmi << endl;
 
     A.addition(3,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(3,2,1) " << A.molesmi << endl;
 
     A.addition(4,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(4,2,2) " << A.molesmi << endl;
 
     A.addition(5,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(5,2,1) " << A.molesmi << endl;
 
     A.addition(6,6,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(6,6,2) " << A.molesmi << endl;
 
     A.addition(6,5,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(6,5,1) " << A.molesmi << endl;
 
     A.addition(5,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(5,2,1) " << A.molesmi << endl;
 
     A.addition(9,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(9,2,2) " << A.molesmi << endl;
 
     A.addition(10,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(10,2,1) " << A.molesmi << endl;
 
     A.addition(11,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(11,2,2) " << A.molesmi << endl;
 
     A.cyclization(4,12,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
@@ -1490,217 +1490,217 @@ void CH4_to_alpha_carotene_path3(MOLECULE &A) {
     out<<"Initialization "<<A.molesmi<<endl;
 
     A.addition(0,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(0,1,1) " << A.molesmi << endl;
 
     A.addition(0,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(0,1,1) " << A.molesmi << endl;
 
     A.addition(0,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(0,1,1) " << A.molesmi << endl;
 
     A.addition(3,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(3,1,1) " << A.molesmi << endl;
 
     A.addition(4,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(4,1,1) " << A.molesmi << endl;
 
     A.addition(5,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(5,2,1) " << A.molesmi << endl;
 
     A.addition(6,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
 	out << "addition(6,2,2) " << A.molesmi << endl;
 
     A.addition(6,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(6,1,1) " << A.molesmi << endl;
 
     A.addition(7,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(7,2,1) " << A.molesmi << endl;
 
     A.cyclization(0,7,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "cyclization(0,7,1) " << A.molesmi << endl;
 
     A.addition(9,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(9,2,2) " << A.molesmi << endl;
 
     A.addition(10,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(10,2,1) " << A.molesmi << endl;
 
     A.addition(11,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(11,2,2) " << A.molesmi << endl;
 
     A.addition(12,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(12,2,1) " << A.molesmi << endl;
 
     A.addition(11,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(11,1,1) " << A.molesmi << endl;
 
     A.addition(13,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(13,2,2) " << A.molesmi << endl;
 
     A.addition(15,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(15,2,1) " << A.molesmi << endl;
 
     A.addition(16,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(16,2,2) " << A.molesmi << endl;
 
     A.addition(17,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(17,2,1) " << A.molesmi << endl;
 
     A.addition(16,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(16,1,1) " << A.molesmi << endl;
 
     A.addition(18,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(18,2,2) " << A.molesmi << endl;
 
     A.addition(20,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(20,2,1) " << A.molesmi << endl;
 
     A.addition(21,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(21,2,2) " << A.molesmi << endl;
 
     A.addition(22,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(22,2,1) " << A.molesmi << endl;
 
     A.addition(22,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(22,1,1) " << A.molesmi << endl;
 
     A.addition(23,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(23,2,2) " << A.molesmi << endl;
 
     A.addition(25,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(25,2,1) " << A.molesmi << endl;
 
     A.addition(26,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(26,2,2) " << A.molesmi << endl;
 
     A.addition(27,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(27,2,1) " << A.molesmi << endl;
 
     A.addition(27,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(27,1,1) " << A.molesmi << endl;
 
     A.addition(28,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
@@ -1714,70 +1714,70 @@ void CH4_to_alpha_carotene_path3(MOLECULE &A) {
     out << "addition(30,1,1) " << A.molesmi << endl;
 
     A.addition(31,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(31,2,1) " << A.molesmi << endl;
 
     A.addition(32,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(32,1,1) " << A.molesmi << endl;
 
     A.addition(32,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(32,2,2) " << A.molesmi << endl;
 
     A.addition(34,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(34,1,1) " << A.molesmi << endl;
 
     //A.change_cistrans(32,0);
-    //A.mds2smi();
+    ////A.mds2smi();
     //A.canonicalize_SMILES();
     //A.smiles=A.molesmi;
     ////A.input();
     //out << "change_cistrans(32,0) " << A.molesmi << endl;
 
     A.addition(35,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(35,1,1) " << A.molesmi << endl;
 
     A.addition(36,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(36,1,1) " << A.molesmi << endl;
 
     A.addition(37,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(37,1,1) " << A.molesmi << endl;
 
     A.addition(37,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(37,1,1) " << A.molesmi << endl;
 
     A.cyclization(31,37,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
@@ -1809,301 +1809,301 @@ void CH4_to_alpha_carotene_path1(MOLECULE &A) {
     out<<"Initialization "<<A.molesmi<<endl;
 
     A.addition(0,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(0,1,1) " << A.molesmi << endl;
 
     A.addition(0,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(0,1,1) " << A.molesmi << endl;
 
     A.addition(0,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(0,1,1) " << A.molesmi << endl;
 
     A.addition(3,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(3,1,1) " << A.molesmi << endl;
 
     A.addition(4,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(4,1,1) " << A.molesmi << endl;
 
     A.addition(5,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(5,2,1) " << A.molesmi << endl;
 
     A.addition(6,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(6,1,1) " << A.molesmi << endl;
 
     A.addition(6,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
 	out << "addition(6,2,2) " << A.molesmi << endl;
 
     A.cyclization(0,8,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "cyclization(0,8,1) " << A.molesmi << endl;
 
     A.addition(8,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(8,2,1) " << A.molesmi << endl;
 
     A.addition(9,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(9,2,2) " << A.molesmi << endl;
 
     A.addition(10,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(10,2,1) " << A.molesmi << endl;
 
     A.addition(11,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(11,1,1) " << A.molesmi << endl;
 
     A.addition(11,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(11,2,2) " << A.molesmi << endl;
 
     A.addition(13,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(13,2,1) " << A.molesmi << endl;
 
     A.addition(14,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(14,2,2) " << A.molesmi << endl;
 
     A.addition(15,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(15,2,1) " << A.molesmi << endl;
 
     A.addition(16,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(16,1,1) " << A.molesmi << endl;
 
     A.addition(16,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(16,2,2) " << A.molesmi << endl;
 
     A.addition(18,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(18,2,1) " << A.molesmi << endl;
 
     A.addition(19,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(19,2,2) " << A.molesmi << endl;
 
     A.addition(20,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(20,2,1) " << A.molesmi << endl;
 
     A.addition(21,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(21,2,2) " << A.molesmi << endl;
 
     A.addition(22,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(22,1,1) " << A.molesmi << endl;
 
     A.addition(22,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(22,2,1) " << A.molesmi << endl;
 
     A.addition(24,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(24,2,2) " << A.molesmi << endl;
 
     A.addition(25,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(25,2,1) " << A.molesmi << endl;
 
     A.addition(26,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(26,2,2) " << A.molesmi << endl;
 
     A.addition(27,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(27,1,1) " << A.molesmi << endl;
 
     A.addition(27,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(27,2,1) " << A.molesmi << endl;
 
     A.addition(29,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(29,2,2) " << A.molesmi << endl;
 
     A.addition(30,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(30,1,1) " << A.molesmi << endl;
 
     A.addition(31,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(31,2,1) " << A.molesmi << endl;
 
     A.addition(32,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(32,1,1) " << A.molesmi << endl;
 
     A.addition(32,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(32,2,2) " << A.molesmi << endl;
 
     A.addition(34,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(34,1,1) " << A.molesmi << endl;
 
     //A.change_cistrans(32,0);
-    //A.mds2smi();
+    ////A.mds2smi();
     //A.canonicalize_SMILES();
     //A.smiles=A.molesmi;
     ////A.input();
     //out << "change_cistrans(32,0) " << A.molesmi << endl;
 
     A.addition(35,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(35,1,1) " << A.molesmi << endl;
 
     A.addition(36,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(36,1,1) " << A.molesmi << endl;
 
     A.addition(37,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(37,1,1) " << A.molesmi << endl;
 
     A.addition(37,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(37,1,1) " << A.molesmi << endl;
 
     A.cyclization(31,37,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "cyclization(31,37,1) " << A.molesmi << endl;
 
     A.change_cistrans(22,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
@@ -2137,287 +2137,287 @@ void CH4_to_alpha_carotene_path2(MOLECULE &A) {
     out<<"Initialization "<<A.molesmi<<endl;
 
     A.addition(0,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(0,2,1) " << A.molesmi << endl;
 
     A.addition(1,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(1,1,1) " << A.molesmi << endl;
 
     A.addition(2,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(2,1,1) " << A.molesmi << endl;
 
     A.addition(3,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(3,1,1) " << A.molesmi << endl;
 
     A.addition(4,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(4,1,1) " << A.molesmi << endl;
 
     A.addition(5,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(5,1,1) " << A.molesmi << endl;
 
     A.addition(5,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(5,1,1) " << A.molesmi << endl;
 
     A.addition(5,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(5,2,1) " << A.molesmi << endl;
 
     A.cyclization(1,8,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "cyclization(1,8,2) " << A.molesmi << endl;
 
     A.addition(8,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(8,2,1) " << A.molesmi << endl;
 
     A.addition(9,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(9,2,2) " << A.molesmi << endl;
 
     A.addition(10,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(10,2,1) " << A.molesmi << endl;
 
     A.addition(11,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(11,1,1) " << A.molesmi << endl;
 
     A.addition(11,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(11,2,2) " << A.molesmi << endl;
 
     A.addition(13,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(13,2,1) " << A.molesmi << endl;
 
     A.addition(14,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(14,2,2) " << A.molesmi << endl;
 
     A.addition(15,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(15,2,1) " << A.molesmi << endl;
 
     A.addition(16,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(16,1,1) " << A.molesmi << endl;
 
     A.addition(16,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(16,2,2) " << A.molesmi << endl;
 
     A.addition(18,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(18,2,1) " << A.molesmi << endl;
 
     A.addition(19,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(19,2,2) " << A.molesmi << endl;
 
     A.addition(20,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(20,2,1) " << A.molesmi << endl;
 
     A.addition(21,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(21,2,2) " << A.molesmi << endl;
 
     A.addition(22,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(22,1,1) " << A.molesmi << endl;
 
     A.addition(22,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(22,2,1) " << A.molesmi << endl;
 
     A.addition(24,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(24,2,2) " << A.molesmi << endl;
 
     A.addition(25,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(25,2,1) " << A.molesmi << endl;
 
     A.addition(26,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(26,2,2) " << A.molesmi << endl;
 
     A.addition(27,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(27,1,1) " << A.molesmi << endl;
 
     A.addition(27,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(27,2,1) " << A.molesmi << endl;
 
     A.addition(29,2,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(29,2,2) " << A.molesmi << endl;
 
     A.addition(30,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(30,1,1) " << A.molesmi << endl;
 
     A.addition(31,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(31,2,1) " << A.molesmi << endl;
 
     A.addition(32,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(32,1,1) " << A.molesmi << endl;
 
     A.addition(31,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(31,1,1) " << A.molesmi << endl;
 
     A.addition(34,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(34,1,1) " << A.molesmi << endl;
 
     A.addition(34,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(34,1,1) " << A.molesmi << endl;
 
     A.addition(34,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(34,1,1) " << A.molesmi << endl;
 
     A.addition(37,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(37,1,1) " << A.molesmi << endl;
 
     A.addition(38,2,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(38,2,1) " << A.molesmi << endl;
 
     A.cyclization(32,39,2);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
