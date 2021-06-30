@@ -1284,7 +1284,7 @@ void CH4_to_Bz_path2(MOLECULE &A) { //MOLECULE &A
     A.ctsisomer.at(1).push_back("");
     A.mds2smi();
 	A.canonicalize_SMILES();
-    out<<A.molesmi<<endl;
+    out<<"Initialization "<<A.molesmi<<endl;
 
     A.addition(0,2,1); //CC
     //A.mds2smi();
@@ -1378,26 +1378,55 @@ void CH4_to_aspirin(MOLECULE &A) {
 	//A.input();
     out << "addition(0,2,1) " << A.molesmi << endl;
 
-    A.addition(1,6,2);
-    //A.mds2smi();
-    A.canonicalize_SMILES();
-    A.smiles=A.molesmi;
-    //A.input();
-    out << "addition(1,6,2) " << A.molesmi << endl;
+    //A.addition(1,6,2);
+    ////A.mds2smi();
+    //A.canonicalize_SMILES();
+    //A.smiles=A.molesmi;
+    ////A.input();
+    //out << "addition(1,6,2) " << A.molesmi << endl;
 
-    A.addition(1,5,1);
+    A.addition(1,8,2);
     //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
-    out << "addition(1,5,1) " << A.molesmi << endl;
+    out << "addition(1,8,2) " << A.molesmi << endl;
 
-    A.addition(3,2,1);
+    A.change_ele(2,6,2,1);
     //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
-    out << "addition(3,2,1) " << A.molesmi << endl;
+    out << "change_ele(2,6,2,1) " << A.molesmi << endl;
+
+    //A.addition(1,5,1);
+    ////A.mds2smi();
+    //A.canonicalize_SMILES();
+    //A.smiles=A.molesmi;
+    ////A.input();
+    //out << "addition(1,5,1) " << A.molesmi << endl;
+
+    //A.addition(3,2,1);
+    ////A.mds2smi();
+    //A.canonicalize_SMILES();
+    //A.smiles=A.molesmi;
+    ////A.input();
+    //out << "addition(3,2,1) " << A.molesmi << endl;
+
+    A.addition(1,2,1);
+    A.mds2smi();
+    A.canonicalize_SMILES();
+    A.smiles=A.molesmi;
+    //A.input();
+    out << "addition(1,2,1) " << A.molesmi << endl;
+
+    A.insertion(3,5,1,1);
+    A.mds2smi();
+    A.canonicalize_SMILES();
+    A.smiles=A.molesmi;
+    //A.input();
+    out << "insertion(3,5,1,1) " << A.molesmi << endl;
+
 
     A.addition(4,2,2);
     //A.mds2smi();
@@ -1413,12 +1442,27 @@ void CH4_to_aspirin(MOLECULE &A) {
     //A.input();
     out << "addition(5,2,1) " << A.molesmi << endl;
 
-    A.addition(6,6,2);
+    //A.addition(6,6,2);
+    ////A.mds2smi();
+    //A.canonicalize_SMILES();
+    //A.smiles=A.molesmi;
+    ////A.input();
+    //out << "addition(6,6,2) " << A.molesmi << endl;
+
+    A.addition(6,11,1);
     //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
-    out << "addition(6,6,2) " << A.molesmi << endl;
+    out << "addition(6,11,1) " << A.molesmi << endl;
+
+    A.change_bnd(7,2,6,2);
+    //A.mds2smi();
+    A.canonicalize_SMILES();
+    A.smiles=A.molesmi;
+    //A.input();
+    out << "change_bnd(7,2,6,2) " << A.molesmi << endl;
+
 
     A.addition(6,5,1);
     //A.mds2smi();
