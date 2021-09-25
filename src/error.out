@@ -1,0 +1,88 @@
+======= Start calculating ========
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+-- The C compiler identification is GNU 9.2.0
+-- The CXX compiler identification is GNU 9.2.0
+-- Check for working C compiler: /home/tom61212/bin/gcc920/bin/gcc
+-- Check for working C compiler: /home/tom61212/bin/gcc920/bin/gcc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /home/tom61212/bin/gcc920/bin/g++
+-- Check for working CXX compiler: /home/tom61212/bin/gcc920/bin/g++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+Default build type is 
+CMAKE_C_FLAGS_DEBUG is -g
+CMAKE_C_FLAGS_RELEASE is -O3 -DNDEBUG
+CMAKE_C_FLAGS_RELWITHDEBINFO is -O2 -g -DNDEBUG
+CMAKE_C_FLAGS_MINSIZEREL is -Os -DNDEBUG
+CMAKE_CXX_FLAGS_DEBUG is -g
+CMAKE_CXX_FLAGS_RELEASE is -O3 -DNDEBUG
+CMAKE_CXX_FLAGS_RELWITHDEBINFO is -O2 -g -DNDEBUG
+CMAKE_CXX_FLAGS_MINSIZEREL is -Os -DNDEBUG
+-- No build type selected, default to Release
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/tom61212/share/GitHub/MARS-IL/MARS-PLUS/src
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+Scanning dependencies of target MARS
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+[ 11%] Building CXX object CMakeFiles/MARS.dir/CASES_NEU.cpp.o
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+[ 22%] Building CXX object CMakeFiles/MARS.dir/CASES_IL.cpp.o
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+[ 33%] Building CXX object CMakeFiles/MARS.dir/CASES_IL_INDEPENDENT.cpp.o
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+[ 44%] Building CXX object CMakeFiles/MARS.dir/UTILITY.cpp.o
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+[ 55%] Building CXX object CMakeFiles/MARS.dir/MOLECULE.cpp.o
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+[ 66%] Building CXX object CMakeFiles/MARS.dir/IL.cpp.o
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+[ 77%] Building CXX object CMakeFiles/MARS.dir/ELEMENTS.cpp.o
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+[ 88%] Building CXX object CMakeFiles/MARS.dir/main.cpp.o
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+[100%] Linking CXX executable MARS
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+[100%] Built target MARS
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+======= End calculating ========

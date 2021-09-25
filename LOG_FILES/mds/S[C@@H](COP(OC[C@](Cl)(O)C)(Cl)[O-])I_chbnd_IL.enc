@@ -1,0 +1,14 @@
+SMILES   S[C@@H](COP(OC[C@](Cl)(O)C)(Cl)[O-])I
+orig_SMILES [PH1@@](O([CH2]([CH0@](Cl)(O)([CH3]))))(O([CH2]([CH1@@](I)(S))))(Cl)([OH0-])
+natom    14  
+Pindex   0    1    2    3    4    4    4    1    8    9    10   10   1    1    
+Cindex   1    2    3    4    5    6    7    8    9    10   11   12   13   14   
+Rindex   0    1    1    1    1    1    1    1    1    1    1    1    1    1    
+Mindex   31   5    1    1    12   5    1    5    1    1    14   19   12   29   
+Cyindex  0    0    0    0    0    0    0    0    0    0    0    0    0    0    
+Chirality 2    0    0    1    0    0    0    0    0    2    0    0    0    0    
+protect  0    0    0    0    0    0    0    0    0    0    0    0    0    1    
+ctsisomer_start _    _    _    _    _    _    _    _    _    _    _    _    _    _    
+ctsisomer_end _    _    _    _    _    _    _    _    _    _    _    _    _    _    
+if_circle 0   
+Cybnd    

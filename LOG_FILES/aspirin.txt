@@ -1,0 +1,16 @@
+Initialization C
+addition(0,2,1) CC
+addition(1,8,2) */N=C/C
+change_ele(2,6,2,1) */N=C/C
+addition(1,2,1) *N=C(C)C
+insertion(3,5,1,1) ON=C(C)C
+addition(4,2,2) C/C(=N/O)/C=C
+addition(5,2,1) C/C(=N/O)/C=C/C
+addition(6,11,1) C/C(=N/O)/C=C/CF
+change_bnd(7,2,6,2) C/C(=N/O)/C=C/C=O
+addition(6,5,1) O/N=C(\C=C\C(=O)O)/C
+addition(5,2,1) O/N=C(\C=C(\C(=O)O)/C)/C
+addition(9,2,2) O/N=C(\C=C(\C(=O)O)/C=C)/C
+addition(10,2,1) C/C=C/C(=C/C(=N\O)/C)/C(=O)O
+addition(11,2,2) C=C/C=C/C(=C/C(=N\O)/C)/C(=O)O
+cyclization(4,12,1) O/N=C(\c1ccccc1C(=O)O)/C

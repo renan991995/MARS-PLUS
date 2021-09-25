@@ -1,0 +1,14 @@
+SMILES   C[N+](=C)C
+orig_SMILES [CH3]([NH0+](=C)([CH3]))
+natom    4   
+Pindex   0    1    2    2    
+Cindex   1    2    3    4    
+Rindex   0    1    2    1    
+Mindex   1    16   2    1    
+Cyindex  0    0    0    0    
+Chirality 0    0    0    0    
+protect  0    1    0    0    
+ctsisomer_start _    _    _    _    
+ctsisomer_end _    _    _    _    
+if_circle 0   
+Cybnd    

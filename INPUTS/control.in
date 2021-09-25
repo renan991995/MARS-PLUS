@@ -1,0 +1,93 @@
+###########################################################################################################
+#                           MARS: Molecular Assembling and Representation Suite                           #
+#                                               Hsuan-Hao Hsu                                             #
+#                                             Chen-Hsuan Huang                                            #
+#                                     Shiang-Tai Lin (stlin@ntu.edu.tw)                                   #
+#                               Computational Molecular Engineering Laboratory                            #
+#             Department of Chemical Engineering, National Taiwan University, Taipei, Taiwan              #
+#                                            Copyright (c) 2019                                           #
+#                                            All rights Reserved                                          #
+###########################################################################################################
+############################################## input format ###############################################
+###########################################################################################################
+#
+#  CHEMICAL_INPULIST:				Use initial gauss or not
+#  					  				"none" or list route 
+#					  				(SMILES of desired molecules as initial guess are listed in a file)
+#
+#  ELEMENT_LIST:					A list that defines the base element library.
+#
+#  EXHAUSTIVE_OPERATIONS:			The operations you want to apply to molecules
+#
+#  EPOCH:							The epoch setting for iterative exhaustive operations
+#
+#  PROGRAM_DIR:						The dir where the source codes and the CMakeLists.txt are
+#
+#  MDS_DIR:							The dor where the MDS' are outputted to
+#
+#  LOG_DIR:							The dir where the result files (and some temporary files) are output to
+#
+#  IF_ION:							1: the case of ILs/salts 										0: the case of neutral molecule (single component)
+#
+#  IF_PROTECT:                      1: protection of all charged atoms/elements 					0: does not protect any atoms/elements
+#
+#  IF_OUTPUT_MDS:					1: output MDS to MDS_DIR										0: does not output any MDS
+#
+#  IF_ENUMERATION:					1: do SMI enumeration for all the designed molecules/ions		0: does notdo SMI enumeration for any molecules/ions
+#
+###########################################################################################################
+
+
+#Directory        
+  PROGRAM_DIR				./						# default: MARS-PLUS/src/
+  MDS_DIR					../LOG_FILES/mds/ 		# default: MARS-PLUS/LOG_FILES/mds/
+  LOG_DIR					../LOG_FILES/			# default: MARS-PLUS/LOG_FILES/
+
+#Element definition
+  ELEMENT_LIST				../INPUTS/ELEMENT_LISTS/element_list.txt
+  #ELEMENT_LIST				none     #default
+
+#Appearance of ions
+  #IF_ION					0
+  IF_ION					1
+
+#SMILES enumeration
+  IF_ENUMERATION			0
+  #IF_ENUMERATION			1
+
+#output mds in MDS_OUTPUT_DIR
+  #IF_OUTPUT_MDS		0
+  IF_OUTPUT_MDS			1
+
+#Proctection
+  #IF_PROTECT				0
+  IF_PROTECT				1
+
+#Molecular operations
+  OPERATIONS				All
+  #OPERATIONS                Crossover
+  #OPERATIONS                Combination
+  #OPERATIONS                Addition
+  #OPERATIONS                Subtraction
+  #OPERATIONS                Change_ele
+  #OPERATIONS                Change_bnd
+  #OPERATIONS                Cistrans_inversion
+  #OPERATIONS                Chirality_inversion
+  #OPERATIONS                Insertion
+  #OPERATIONS                Cyclization
+  #OPERATIONS                Decyclization
+  #OPERATIONS                Component_switch
+
+#Epoch
+  EPOCH						1
+  #EPOCH					10
+
+
+#Initial guess molecules/ILs
+  #CHEMICAL_IUPUTLIST					../INPUTS/INPUT_CHEMICALS/IL.txt
+  #CHEMICAL_IUPUTLIST                   ../INPUTS/INPUT_CHEMICALS/IL1.txt
+  #CHEMICAL_IUPUTLIST                   ../INPUTS/INPUT_CHEMICALS/IL2.txt
+  #CHEMICAL_IUPUTLIST                   ../INPUTS/INPUT_CHEMICALS/IL3.txt
+  CHEMICAL_IUPUTLIST                    ../INPUTS/INPUT_CHEMICALS/IL4.txt
+  #CHEMICAL_IUPUTLIST                   ../INPUTS/INPUT_CHEMICALS/IL5.txt
+

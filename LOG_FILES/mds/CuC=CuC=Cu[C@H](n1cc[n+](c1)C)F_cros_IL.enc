@@ -1,0 +1,14 @@
+SMILES   C/C=C/C=C/[C@H](n1cc[n+](c1)C)F
+orig_SMILES [CH3]([NH0+](=C%(1))(C(=C(N%(1)([CH1@](F)(/C(=C/(/C(=C/(C))))))))))
+natom    13  
+Pindex   0    1    2    2    4    5    6    7    7    9    10   11   12   
+Cindex   1    2    3    4    5    6    7    8    9    10   11   12   13   
+Rindex   0    1    2    1    2    1    1    1    1    2    1    2    1    
+Mindex   1    16   2    2    2    7    1    11   2    2    2    2    2    
+Cyindex  0    0    1    0    0    1    0    0    0    0    0    0    0    
+Chirality 0    0    0    0    0    0    1    0    0    0    0    0    0    
+protect  0    1    0    0    0    0    0    0    0    0    0    0    0    
+ctsisomer_start _    _    _    _    _    _    _    _    /    _    /    _    _    
+ctsisomer_end _    _    _    _    _    _    _    _    _    /    _    /    _    
+if_circle 1   
+Cybnd    1    

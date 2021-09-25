@@ -1,0 +1,2 @@
+CCCCCCCCN1C=C[N+](=C1)C   [P-](C(F)(F)C(F)(F)(F))(F)(C(F)(F)C(F)(F)(F))(F)(C(F)(F)C(F)(F)(F))(F)
+[P+](CCCCCC)(CC/C=C/CC)(CCCCCC)(CCCCCCCCCCCCCC)    [B-](C#N)(C#N)(C#N)(C#N)

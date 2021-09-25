@@ -1,0 +1,2 @@
+C[n+](c1)ccn1[C@H](F)/C=C/C   P(OC[C@](Cl)(O)C)(OC[C@@H](I)S)(=O)[O-]
+C/C=C(/[C@@](/C(=C(/C(C)C)\C)/C)(/C(=C(/[n+]1ccccc1)\CC)/C=C)C)\C    [B-](C#N)(C#N)(C#N)(C#N)
