@@ -1,8 +1,0 @@
-C
-addition(0,2,1) CC
-change_bnd(1,2,2,2) C=C
-addition(1,2,1) CC=C
-addition(2,2,2) C=CC=C
-addition(3,2,1) C/C=C/C=C
-addition(4,2,2) C=C/C=C/C=C
-cyclization(0,5,1) c1ccccc1
