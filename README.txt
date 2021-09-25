@@ -8,13 +8,13 @@
 		computer molecular design problems.
 
 		The source code consists of 7 header files and 6 cpp files: (see src/)
-			ELEMENTS.h		MOLECULE.h		CASES_NEU.h		CASES_IL_INDEPENDENT.h		CASES_IL.h		UTILITY.h		PARAMETER.h
-			ELEMENTS.cpp	MOLECULE.cpp    CASES_NEU.cpp	CASES_IL_INDEPENDENT.cpp	CASES_IL.cpp	main.cpp
+			ELEMENTS.h    MOLECULE.h    CASES_NEU.h    CASES_IL_INDEPENDENT.h    CASES_IL.h    UTILITY.h    PARAMETER.h
+			ELEMENTS.cpp  MOLECULE.cpp  CASES_NEU.cpp  CASES_IL_INDEPENDENT.cpp  CASES_IL.cpp  UTILITY.cpp  main.cpp
 
 		There are several input files to start up MARS-PLUS: (see INPUTS/)
-			INPUTS/control.in : 						controls the input, output, and calculation options.
-			INPUTS/ELEMENT_LISTS/element_list.txt :		a list that defines base element library.
-			INPUTS/INPUT_CHEMICALS/IL4.txt : 			the beginning chemicals.
+			INPUTS/control.in : controls the input, output, and calculation options.
+			INPUTS/ELEMENT_LISTS/element_list.txt :	a list that defines base element library.
+			INPUTS/INPUT_CHEMICALS/IL4.txt : the beginning chemicals.
 
 		The calculation results for every operation will be outputted as a file (see LOG_FILES/):
 			For example, the results of bond change operation on an IL will be outputted to LOG_FILES/change_bnd_IL.txt
@@ -23,8 +23,8 @@
 
 (2) Development environment
 		Linux CentOS 7
-		g++ compiler from GNU Compiler Collection v9.2.0  	(or any compiler supporting C++11)
-		Open Babel v3.1.0  									(compile from source code)
+		g++ compiler from GNU Compiler Collection v9.2.0		(or any compiler supporting C++11)
+		Open Babel v3.1.0		(compile from source code)
 		cmake v3.15.5
 		make v4.2
 
