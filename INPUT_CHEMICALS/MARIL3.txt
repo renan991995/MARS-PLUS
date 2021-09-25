@@ -1,2 +1,0 @@
-C#C/C=C(/CC(=C=C(/C(=C/C)/CC)C)[n+]1ccccc1)\C	[O-]O/C(=C(/CC)\O)/C
-C=CC([PH+](C(/C(=C(/O)\C)/C)(/C=C/C(=C)C)O)C#C)(C)C	N=NO/C(=C(/C([BH-](C(=C)CC)C(CN)C)(N=O)C)\C)/C

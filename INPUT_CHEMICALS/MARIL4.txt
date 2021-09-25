@@ -1,6 +1,0 @@
-# FC/C=C(/C(/C(=C(/C(CCl)CBr)\C)/C)(/C(=C(/[n+]1ccccc1)\CC)/C=C)C)\C   C=CC/C(=C(/C(=C(/C#N)\O)/CP)\C(=C)O)/[C-](O)C
-# C=CC([PH+](C(/C(=C(/O)\C)/C)(/C=C/C(=C)C)O)C#C)(C=S)C     O/C(=C(/C([BH-](C(=C)CCI)C(CN)C)(N=O)C)\C)/C
-# C/C=C(/C(/C(=C(/C(C)C)\C)/C)(/C(=C(/[n+]1ccccc1)\CC)/C=C)C)\C	C=CC/C(=C(/C(=C(/C#N)\O)/C)\C(=C)O)/[C-](O)C
-# C=CC([PH+](C(/C(=C(/O)\C)/C)(/C=C/C(=C)C)O)C#C)(C)COC[C@H]([C@]1(C)C(C)(C)CC[P+]1(C)C)C		O/C(=C(/C([B-]1(N=C)C[C@@H]2[C@@]3([C@@]1(C)[C@H](N)CC2(C3)C)C)(N=O)C)\C)/C
-C[n+](c1)ccn1[C@H](F)/C=C/C		P(OC[C@](Cl)(O)C)(OC[C@@H](I)S)(=O)[O-]
-C/C=C(/[C@@](/C(=C(/C(C)C)\C)/C)(/C(=C(/[n+]1ccccc1)\CC)/C=C)C)\C	[B-](C#N)(C#N)(C#N)(C#N)
