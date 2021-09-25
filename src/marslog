@@ -13735,7 +13735,7 @@ EXHAUSTIVE CYCLIZATION: C/C=C(/[C@@](/C(=C(/C(C)C)\C)/C)(/C(=C(/[n+]1ccccc1)\CC)
 EXHAUSTIVE CYCLIZATION: C/C=C(/[C@@](/C(=C(/C(C)C)\C)/C)(/C(=C(/[n+]1ccccc1)\CC)/C=C)C)\C {CAT: 23 , 25 | bnd 1 } -> CC/C(=C\1/C=CC/C(=C\C)/[C@@]1(C)/C(=C(/C(C)C)\C)/C)/[n+]1ccccc1 {No. 125 }
 Do exhaustive decyclization
 EXHAUSTIVE DECYCLIZATION: C/C=C(/[C@@](/C(=C(/C(C)C)\C)/C)(/C(=C(/[n+]1ccccc1)\CC)/C=C)C)\C {CAT: ring no. 1 | bnd 2 } -> C/C=C/C=C/[NH2+]/C(=C(/[C@](/C(=C(/C(C)C)\C)/C)(/C(=C/C)/C)C)\C=C)/CC {No. 1 }
-See the result for each txt file. (combination_IL.txt, crossover_IL.txt, addition_IL.txt, insertion_IL.txt, subtraction_IL.txt, cyclization_IL.txt, decyclization_IL.txt, change_ele_IL, change_bnd_IL, change_ct_IL.txt, and change_chirality_IL.txt)
+See the result for each txt file. (combination_IL.txt, crossover_IL.txt, addition_IL.txt, insertion_IL.txt, subtraction_IL.txt, cyclization_IL.txt, decyclization_IL.txt, change_ele_IL, change_bnd_IL, change_cistrans_IL.txt, and change_chirality_IL.txt)
 Make benzene from methane (path 1)
 Make benzene from methane (path 2)
 Make aspirin from methane

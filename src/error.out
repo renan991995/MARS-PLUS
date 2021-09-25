@@ -28,7 +28,7 @@ CMAKE_CXX_FLAGS_MINSIZEREL is -Os -DNDEBUG
 -- No build type selected, default to Release
 -- Configuring done
 -- Generating done
--- Build files have been written to: /home/tom61212/share/GitHub/MARS-IL/MARS-PLUS/src
+-- Build files have been written to: /home/tom61212/share/GitHub/tmp/MARS-PLUS/src
 /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
 /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
 /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)

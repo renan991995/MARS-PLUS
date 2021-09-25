@@ -154,7 +154,7 @@ int main(int argc, char **argv) {
 
 		}
 
-		cout<<"See the result for each txt file. (combination.txt, crossover.txt, addition.txt, subtraction.txt, change_ele.txt, change_bnd.txt, cyclization.txt, decyclization.txt, insertion.txt, change_ct.txt, change_chirality.txt)"<<endl;		
+		cout<<"See the result for each txt file. (combination.txt, crossover.txt, addition.txt, subtraction.txt, change_ele.txt, change_bnd.txt, cyclization.txt, decyclization.txt, insertion.txt, change_cistrans.txt, change_chirality.txt)"<<endl;		
 	}
 
 
@@ -323,7 +323,7 @@ int main(int argc, char **argv) {
 		}
 
 
-		cout<<"See the result for each txt file. (combination_IL.txt, crossover_IL.txt, addition_IL.txt, insertion_IL.txt, subtraction_IL.txt, cyclization_IL.txt, decyclization_IL.txt, change_ele_IL, change_bnd_IL, change_ct_IL.txt, and change_chirality_IL.txt)"<<endl;
+		cout<<"See the result for each txt file. (combination_IL.txt, crossover_IL.txt, addition_IL.txt, insertion_IL.txt, subtraction_IL.txt, cyclization_IL.txt, decyclization_IL.txt, change_ele_IL, change_bnd_IL, change_cistrans_IL.txt, and change_chirality_IL.txt)"<<endl;
 	}
 
 

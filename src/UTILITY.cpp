@@ -302,29 +302,29 @@ unsigned int rd_1ILsmi(string r_inputlist,unsigned int numcat,unsigned int numan
 }
 
 unsigned int clearlog() {
-	system("rm ./combination.txt 2> /dev/null");
-	system("rm ./crossover.txt 2> /dev/null");
-	system("rm ./addition.txt 2> /dev/null");
-	system("rm ./subtraction.txt 2> /dev/null");
-	system("rm ./insertion.txt 2> /dev/null");
-	system("rm ./cyclization.txt 2> /dev/null");
-	system("rm ./decyclization.txt 2> /dev/null");
-	system("rm ./exchangeatm.txt 2> /dev/null");
-	system("rm ./exchangebnd.txt 2> /dev/null");
-	system("rm ./changect.txt 2> /dev/null");
-	system("rm ./changeenan.txt 2> /dev/null");
+	system(("rm "+para.logdir+"combination.txt 2> /dev/null").c_str());
+	system(("rm "+para.logdir+"crossover.txt 2> /dev/null").c_str());
+	system(("rm "+para.logdir+"addition.txt 2> /dev/null").c_str());
+	system(("rm "+para.logdir+"subtraction.txt 2> /dev/null").c_str());
+	system(("rm "+para.logdir+"insertion.txt 2> /dev/null").c_str());
+	system(("rm "+para.logdir+"cyclization.txt 2> /dev/null").c_str());
+	system(("rm "+para.logdir+"decyclization.txt 2> /dev/null").c_str());
+	system(("rm "+para.logdir+"change_ele.txt 2> /dev/null").c_str());
+	system(("rm "+para.logdir+"change_bnd.txt 2> /dev/null").c_str());
+	system(("rm "+para.logdir+"change_cistrans.txt 2> /dev/null").c_str());
+	system(("rm "+para.logdir+"change_chirality.txt 2> /dev/null").c_str());
 
-    system("rm ./combination_IL.txt 2> /dev/null");
-    system("rm ./crossover_IL.txt 2> /dev/null");
-    system("rm ./addition_IL.txt 2> /dev/null");
-    system("rm ./subtraction_IL.txt 2> /dev/null");
-    system("rm ./insertion_IL.txt 2> /dev/null");
-    system("rm ./cyclization_IL.txt 2> /dev/null");
-    system("rm ./decyclization_IL.txt 2> /dev/null");
-    system("rm ./exchangeatm_IL.txt 2> /dev/null");
-    system("rm ./exchangebnd_IL.txt 2> /dev/null");
-    system("rm ./changect_IL.txt 2> /dev/null");
-    system("rm ./changeenan_IL.txt 2> /dev/null");
+    system(("rm "+para.logdir+"combination_IL.txt 2> /dev/null").c_str());
+    system(("rm "+para.logdir+"crossover_IL.txt 2> /dev/null").c_str());
+    system(("rm "+para.logdir+"addition_IL.txt 2> /dev/null").c_str());
+    system(("rm "+para.logdir+"subtraction_IL.txt 2> /dev/null").c_str());
+    system(("rm "+para.logdir+"insertion_IL.txt 2> /dev/null").c_str());
+    system(("rm "+para.logdir+"cyclization_IL.txt 2> /dev/null").c_str());
+    system(("rm "+para.logdir+"decyclization_IL.txt 2> /dev/null").c_str());
+    system(("rm "+para.logdir+"change_ele_IL.txt 2> /dev/null").c_str());
+    system(("rm "+para.logdir+"change_bnd_IL.txt 2> /dev/null").c_str());
+    system(("rm "+para.logdir+"change_cistrans_IL.txt 2> /dev/null").c_str());
+    system(("rm "+para.logdir+"change_chirality_IL.txt 2> /dev/null").c_str());
 
 	return 1;
 }
