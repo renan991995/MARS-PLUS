@@ -1,0 +1,603 @@
+The system is: Linux - 2.6.32-279.el6.x86_64 - x86_64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: /home/tom61212/bin/gcc920/bin/gcc 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+
+The C compiler identification is GNU, found in "/home/tom61212/share/GitHub/tmp/MARS-PLUS/src/CMakeFiles/3.15.5/CompilerIdC/a.out"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: /home/tom61212/bin/gcc920/bin/g++ 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+
+The CXX compiler identification is GNU, found in "/home/tom61212/share/GitHub/tmp/MARS-PLUS/src/CMakeFiles/3.15.5/CompilerIdCXX/a.out"
+
+Determining if the C compiler works passed with the following output:
+Change Dir: /home/tom61212/share/GitHub/tmp/MARS-PLUS/src/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_391db/fast && /usr/bin/gmake -f CMakeFiles/cmTC_391db.dir/build.make CMakeFiles/cmTC_391db.dir/build
+gmake[1]: Entering directory `/home/tom61212/share/GitHub/tmp/MARS-PLUS/src/CMakeFiles/CMakeTmp'
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+Building C object CMakeFiles/cmTC_391db.dir/testCCompiler.c.o
+/home/tom61212/bin/gcc920/bin/gcc    -o CMakeFiles/cmTC_391db.dir/testCCompiler.c.o   -c /home/tom61212/share/GitHub/tmp/MARS-PLUS/src/CMakeFiles/CMakeTmp/testCCompiler.c
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+Linking C executable cmTC_391db
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake -E cmake_link_script CMakeFiles/cmTC_391db.dir/link.txt --verbose=1
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/gcc920/bin/gcc      -rdynamic CMakeFiles/cmTC_391db.dir/testCCompiler.c.o  -o cmTC_391db 
+gmake[1]: Leaving directory `/home/tom61212/share/GitHub/tmp/MARS-PLUS/src/CMakeFiles/CMakeTmp'
+
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: /home/tom61212/share/GitHub/tmp/MARS-PLUS/src/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_03daa/fast && /usr/bin/gmake -f CMakeFiles/cmTC_03daa.dir/build.make CMakeFiles/cmTC_03daa.dir/build
+gmake[1]: Entering directory `/home/tom61212/share/GitHub/tmp/MARS-PLUS/src/CMakeFiles/CMakeTmp'
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+Building C object CMakeFiles/cmTC_03daa.dir/CMakeCCompilerABI.c.o
+/home/tom61212/bin/gcc920/bin/gcc   -v -o CMakeFiles/cmTC_03daa.dir/CMakeCCompilerABI.c.o   -c /home/tom61212/bin/cmake-install/cmake-3.15.5/share/cmake-3.15/Modules/CMakeCCompilerABI.c
+Using built-in specs.
+COLLECT_GCC=/home/tom61212/bin/gcc920/bin/gcc
+Target: x86_64-pc-linux-gnu
+Configured with: ../gcc-9.2.0/configure --enable-languages=c,c++ --disable-multilib --prefix=/home/guest/gcc920/
+Thread model: posix
+gcc version 9.2.0 (GCC) 
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_03daa.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
+ /home/tom61212/bin/gcc920/bin/../libexec/gcc/x86_64-pc-linux-gnu/9.2.0/cc1 -quiet -v -iprefix /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/ /home/tom61212/bin/cmake-install/cmake-3.15.5/share/cmake-3.15/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_03daa.dir/CMakeCCompilerABI.c.o -version -o /tmp/cczGaqYh.s
+GNU C17 (GCC) version 9.2.0 (x86_64-pc-linux-gnu)
+	compiled by GNU C version 9.2.0, GMP version 6.1.0, MPFR version 3.1.4, MPC version 1.0.3, isl version isl-0.18-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring nonexistent directory "/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/include"
+ignoring duplicate directory "/home/tom61212/bin/gcc920/bin/../lib/gcc/../../lib/gcc/x86_64-pc-linux-gnu/9.2.0/include"
+ignoring duplicate directory "/home/tom61212/bin/gcc920/bin/../lib/gcc/../../lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed"
+ignoring nonexistent directory "/home/tom61212/bin/gcc920/bin/../lib/gcc/../../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ /aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/include
+ /aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/include
+ /aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/include/tbb
+ /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/include
+ /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed
+ /usr/local/include
+ /home/tom61212/bin/gcc920/bin/../lib/gcc/../../include
+ /usr/include
+End of search list.
+GNU C17 (GCC) version 9.2.0 (x86_64-pc-linux-gnu)
+	compiled by GNU C version 9.2.0, GMP version 6.1.0, MPFR version 3.1.4, MPC version 1.0.3, isl version isl-0.18-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: 13ad71acde614e71883e20e9ba662728
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_03daa.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
+ as -v --64 -o CMakeFiles/cmTC_03daa.dir/CMakeCCompilerABI.c.o /tmp/cczGaqYh.s
+GNU assembler version 2.20.51.0.2 (x86_64-redhat-linux) using BFD version version 2.20.51.0.2-5.34.el6 20100205
+COMPILER_PATH=/home/tom61212/bin/gcc920/bin/../libexec/gcc/x86_64-pc-linux-gnu/9.2.0/:/home/tom61212/bin/gcc920/bin/../libexec/gcc/
+LIBRARY_PATH=/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/:/home/tom61212/bin/gcc920/bin/../lib/gcc/:/home/tom61212/bin/gcc920/lib64/../lib64/:/usr/local/lib/../lib64/:/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/home/tom61212/bin/Python-3.6.8/build/lib/:/home/tom61212/share/rdkit_py/rdkit/lib/:/home/tom61212/share/boost_1_75_0_py/build/lib/:/home/akitainu/bin/openbabel-install/lib/:/home/tom61212/bin/obabel-install/lib/:/home/tom61212/bin/gcc920/lib64/:/usr/local/lib/:/aracbox/app/g09/bsd/:/aracbox/app/g09/:/aracbox/app/g09/bsd/:/aracbox/app/g09/:/aracbox/mpi/openmpi/1.6.3/intel_13/x86_64/lib/:/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64/:/aracbox/mpi/openmpi/1.6.3/pgi_12/x86_64/lib/:/aracbox/pgi/Compiler/linux86-64/12.10/lib/:/opt/aracbox/torque/lib/:./:/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64/:/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_03daa.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+Linking C executable cmTC_03daa
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake -E cmake_link_script CMakeFiles/cmTC_03daa.dir/link.txt --verbose=1
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/gcc920/bin/gcc     -v -rdynamic CMakeFiles/cmTC_03daa.dir/CMakeCCompilerABI.c.o  -o cmTC_03daa 
+Using built-in specs.
+COLLECT_GCC=/home/tom61212/bin/gcc920/bin/gcc
+COLLECT_LTO_WRAPPER=/home/tom61212/bin/gcc920/bin/../libexec/gcc/x86_64-pc-linux-gnu/9.2.0/lto-wrapper
+Target: x86_64-pc-linux-gnu
+Configured with: ../gcc-9.2.0/configure --enable-languages=c,c++ --disable-multilib --prefix=/home/guest/gcc920/
+Thread model: posix
+gcc version 9.2.0 (GCC) 
+COMPILER_PATH=/home/tom61212/bin/gcc920/bin/../libexec/gcc/x86_64-pc-linux-gnu/9.2.0/:/home/tom61212/bin/gcc920/bin/../libexec/gcc/
+LIBRARY_PATH=/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/:/home/tom61212/bin/gcc920/bin/../lib/gcc/:/home/tom61212/bin/gcc920/lib64/../lib64/:/usr/local/lib/../lib64/:/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/home/tom61212/bin/Python-3.6.8/build/lib/:/home/tom61212/share/rdkit_py/rdkit/lib/:/home/tom61212/share/boost_1_75_0_py/build/lib/:/home/akitainu/bin/openbabel-install/lib/:/home/tom61212/bin/obabel-install/lib/:/home/tom61212/bin/gcc920/lib64/:/usr/local/lib/:/aracbox/app/g09/bsd/:/aracbox/app/g09/:/aracbox/app/g09/bsd/:/aracbox/app/g09/:/aracbox/mpi/openmpi/1.6.3/intel_13/x86_64/lib/:/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64/:/aracbox/mpi/openmpi/1.6.3/pgi_12/x86_64/lib/:/aracbox/pgi/Compiler/linux86-64/12.10/lib/:/opt/aracbox/torque/lib/:./:/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64/:/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_03daa' '-mtune=generic' '-march=x86-64'
+ /home/tom61212/bin/gcc920/bin/../libexec/gcc/x86_64-pc-linux-gnu/9.2.0/collect2 --eh-frame-hdr -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_03daa /usr/lib/../lib64/crt1.o /usr/lib/../lib64/crti.o /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/crtbegin.o -L/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0 -L/home/tom61212/bin/gcc920/bin/../lib/gcc -L/home/tom61212/bin/gcc920/lib64/../lib64 -L/usr/local/lib/../lib64 -L/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/home/tom61212/bin/Python-3.6.8/build/lib -L/home/tom61212/share/rdkit_py/rdkit/lib -L/home/tom61212/share/boost_1_75_0_py/build/lib -L/home/akitainu/bin/openbabel-install/lib -L/home/tom61212/bin/obabel-install/lib -L/home/tom61212/bin/gcc920/lib64 -L/usr/local/lib -L/aracbox/app/g09/bsd -L/aracbox/app/g09 -L/aracbox/app/g09/bsd -L/aracbox/app/g09 -L/aracbox/mpi/openmpi/1.6.3/intel_13/x86_64/lib -L/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64 -L/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64 -L/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64 -L/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64 -L/aracbox/mpi/openmpi/1.6.3/pgi_12/x86_64/lib -L/aracbox/pgi/Compiler/linux86-64/12.10/lib -L/opt/aracbox/torque/lib -L. -L/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64 -L/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64 -L/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64 -L/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64 -L/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../.. CMakeFiles/cmTC_03daa.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/crtend.o /usr/lib/../lib64/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_03daa' '-mtune=generic' '-march=x86-64'
+gmake[1]: Leaving directory `/home/tom61212/share/GitHub/tmp/MARS-PLUS/src/CMakeFiles/CMakeTmp'
+
+
+
+Parsed C implicit include dir info from above output: rv=done
+  found start of include info
+  found start of implicit include info
+    add: [/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/include]
+    add: [/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/include]
+    add: [/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/include/tbb]
+    add: [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/include]
+    add: [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed]
+    add: [/usr/local/include]
+    add: [/home/tom61212/bin/gcc920/bin/../lib/gcc/../../include]
+    add: [/usr/include]
+  end of search list found
+  collapse include dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/include] ==> [/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/include]
+  collapse include dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/include] ==> [/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/include]
+  collapse include dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/include/tbb] ==> [/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/include/tbb]
+  collapse include dir [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/include] ==> [/home/tom61212/bin/gcc920/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include]
+  collapse include dir [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed] ==> [/home/tom61212/bin/gcc920/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed]
+  collapse include dir [/usr/local/include] ==> [/usr/local/include]
+  collapse include dir [/home/tom61212/bin/gcc920/bin/../lib/gcc/../../include] ==> [/home/tom61212/bin/gcc920/include]
+  collapse include dir [/usr/include] ==> [/usr/include]
+  implicit include dirs: [/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/include;/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/include;/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/include/tbb;/home/tom61212/bin/gcc920/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include;/home/tom61212/bin/gcc920/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed;/usr/local/include;/home/tom61212/bin/gcc920/include;/usr/include]
+
+
+Parsed C implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /home/tom61212/share/GitHub/tmp/MARS-PLUS/src/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command(s):/usr/bin/gmake cmTC_03daa/fast && /usr/bin/gmake -f CMakeFiles/cmTC_03daa.dir/build.make CMakeFiles/cmTC_03daa.dir/build]
+  ignore line: [gmake[1]: Entering directory `/home/tom61212/share/GitHub/tmp/MARS-PLUS/src/CMakeFiles/CMakeTmp']
+  ignore line: [/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)]
+  ignore line: [/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)]
+  ignore line: [/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)]
+  ignore line: [Building C object CMakeFiles/cmTC_03daa.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/home/tom61212/bin/gcc920/bin/gcc   -v -o CMakeFiles/cmTC_03daa.dir/CMakeCCompilerABI.c.o   -c /home/tom61212/bin/cmake-install/cmake-3.15.5/share/cmake-3.15/Modules/CMakeCCompilerABI.c]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/home/tom61212/bin/gcc920/bin/gcc]
+  ignore line: [Target: x86_64-pc-linux-gnu]
+  ignore line: [Configured with: ../gcc-9.2.0/configure --enable-languages=c,c++ --disable-multilib --prefix=/home/guest/gcc920/]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 9.2.0 (GCC) ]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_03daa.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
+  ignore line: [ /home/tom61212/bin/gcc920/bin/../libexec/gcc/x86_64-pc-linux-gnu/9.2.0/cc1 -quiet -v -iprefix /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/ /home/tom61212/bin/cmake-install/cmake-3.15.5/share/cmake-3.15/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_03daa.dir/CMakeCCompilerABI.c.o -version -o /tmp/cczGaqYh.s]
+  ignore line: [GNU C17 (GCC) version 9.2.0 (x86_64-pc-linux-gnu)]
+  ignore line: [	compiled by GNU C version 9.2.0, GMP version 6.1.0, MPFR version 3.1.4, MPC version 1.0.3, isl version isl-0.18-GMP]
+  ignore line: []
+  ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+  ignore line: [ignoring nonexistent directory "/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/include"]
+  ignore line: [ignoring duplicate directory "/home/tom61212/bin/gcc920/bin/../lib/gcc/../../lib/gcc/x86_64-pc-linux-gnu/9.2.0/include"]
+  ignore line: [ignoring duplicate directory "/home/tom61212/bin/gcc920/bin/../lib/gcc/../../lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed"]
+  ignore line: [ignoring nonexistent directory "/home/tom61212/bin/gcc920/bin/../lib/gcc/../../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/include"]
+  ignore line: [#include "..." search starts here:]
+  ignore line: [#include <...> search starts here:]
+  ignore line: [ /aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/include]
+  ignore line: [ /aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/include]
+  ignore line: [ /aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/include/tbb]
+  ignore line: [ /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/include]
+  ignore line: [ /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed]
+  ignore line: [ /usr/local/include]
+  ignore line: [ /home/tom61212/bin/gcc920/bin/../lib/gcc/../../include]
+  ignore line: [ /usr/include]
+  ignore line: [End of search list.]
+  ignore line: [GNU C17 (GCC) version 9.2.0 (x86_64-pc-linux-gnu)]
+  ignore line: [	compiled by GNU C version 9.2.0, GMP version 6.1.0, MPFR version 3.1.4, MPC version 1.0.3, isl version isl-0.18-GMP]
+  ignore line: []
+  ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+  ignore line: [Compiler executable checksum: 13ad71acde614e71883e20e9ba662728]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_03daa.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
+  ignore line: [ as -v --64 -o CMakeFiles/cmTC_03daa.dir/CMakeCCompilerABI.c.o /tmp/cczGaqYh.s]
+  ignore line: [GNU assembler version 2.20.51.0.2 (x86_64-redhat-linux) using BFD version version 2.20.51.0.2-5.34.el6 20100205]
+  ignore line: [COMPILER_PATH=/home/tom61212/bin/gcc920/bin/../libexec/gcc/x86_64-pc-linux-gnu/9.2.0/:/home/tom61212/bin/gcc920/bin/../libexec/gcc/]
+  ignore line: [LIBRARY_PATH=/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/:/home/tom61212/bin/gcc920/bin/../lib/gcc/:/home/tom61212/bin/gcc920/lib64/../lib64/:/usr/local/lib/../lib64/:/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/home/tom61212/bin/Python-3.6.8/build/lib/:/home/tom61212/share/rdkit_py/rdkit/lib/:/home/tom61212/share/boost_1_75_0_py/build/lib/:/home/akitainu/bin/openbabel-install/lib/:/home/tom61212/bin/obabel-install/lib/:/home/tom61212/bin/gcc920/lib64/:/usr/local/lib/:/aracbox/app/g09/bsd/:/aracbox/app/g09/:/aracbox/app/g09/bsd/:/aracbox/app/g09/:/aracbox/mpi/openmpi/1.6.3/intel_13/x86_64/lib/:/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64/:/aracbox/mpi/openmpi/1.6.3/pgi_12/x86_64/lib/:/aracbox/pgi/Compiler/linux86-64/12.10/lib/:/opt/aracbox/torque/lib/:./:/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64/:/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_03daa.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
+  ignore line: [/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)]
+  ignore line: [/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)]
+  ignore line: [/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)]
+  ignore line: [Linking C executable cmTC_03daa]
+  ignore line: [/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake -E cmake_link_script CMakeFiles/cmTC_03daa.dir/link.txt --verbose=1]
+  ignore line: [/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)]
+  ignore line: [/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)]
+  ignore line: [/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)]
+  ignore line: [/home/tom61212/bin/gcc920/bin/gcc     -v -rdynamic CMakeFiles/cmTC_03daa.dir/CMakeCCompilerABI.c.o  -o cmTC_03daa ]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/home/tom61212/bin/gcc920/bin/gcc]
+  ignore line: [COLLECT_LTO_WRAPPER=/home/tom61212/bin/gcc920/bin/../libexec/gcc/x86_64-pc-linux-gnu/9.2.0/lto-wrapper]
+  ignore line: [Target: x86_64-pc-linux-gnu]
+  ignore line: [Configured with: ../gcc-9.2.0/configure --enable-languages=c,c++ --disable-multilib --prefix=/home/guest/gcc920/]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 9.2.0 (GCC) ]
+  ignore line: [COMPILER_PATH=/home/tom61212/bin/gcc920/bin/../libexec/gcc/x86_64-pc-linux-gnu/9.2.0/:/home/tom61212/bin/gcc920/bin/../libexec/gcc/]
+  ignore line: [LIBRARY_PATH=/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/:/home/tom61212/bin/gcc920/bin/../lib/gcc/:/home/tom61212/bin/gcc920/lib64/../lib64/:/usr/local/lib/../lib64/:/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/home/tom61212/bin/Python-3.6.8/build/lib/:/home/tom61212/share/rdkit_py/rdkit/lib/:/home/tom61212/share/boost_1_75_0_py/build/lib/:/home/akitainu/bin/openbabel-install/lib/:/home/tom61212/bin/obabel-install/lib/:/home/tom61212/bin/gcc920/lib64/:/usr/local/lib/:/aracbox/app/g09/bsd/:/aracbox/app/g09/:/aracbox/app/g09/bsd/:/aracbox/app/g09/:/aracbox/mpi/openmpi/1.6.3/intel_13/x86_64/lib/:/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64/:/aracbox/mpi/openmpi/1.6.3/pgi_12/x86_64/lib/:/aracbox/pgi/Compiler/linux86-64/12.10/lib/:/opt/aracbox/torque/lib/:./:/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64/:/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_03daa' '-mtune=generic' '-march=x86-64']
+  link line: [ /home/tom61212/bin/gcc920/bin/../libexec/gcc/x86_64-pc-linux-gnu/9.2.0/collect2 --eh-frame-hdr -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_03daa /usr/lib/../lib64/crt1.o /usr/lib/../lib64/crti.o /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/crtbegin.o -L/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0 -L/home/tom61212/bin/gcc920/bin/../lib/gcc -L/home/tom61212/bin/gcc920/lib64/../lib64 -L/usr/local/lib/../lib64 -L/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/home/tom61212/bin/Python-3.6.8/build/lib -L/home/tom61212/share/rdkit_py/rdkit/lib -L/home/tom61212/share/boost_1_75_0_py/build/lib -L/home/akitainu/bin/openbabel-install/lib -L/home/tom61212/bin/obabel-install/lib -L/home/tom61212/bin/gcc920/lib64 -L/usr/local/lib -L/aracbox/app/g09/bsd -L/aracbox/app/g09 -L/aracbox/app/g09/bsd -L/aracbox/app/g09 -L/aracbox/mpi/openmpi/1.6.3/intel_13/x86_64/lib -L/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64 -L/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64 -L/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64 -L/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64 -L/aracbox/mpi/openmpi/1.6.3/pgi_12/x86_64/lib -L/aracbox/pgi/Compiler/linux86-64/12.10/lib -L/opt/aracbox/torque/lib -L. -L/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64 -L/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64 -L/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64 -L/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64 -L/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../.. CMakeFiles/cmTC_03daa.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/crtend.o /usr/lib/../lib64/crtn.o]
+    arg [/home/tom61212/bin/gcc920/bin/../libexec/gcc/x86_64-pc-linux-gnu/9.2.0/collect2] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-m] ==> ignore
+    arg [elf_x86_64] ==> ignore
+    arg [-export-dynamic] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_03daa] ==> ignore
+    arg [/usr/lib/../lib64/crt1.o] ==> ignore
+    arg [/usr/lib/../lib64/crti.o] ==> ignore
+    arg [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/crtbegin.o] ==> ignore
+    arg [-L/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0] ==> dir [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0]
+    arg [-L/home/tom61212/bin/gcc920/bin/../lib/gcc] ==> dir [/home/tom61212/bin/gcc920/bin/../lib/gcc]
+    arg [-L/home/tom61212/bin/gcc920/lib64/../lib64] ==> dir [/home/tom61212/bin/gcc920/lib64/../lib64]
+    arg [-L/usr/local/lib/../lib64] ==> dir [/usr/local/lib/../lib64]
+    arg [-L/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64] ==> dir [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64]
+    arg [-L/lib/../lib64] ==> dir [/lib/../lib64]
+    arg [-L/usr/lib/../lib64] ==> dir [/usr/lib/../lib64]
+    arg [-L/home/tom61212/bin/Python-3.6.8/build/lib] ==> dir [/home/tom61212/bin/Python-3.6.8/build/lib]
+    arg [-L/home/tom61212/share/rdkit_py/rdkit/lib] ==> dir [/home/tom61212/share/rdkit_py/rdkit/lib]
+    arg [-L/home/tom61212/share/boost_1_75_0_py/build/lib] ==> dir [/home/tom61212/share/boost_1_75_0_py/build/lib]
+    arg [-L/home/akitainu/bin/openbabel-install/lib] ==> dir [/home/akitainu/bin/openbabel-install/lib]
+    arg [-L/home/tom61212/bin/obabel-install/lib] ==> dir [/home/tom61212/bin/obabel-install/lib]
+    arg [-L/home/tom61212/bin/gcc920/lib64] ==> dir [/home/tom61212/bin/gcc920/lib64]
+    arg [-L/usr/local/lib] ==> dir [/usr/local/lib]
+    arg [-L/aracbox/app/g09/bsd] ==> dir [/aracbox/app/g09/bsd]
+    arg [-L/aracbox/app/g09] ==> dir [/aracbox/app/g09]
+    arg [-L/aracbox/app/g09/bsd] ==> dir [/aracbox/app/g09/bsd]
+    arg [-L/aracbox/app/g09] ==> dir [/aracbox/app/g09]
+    arg [-L/aracbox/mpi/openmpi/1.6.3/intel_13/x86_64/lib] ==> dir [/aracbox/mpi/openmpi/1.6.3/intel_13/x86_64/lib]
+    arg [-L/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64] ==> dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64]
+    arg [-L/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64] ==> dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64]
+    arg [-L/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64] ==> dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64]
+    arg [-L/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64] ==> dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64]
+    arg [-L/aracbox/mpi/openmpi/1.6.3/pgi_12/x86_64/lib] ==> dir [/aracbox/mpi/openmpi/1.6.3/pgi_12/x86_64/lib]
+    arg [-L/aracbox/pgi/Compiler/linux86-64/12.10/lib] ==> dir [/aracbox/pgi/Compiler/linux86-64/12.10/lib]
+    arg [-L/opt/aracbox/torque/lib] ==> dir [/opt/aracbox/torque/lib]
+    arg [-L.] ==> ignore
+    arg [-L/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64] ==> dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64]
+    arg [-L/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64] ==> dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64]
+    arg [-L/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64] ==> dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64]
+    arg [-L/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64] ==> dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64]
+    arg [-L/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../..] ==> dir [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../..]
+    arg [CMakeFiles/cmTC_03daa.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [-lgcc] ==> lib [gcc]
+    arg [--as-needed] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [--no-as-needed] ==> ignore
+    arg [-lc] ==> lib [c]
+    arg [-lgcc] ==> lib [gcc]
+    arg [--as-needed] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [--no-as-needed] ==> ignore
+    arg [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/crtend.o] ==> ignore
+    arg [/usr/lib/../lib64/crtn.o] ==> ignore
+  collapse library dir [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0] ==> [/home/tom61212/bin/gcc920/lib/gcc/x86_64-pc-linux-gnu/9.2.0]
+  collapse library dir [/home/tom61212/bin/gcc920/bin/../lib/gcc] ==> [/home/tom61212/bin/gcc920/lib/gcc]
+  collapse library dir [/home/tom61212/bin/gcc920/lib64/../lib64] ==> [/home/tom61212/bin/gcc920/lib64]
+  collapse library dir [/usr/local/lib/../lib64] ==> [/usr/local/lib64]
+  collapse library dir [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64] ==> [/home/tom61212/bin/gcc920/lib64]
+  collapse library dir [/lib/../lib64] ==> [/lib64]
+  collapse library dir [/usr/lib/../lib64] ==> [/usr/lib64]
+  collapse library dir [/home/tom61212/bin/Python-3.6.8/build/lib] ==> [/home/tom61212/bin/Python-3.6.8/build/lib]
+  collapse library dir [/home/tom61212/share/rdkit_py/rdkit/lib] ==> [/home/tom61212/share/rdkit_py/rdkit/lib]
+  collapse library dir [/home/tom61212/share/boost_1_75_0_py/build/lib] ==> [/home/tom61212/share/boost_1_75_0_py/build/lib]
+  collapse library dir [/home/akitainu/bin/openbabel-install/lib] ==> [/home/akitainu/bin/openbabel-install/lib]
+  collapse library dir [/home/tom61212/bin/obabel-install/lib] ==> [/home/tom61212/bin/obabel-install/lib]
+  collapse library dir [/home/tom61212/bin/gcc920/lib64] ==> [/home/tom61212/bin/gcc920/lib64]
+  collapse library dir [/usr/local/lib] ==> [/usr/local/lib]
+  collapse library dir [/aracbox/app/g09/bsd] ==> [/aracbox/app/g09/bsd]
+  collapse library dir [/aracbox/app/g09] ==> [/aracbox/app/g09]
+  collapse library dir [/aracbox/app/g09/bsd] ==> [/aracbox/app/g09/bsd]
+  collapse library dir [/aracbox/app/g09] ==> [/aracbox/app/g09]
+  collapse library dir [/aracbox/mpi/openmpi/1.6.3/intel_13/x86_64/lib] ==> [/aracbox/mpi/openmpi/1.6.3/intel_13/x86_64/lib]
+  collapse library dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64] ==> [/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64]
+  collapse library dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64] ==> [/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64]
+  collapse library dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64] ==> [/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64]
+  collapse library dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64] ==> [/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64]
+  collapse library dir [/aracbox/mpi/openmpi/1.6.3/pgi_12/x86_64/lib] ==> [/aracbox/mpi/openmpi/1.6.3/pgi_12/x86_64/lib]
+  collapse library dir [/aracbox/pgi/Compiler/linux86-64/12.10/lib] ==> [/aracbox/pgi/Compiler/linux86-64/12.10/lib]
+  collapse library dir [/opt/aracbox/torque/lib] ==> [/opt/aracbox/torque/lib]
+  collapse library dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64] ==> [/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64]
+  collapse library dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64] ==> [/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64]
+  collapse library dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64] ==> [/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64]
+  collapse library dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64] ==> [/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64]
+  collapse library dir [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../..] ==> [/home/tom61212/bin/gcc920/lib]
+  implicit libs: [gcc;gcc_s;c;gcc;gcc_s]
+  implicit dirs: [/home/tom61212/bin/gcc920/lib/gcc/x86_64-pc-linux-gnu/9.2.0;/home/tom61212/bin/gcc920/lib/gcc;/home/tom61212/bin/gcc920/lib64;/usr/local/lib64;/lib64;/usr/lib64;/home/tom61212/bin/Python-3.6.8/build/lib;/home/tom61212/share/rdkit_py/rdkit/lib;/home/tom61212/share/boost_1_75_0_py/build/lib;/home/akitainu/bin/openbabel-install/lib;/home/tom61212/bin/obabel-install/lib;/usr/local/lib;/aracbox/app/g09/bsd;/aracbox/app/g09;/aracbox/mpi/openmpi/1.6.3/intel_13/x86_64/lib;/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64;/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64;/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64;/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64;/aracbox/mpi/openmpi/1.6.3/pgi_12/x86_64/lib;/aracbox/pgi/Compiler/linux86-64/12.10/lib;/opt/aracbox/torque/lib;/home/tom61212/bin/gcc920/lib]
+  implicit fwks: []
+
+
+Determining if the CXX compiler works passed with the following output:
+Change Dir: /home/tom61212/share/GitHub/tmp/MARS-PLUS/src/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_b980a/fast && /usr/bin/gmake -f CMakeFiles/cmTC_b980a.dir/build.make CMakeFiles/cmTC_b980a.dir/build
+gmake[1]: Entering directory `/home/tom61212/share/GitHub/tmp/MARS-PLUS/src/CMakeFiles/CMakeTmp'
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+Building CXX object CMakeFiles/cmTC_b980a.dir/testCXXCompiler.cxx.o
+/home/tom61212/bin/gcc920/bin/g++     -o CMakeFiles/cmTC_b980a.dir/testCXXCompiler.cxx.o -c /home/tom61212/share/GitHub/tmp/MARS-PLUS/src/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+Linking CXX executable cmTC_b980a
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b980a.dir/link.txt --verbose=1
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/gcc920/bin/g++       -rdynamic CMakeFiles/cmTC_b980a.dir/testCXXCompiler.cxx.o  -o cmTC_b980a 
+gmake[1]: Leaving directory `/home/tom61212/share/GitHub/tmp/MARS-PLUS/src/CMakeFiles/CMakeTmp'
+
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: /home/tom61212/share/GitHub/tmp/MARS-PLUS/src/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_bf985/fast && /usr/bin/gmake -f CMakeFiles/cmTC_bf985.dir/build.make CMakeFiles/cmTC_bf985.dir/build
+gmake[1]: Entering directory `/home/tom61212/share/GitHub/tmp/MARS-PLUS/src/CMakeFiles/CMakeTmp'
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+Building CXX object CMakeFiles/cmTC_bf985.dir/CMakeCXXCompilerABI.cpp.o
+/home/tom61212/bin/gcc920/bin/g++    -v -o CMakeFiles/cmTC_bf985.dir/CMakeCXXCompilerABI.cpp.o -c /home/tom61212/bin/cmake-install/cmake-3.15.5/share/cmake-3.15/Modules/CMakeCXXCompilerABI.cpp
+Using built-in specs.
+COLLECT_GCC=/home/tom61212/bin/gcc920/bin/g++
+Target: x86_64-pc-linux-gnu
+Configured with: ../gcc-9.2.0/configure --enable-languages=c,c++ --disable-multilib --prefix=/home/guest/gcc920/
+Thread model: posix
+gcc version 9.2.0 (GCC) 
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_bf985.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+ /home/tom61212/bin/gcc920/bin/../libexec/gcc/x86_64-pc-linux-gnu/9.2.0/cc1plus -quiet -v -iprefix /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/ -D_GNU_SOURCE /home/tom61212/bin/cmake-install/cmake-3.15.5/share/cmake-3.15/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpbase CMakeCXXCompilerABI.cpp -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_bf985.dir/CMakeCXXCompilerABI.cpp.o -version -o /tmp/ccvSrVQ8.s
+GNU C++14 (GCC) version 9.2.0 (x86_64-pc-linux-gnu)
+	compiled by GNU C version 9.2.0, GMP version 6.1.0, MPFR version 3.1.4, MPC version 1.0.3, isl version isl-0.18-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring nonexistent directory "/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/include"
+ignoring duplicate directory "/home/tom61212/bin/gcc920/bin/../lib/gcc/../../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0"
+ignoring duplicate directory "/home/tom61212/bin/gcc920/bin/../lib/gcc/../../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/x86_64-pc-linux-gnu"
+ignoring duplicate directory "/home/tom61212/bin/gcc920/bin/../lib/gcc/../../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/backward"
+ignoring duplicate directory "/home/tom61212/bin/gcc920/bin/../lib/gcc/../../lib/gcc/x86_64-pc-linux-gnu/9.2.0/include"
+ignoring duplicate directory "/home/tom61212/bin/gcc920/bin/../lib/gcc/../../lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed"
+ignoring nonexistent directory "/home/tom61212/bin/gcc920/bin/../lib/gcc/../../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ /aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/include
+ /aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/include
+ /aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/include/tbb
+ /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0
+ /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/x86_64-pc-linux-gnu
+ /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/backward
+ /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/include
+ /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed
+ /usr/local/include
+ /home/tom61212/bin/gcc920/bin/../lib/gcc/../../include
+ /usr/include
+End of search list.
+GNU C++14 (GCC) version 9.2.0 (x86_64-pc-linux-gnu)
+	compiled by GNU C version 9.2.0, GMP version 6.1.0, MPFR version 3.1.4, MPC version 1.0.3, isl version isl-0.18-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: dac519595067628d3dda078163ba4c91
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_bf985.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+ as -v --64 -o CMakeFiles/cmTC_bf985.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccvSrVQ8.s
+GNU assembler version 2.20.51.0.2 (x86_64-redhat-linux) using BFD version version 2.20.51.0.2-5.34.el6 20100205
+COMPILER_PATH=/home/tom61212/bin/gcc920/bin/../libexec/gcc/x86_64-pc-linux-gnu/9.2.0/:/home/tom61212/bin/gcc920/bin/../libexec/gcc/
+LIBRARY_PATH=/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/:/home/tom61212/bin/gcc920/bin/../lib/gcc/:/home/tom61212/bin/gcc920/lib64/../lib64/:/usr/local/lib/../lib64/:/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/home/tom61212/bin/Python-3.6.8/build/lib/:/home/tom61212/share/rdkit_py/rdkit/lib/:/home/tom61212/share/boost_1_75_0_py/build/lib/:/home/akitainu/bin/openbabel-install/lib/:/home/tom61212/bin/obabel-install/lib/:/home/tom61212/bin/gcc920/lib64/:/usr/local/lib/:/aracbox/app/g09/bsd/:/aracbox/app/g09/:/aracbox/app/g09/bsd/:/aracbox/app/g09/:/aracbox/mpi/openmpi/1.6.3/intel_13/x86_64/lib/:/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64/:/aracbox/mpi/openmpi/1.6.3/pgi_12/x86_64/lib/:/aracbox/pgi/Compiler/linux86-64/12.10/lib/:/opt/aracbox/torque/lib/:./:/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64/:/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_bf985.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+Linking CXX executable cmTC_bf985
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bf985.dir/link.txt --verbose=1
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)
+/home/tom61212/bin/gcc920/bin/g++      -v -rdynamic CMakeFiles/cmTC_bf985.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_bf985 
+Using built-in specs.
+COLLECT_GCC=/home/tom61212/bin/gcc920/bin/g++
+COLLECT_LTO_WRAPPER=/home/tom61212/bin/gcc920/bin/../libexec/gcc/x86_64-pc-linux-gnu/9.2.0/lto-wrapper
+Target: x86_64-pc-linux-gnu
+Configured with: ../gcc-9.2.0/configure --enable-languages=c,c++ --disable-multilib --prefix=/home/guest/gcc920/
+Thread model: posix
+gcc version 9.2.0 (GCC) 
+COMPILER_PATH=/home/tom61212/bin/gcc920/bin/../libexec/gcc/x86_64-pc-linux-gnu/9.2.0/:/home/tom61212/bin/gcc920/bin/../libexec/gcc/
+LIBRARY_PATH=/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/:/home/tom61212/bin/gcc920/bin/../lib/gcc/:/home/tom61212/bin/gcc920/lib64/../lib64/:/usr/local/lib/../lib64/:/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/home/tom61212/bin/Python-3.6.8/build/lib/:/home/tom61212/share/rdkit_py/rdkit/lib/:/home/tom61212/share/boost_1_75_0_py/build/lib/:/home/akitainu/bin/openbabel-install/lib/:/home/tom61212/bin/obabel-install/lib/:/home/tom61212/bin/gcc920/lib64/:/usr/local/lib/:/aracbox/app/g09/bsd/:/aracbox/app/g09/:/aracbox/app/g09/bsd/:/aracbox/app/g09/:/aracbox/mpi/openmpi/1.6.3/intel_13/x86_64/lib/:/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64/:/aracbox/mpi/openmpi/1.6.3/pgi_12/x86_64/lib/:/aracbox/pgi/Compiler/linux86-64/12.10/lib/:/opt/aracbox/torque/lib/:./:/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64/:/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_bf985' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+ /home/tom61212/bin/gcc920/bin/../libexec/gcc/x86_64-pc-linux-gnu/9.2.0/collect2 --eh-frame-hdr -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_bf985 /usr/lib/../lib64/crt1.o /usr/lib/../lib64/crti.o /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/crtbegin.o -L/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0 -L/home/tom61212/bin/gcc920/bin/../lib/gcc -L/home/tom61212/bin/gcc920/lib64/../lib64 -L/usr/local/lib/../lib64 -L/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/home/tom61212/bin/Python-3.6.8/build/lib -L/home/tom61212/share/rdkit_py/rdkit/lib -L/home/tom61212/share/boost_1_75_0_py/build/lib -L/home/akitainu/bin/openbabel-install/lib -L/home/tom61212/bin/obabel-install/lib -L/home/tom61212/bin/gcc920/lib64 -L/usr/local/lib -L/aracbox/app/g09/bsd -L/aracbox/app/g09 -L/aracbox/app/g09/bsd -L/aracbox/app/g09 -L/aracbox/mpi/openmpi/1.6.3/intel_13/x86_64/lib -L/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64 -L/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64 -L/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64 -L/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64 -L/aracbox/mpi/openmpi/1.6.3/pgi_12/x86_64/lib -L/aracbox/pgi/Compiler/linux86-64/12.10/lib -L/opt/aracbox/torque/lib -L. -L/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64 -L/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64 -L/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64 -L/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64 -L/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../.. CMakeFiles/cmTC_bf985.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/crtend.o /usr/lib/../lib64/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_bf985' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+gmake[1]: Leaving directory `/home/tom61212/share/GitHub/tmp/MARS-PLUS/src/CMakeFiles/CMakeTmp'
+
+
+
+Parsed CXX implicit include dir info from above output: rv=done
+  found start of include info
+  found start of implicit include info
+    add: [/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/include]
+    add: [/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/include]
+    add: [/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/include/tbb]
+    add: [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0]
+    add: [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/x86_64-pc-linux-gnu]
+    add: [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/backward]
+    add: [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/include]
+    add: [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed]
+    add: [/usr/local/include]
+    add: [/home/tom61212/bin/gcc920/bin/../lib/gcc/../../include]
+    add: [/usr/include]
+  end of search list found
+  collapse include dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/include] ==> [/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/include]
+  collapse include dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/include] ==> [/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/include]
+  collapse include dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/include/tbb] ==> [/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/include/tbb]
+  collapse include dir [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0] ==> [/home/tom61212/bin/gcc920/include/c++/9.2.0]
+  collapse include dir [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/x86_64-pc-linux-gnu] ==> [/home/tom61212/bin/gcc920/include/c++/9.2.0/x86_64-pc-linux-gnu]
+  collapse include dir [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/backward] ==> [/home/tom61212/bin/gcc920/include/c++/9.2.0/backward]
+  collapse include dir [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/include] ==> [/home/tom61212/bin/gcc920/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include]
+  collapse include dir [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed] ==> [/home/tom61212/bin/gcc920/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed]
+  collapse include dir [/usr/local/include] ==> [/usr/local/include]
+  collapse include dir [/home/tom61212/bin/gcc920/bin/../lib/gcc/../../include] ==> [/home/tom61212/bin/gcc920/include]
+  collapse include dir [/usr/include] ==> [/usr/include]
+  implicit include dirs: [/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/include;/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/include;/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/include/tbb;/home/tom61212/bin/gcc920/include/c++/9.2.0;/home/tom61212/bin/gcc920/include/c++/9.2.0/x86_64-pc-linux-gnu;/home/tom61212/bin/gcc920/include/c++/9.2.0/backward;/home/tom61212/bin/gcc920/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include;/home/tom61212/bin/gcc920/lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed;/usr/local/include;/home/tom61212/bin/gcc920/include;/usr/include]
+
+
+Parsed CXX implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /home/tom61212/share/GitHub/tmp/MARS-PLUS/src/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command(s):/usr/bin/gmake cmTC_bf985/fast && /usr/bin/gmake -f CMakeFiles/cmTC_bf985.dir/build.make CMakeFiles/cmTC_bf985.dir/build]
+  ignore line: [gmake[1]: Entering directory `/home/tom61212/share/GitHub/tmp/MARS-PLUS/src/CMakeFiles/CMakeTmp']
+  ignore line: [/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)]
+  ignore line: [/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)]
+  ignore line: [/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)]
+  ignore line: [Building CXX object CMakeFiles/cmTC_bf985.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/home/tom61212/bin/gcc920/bin/g++    -v -o CMakeFiles/cmTC_bf985.dir/CMakeCXXCompilerABI.cpp.o -c /home/tom61212/bin/cmake-install/cmake-3.15.5/share/cmake-3.15/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/home/tom61212/bin/gcc920/bin/g++]
+  ignore line: [Target: x86_64-pc-linux-gnu]
+  ignore line: [Configured with: ../gcc-9.2.0/configure --enable-languages=c,c++ --disable-multilib --prefix=/home/guest/gcc920/]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 9.2.0 (GCC) ]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_bf985.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+  ignore line: [ /home/tom61212/bin/gcc920/bin/../libexec/gcc/x86_64-pc-linux-gnu/9.2.0/cc1plus -quiet -v -iprefix /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/ -D_GNU_SOURCE /home/tom61212/bin/cmake-install/cmake-3.15.5/share/cmake-3.15/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpbase CMakeCXXCompilerABI.cpp -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_bf985.dir/CMakeCXXCompilerABI.cpp.o -version -o /tmp/ccvSrVQ8.s]
+  ignore line: [GNU C++14 (GCC) version 9.2.0 (x86_64-pc-linux-gnu)]
+  ignore line: [	compiled by GNU C version 9.2.0, GMP version 6.1.0, MPFR version 3.1.4, MPC version 1.0.3, isl version isl-0.18-GMP]
+  ignore line: []
+  ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+  ignore line: [ignoring nonexistent directory "/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/include"]
+  ignore line: [ignoring duplicate directory "/home/tom61212/bin/gcc920/bin/../lib/gcc/../../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0"]
+  ignore line: [ignoring duplicate directory "/home/tom61212/bin/gcc920/bin/../lib/gcc/../../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/x86_64-pc-linux-gnu"]
+  ignore line: [ignoring duplicate directory "/home/tom61212/bin/gcc920/bin/../lib/gcc/../../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/backward"]
+  ignore line: [ignoring duplicate directory "/home/tom61212/bin/gcc920/bin/../lib/gcc/../../lib/gcc/x86_64-pc-linux-gnu/9.2.0/include"]
+  ignore line: [ignoring duplicate directory "/home/tom61212/bin/gcc920/bin/../lib/gcc/../../lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed"]
+  ignore line: [ignoring nonexistent directory "/home/tom61212/bin/gcc920/bin/../lib/gcc/../../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../x86_64-pc-linux-gnu/include"]
+  ignore line: [#include "..." search starts here:]
+  ignore line: [#include <...> search starts here:]
+  ignore line: [ /aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/include]
+  ignore line: [ /aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/include]
+  ignore line: [ /aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/include/tbb]
+  ignore line: [ /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0]
+  ignore line: [ /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/x86_64-pc-linux-gnu]
+  ignore line: [ /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../include/c++/9.2.0/backward]
+  ignore line: [ /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/include]
+  ignore line: [ /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/include-fixed]
+  ignore line: [ /usr/local/include]
+  ignore line: [ /home/tom61212/bin/gcc920/bin/../lib/gcc/../../include]
+  ignore line: [ /usr/include]
+  ignore line: [End of search list.]
+  ignore line: [GNU C++14 (GCC) version 9.2.0 (x86_64-pc-linux-gnu)]
+  ignore line: [	compiled by GNU C version 9.2.0, GMP version 6.1.0, MPFR version 3.1.4, MPC version 1.0.3, isl version isl-0.18-GMP]
+  ignore line: []
+  ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+  ignore line: [Compiler executable checksum: dac519595067628d3dda078163ba4c91]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_bf985.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+  ignore line: [ as -v --64 -o CMakeFiles/cmTC_bf985.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccvSrVQ8.s]
+  ignore line: [GNU assembler version 2.20.51.0.2 (x86_64-redhat-linux) using BFD version version 2.20.51.0.2-5.34.el6 20100205]
+  ignore line: [COMPILER_PATH=/home/tom61212/bin/gcc920/bin/../libexec/gcc/x86_64-pc-linux-gnu/9.2.0/:/home/tom61212/bin/gcc920/bin/../libexec/gcc/]
+  ignore line: [LIBRARY_PATH=/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/:/home/tom61212/bin/gcc920/bin/../lib/gcc/:/home/tom61212/bin/gcc920/lib64/../lib64/:/usr/local/lib/../lib64/:/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/home/tom61212/bin/Python-3.6.8/build/lib/:/home/tom61212/share/rdkit_py/rdkit/lib/:/home/tom61212/share/boost_1_75_0_py/build/lib/:/home/akitainu/bin/openbabel-install/lib/:/home/tom61212/bin/obabel-install/lib/:/home/tom61212/bin/gcc920/lib64/:/usr/local/lib/:/aracbox/app/g09/bsd/:/aracbox/app/g09/:/aracbox/app/g09/bsd/:/aracbox/app/g09/:/aracbox/mpi/openmpi/1.6.3/intel_13/x86_64/lib/:/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64/:/aracbox/mpi/openmpi/1.6.3/pgi_12/x86_64/lib/:/aracbox/pgi/Compiler/linux86-64/12.10/lib/:/opt/aracbox/torque/lib/:./:/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64/:/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_bf985.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+  ignore line: [/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)]
+  ignore line: [/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)]
+  ignore line: [/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)]
+  ignore line: [Linking CXX executable cmTC_bf985]
+  ignore line: [/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bf985.dir/link.txt --verbose=1]
+  ignore line: [/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libssl.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)]
+  ignore line: [/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)]
+  ignore line: [/home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake: /usr/lib64/libcrypto.so.10: no version information available (required by /home/tom61212/bin/cmake-install/cmake-3.15.5/bin/cmake)]
+  ignore line: [/home/tom61212/bin/gcc920/bin/g++      -v -rdynamic CMakeFiles/cmTC_bf985.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_bf985 ]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/home/tom61212/bin/gcc920/bin/g++]
+  ignore line: [COLLECT_LTO_WRAPPER=/home/tom61212/bin/gcc920/bin/../libexec/gcc/x86_64-pc-linux-gnu/9.2.0/lto-wrapper]
+  ignore line: [Target: x86_64-pc-linux-gnu]
+  ignore line: [Configured with: ../gcc-9.2.0/configure --enable-languages=c,c++ --disable-multilib --prefix=/home/guest/gcc920/]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 9.2.0 (GCC) ]
+  ignore line: [COMPILER_PATH=/home/tom61212/bin/gcc920/bin/../libexec/gcc/x86_64-pc-linux-gnu/9.2.0/:/home/tom61212/bin/gcc920/bin/../libexec/gcc/]
+  ignore line: [LIBRARY_PATH=/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/:/home/tom61212/bin/gcc920/bin/../lib/gcc/:/home/tom61212/bin/gcc920/lib64/../lib64/:/usr/local/lib/../lib64/:/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/home/tom61212/bin/Python-3.6.8/build/lib/:/home/tom61212/share/rdkit_py/rdkit/lib/:/home/tom61212/share/boost_1_75_0_py/build/lib/:/home/akitainu/bin/openbabel-install/lib/:/home/tom61212/bin/obabel-install/lib/:/home/tom61212/bin/gcc920/lib64/:/usr/local/lib/:/aracbox/app/g09/bsd/:/aracbox/app/g09/:/aracbox/app/g09/bsd/:/aracbox/app/g09/:/aracbox/mpi/openmpi/1.6.3/intel_13/x86_64/lib/:/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64/:/aracbox/mpi/openmpi/1.6.3/pgi_12/x86_64/lib/:/aracbox/pgi/Compiler/linux86-64/12.10/lib/:/opt/aracbox/torque/lib/:./:/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64/:/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64/:/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_bf985' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+  link line: [ /home/tom61212/bin/gcc920/bin/../libexec/gcc/x86_64-pc-linux-gnu/9.2.0/collect2 --eh-frame-hdr -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_bf985 /usr/lib/../lib64/crt1.o /usr/lib/../lib64/crti.o /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/crtbegin.o -L/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0 -L/home/tom61212/bin/gcc920/bin/../lib/gcc -L/home/tom61212/bin/gcc920/lib64/../lib64 -L/usr/local/lib/../lib64 -L/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/home/tom61212/bin/Python-3.6.8/build/lib -L/home/tom61212/share/rdkit_py/rdkit/lib -L/home/tom61212/share/boost_1_75_0_py/build/lib -L/home/akitainu/bin/openbabel-install/lib -L/home/tom61212/bin/obabel-install/lib -L/home/tom61212/bin/gcc920/lib64 -L/usr/local/lib -L/aracbox/app/g09/bsd -L/aracbox/app/g09 -L/aracbox/app/g09/bsd -L/aracbox/app/g09 -L/aracbox/mpi/openmpi/1.6.3/intel_13/x86_64/lib -L/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64 -L/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64 -L/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64 -L/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64 -L/aracbox/mpi/openmpi/1.6.3/pgi_12/x86_64/lib -L/aracbox/pgi/Compiler/linux86-64/12.10/lib -L/opt/aracbox/torque/lib -L. -L/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64 -L/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64 -L/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64 -L/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64 -L/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../.. CMakeFiles/cmTC_bf985.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/crtend.o /usr/lib/../lib64/crtn.o]
+    arg [/home/tom61212/bin/gcc920/bin/../libexec/gcc/x86_64-pc-linux-gnu/9.2.0/collect2] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-m] ==> ignore
+    arg [elf_x86_64] ==> ignore
+    arg [-export-dynamic] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_bf985] ==> ignore
+    arg [/usr/lib/../lib64/crt1.o] ==> ignore
+    arg [/usr/lib/../lib64/crti.o] ==> ignore
+    arg [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/crtbegin.o] ==> ignore
+    arg [-L/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0] ==> dir [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0]
+    arg [-L/home/tom61212/bin/gcc920/bin/../lib/gcc] ==> dir [/home/tom61212/bin/gcc920/bin/../lib/gcc]
+    arg [-L/home/tom61212/bin/gcc920/lib64/../lib64] ==> dir [/home/tom61212/bin/gcc920/lib64/../lib64]
+    arg [-L/usr/local/lib/../lib64] ==> dir [/usr/local/lib/../lib64]
+    arg [-L/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64] ==> dir [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64]
+    arg [-L/lib/../lib64] ==> dir [/lib/../lib64]
+    arg [-L/usr/lib/../lib64] ==> dir [/usr/lib/../lib64]
+    arg [-L/home/tom61212/bin/Python-3.6.8/build/lib] ==> dir [/home/tom61212/bin/Python-3.6.8/build/lib]
+    arg [-L/home/tom61212/share/rdkit_py/rdkit/lib] ==> dir [/home/tom61212/share/rdkit_py/rdkit/lib]
+    arg [-L/home/tom61212/share/boost_1_75_0_py/build/lib] ==> dir [/home/tom61212/share/boost_1_75_0_py/build/lib]
+    arg [-L/home/akitainu/bin/openbabel-install/lib] ==> dir [/home/akitainu/bin/openbabel-install/lib]
+    arg [-L/home/tom61212/bin/obabel-install/lib] ==> dir [/home/tom61212/bin/obabel-install/lib]
+    arg [-L/home/tom61212/bin/gcc920/lib64] ==> dir [/home/tom61212/bin/gcc920/lib64]
+    arg [-L/usr/local/lib] ==> dir [/usr/local/lib]
+    arg [-L/aracbox/app/g09/bsd] ==> dir [/aracbox/app/g09/bsd]
+    arg [-L/aracbox/app/g09] ==> dir [/aracbox/app/g09]
+    arg [-L/aracbox/app/g09/bsd] ==> dir [/aracbox/app/g09/bsd]
+    arg [-L/aracbox/app/g09] ==> dir [/aracbox/app/g09]
+    arg [-L/aracbox/mpi/openmpi/1.6.3/intel_13/x86_64/lib] ==> dir [/aracbox/mpi/openmpi/1.6.3/intel_13/x86_64/lib]
+    arg [-L/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64] ==> dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64]
+    arg [-L/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64] ==> dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64]
+    arg [-L/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64] ==> dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64]
+    arg [-L/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64] ==> dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64]
+    arg [-L/aracbox/mpi/openmpi/1.6.3/pgi_12/x86_64/lib] ==> dir [/aracbox/mpi/openmpi/1.6.3/pgi_12/x86_64/lib]
+    arg [-L/aracbox/pgi/Compiler/linux86-64/12.10/lib] ==> dir [/aracbox/pgi/Compiler/linux86-64/12.10/lib]
+    arg [-L/opt/aracbox/torque/lib] ==> dir [/opt/aracbox/torque/lib]
+    arg [-L.] ==> ignore
+    arg [-L/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64] ==> dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64]
+    arg [-L/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64] ==> dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64]
+    arg [-L/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64] ==> dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64]
+    arg [-L/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64] ==> dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64]
+    arg [-L/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../..] ==> dir [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../..]
+    arg [CMakeFiles/cmTC_bf985.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [-lstdc++] ==> lib [stdc++]
+    arg [-lm] ==> lib [m]
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [-lgcc] ==> lib [gcc]
+    arg [-lc] ==> lib [c]
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [-lgcc] ==> lib [gcc]
+    arg [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/crtend.o] ==> ignore
+    arg [/usr/lib/../lib64/crtn.o] ==> ignore
+  collapse library dir [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0] ==> [/home/tom61212/bin/gcc920/lib/gcc/x86_64-pc-linux-gnu/9.2.0]
+  collapse library dir [/home/tom61212/bin/gcc920/bin/../lib/gcc] ==> [/home/tom61212/bin/gcc920/lib/gcc]
+  collapse library dir [/home/tom61212/bin/gcc920/lib64/../lib64] ==> [/home/tom61212/bin/gcc920/lib64]
+  collapse library dir [/usr/local/lib/../lib64] ==> [/usr/local/lib64]
+  collapse library dir [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../../../lib64] ==> [/home/tom61212/bin/gcc920/lib64]
+  collapse library dir [/lib/../lib64] ==> [/lib64]
+  collapse library dir [/usr/lib/../lib64] ==> [/usr/lib64]
+  collapse library dir [/home/tom61212/bin/Python-3.6.8/build/lib] ==> [/home/tom61212/bin/Python-3.6.8/build/lib]
+  collapse library dir [/home/tom61212/share/rdkit_py/rdkit/lib] ==> [/home/tom61212/share/rdkit_py/rdkit/lib]
+  collapse library dir [/home/tom61212/share/boost_1_75_0_py/build/lib] ==> [/home/tom61212/share/boost_1_75_0_py/build/lib]
+  collapse library dir [/home/akitainu/bin/openbabel-install/lib] ==> [/home/akitainu/bin/openbabel-install/lib]
+  collapse library dir [/home/tom61212/bin/obabel-install/lib] ==> [/home/tom61212/bin/obabel-install/lib]
+  collapse library dir [/home/tom61212/bin/gcc920/lib64] ==> [/home/tom61212/bin/gcc920/lib64]
+  collapse library dir [/usr/local/lib] ==> [/usr/local/lib]
+  collapse library dir [/aracbox/app/g09/bsd] ==> [/aracbox/app/g09/bsd]
+  collapse library dir [/aracbox/app/g09] ==> [/aracbox/app/g09]
+  collapse library dir [/aracbox/app/g09/bsd] ==> [/aracbox/app/g09/bsd]
+  collapse library dir [/aracbox/app/g09] ==> [/aracbox/app/g09]
+  collapse library dir [/aracbox/mpi/openmpi/1.6.3/intel_13/x86_64/lib] ==> [/aracbox/mpi/openmpi/1.6.3/intel_13/x86_64/lib]
+  collapse library dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64] ==> [/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64]
+  collapse library dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64] ==> [/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64]
+  collapse library dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64] ==> [/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64]
+  collapse library dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64] ==> [/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64]
+  collapse library dir [/aracbox/mpi/openmpi/1.6.3/pgi_12/x86_64/lib] ==> [/aracbox/mpi/openmpi/1.6.3/pgi_12/x86_64/lib]
+  collapse library dir [/aracbox/pgi/Compiler/linux86-64/12.10/lib] ==> [/aracbox/pgi/Compiler/linux86-64/12.10/lib]
+  collapse library dir [/opt/aracbox/torque/lib] ==> [/opt/aracbox/torque/lib]
+  collapse library dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64] ==> [/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64]
+  collapse library dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64] ==> [/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64]
+  collapse library dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64] ==> [/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64]
+  collapse library dir [/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64] ==> [/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64]
+  collapse library dir [/home/tom61212/bin/gcc920/bin/../lib/gcc/x86_64-pc-linux-gnu/9.2.0/../../..] ==> [/home/tom61212/bin/gcc920/lib]
+  implicit libs: [stdc++;m;gcc_s;gcc;c;gcc_s;gcc]
+  implicit dirs: [/home/tom61212/bin/gcc920/lib/gcc/x86_64-pc-linux-gnu/9.2.0;/home/tom61212/bin/gcc920/lib/gcc;/home/tom61212/bin/gcc920/lib64;/usr/local/lib64;/lib64;/usr/lib64;/home/tom61212/bin/Python-3.6.8/build/lib;/home/tom61212/share/rdkit_py/rdkit/lib;/home/tom61212/share/boost_1_75_0_py/build/lib;/home/akitainu/bin/openbabel-install/lib;/home/tom61212/bin/obabel-install/lib;/usr/local/lib;/aracbox/app/g09/bsd;/aracbox/app/g09;/aracbox/mpi/openmpi/1.6.3/intel_13/x86_64/lib;/aracbox/intel/Compiler/composer_xe_2013.1.117/ipp/lib/intel64;/aracbox/intel/Compiler/composer_xe_2013.1.117/mkl/lib/intel64;/aracbox/intel/Compiler/composer_xe_2013.1.117/tbb/lib/intel64;/aracbox/intel/Compiler/composer_xe_2013.1.117/compiler/lib/intel64;/aracbox/mpi/openmpi/1.6.3/pgi_12/x86_64/lib;/aracbox/pgi/Compiler/linux86-64/12.10/lib;/opt/aracbox/torque/lib;/home/tom61212/bin/gcc920/lib]
+  implicit fwks: []
+
+

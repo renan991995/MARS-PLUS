@@ -1387,12 +1387,12 @@ unsigned int CH4_to_aspirin(MOLECULE &A) {
     ////A.input();
     //out << "addition(1,6,2) " << A.molesmi << endl;
 
-    A.addition(1,8,2);
+    A.addition(1,2,2);
     //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
-    out << "addition(1,8,2) " << A.molesmi << endl;
+    out << "addition(1,2,2) " << A.molesmi << endl;
 
     A.change_ele(2,6,2,1);
     //A.mds2smi();
@@ -1416,19 +1416,18 @@ unsigned int CH4_to_aspirin(MOLECULE &A) {
     //out << "addition(3,2,1) " << A.molesmi << endl;
 
     A.addition(1,2,1);
-    A.mds2smi();
+	//A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "addition(1,2,1) " << A.molesmi << endl;
 
     A.insertion(3,5,1,1);
-    A.mds2smi();
+    //A.mds2smi();
     A.canonicalize_SMILES();
     A.smiles=A.molesmi;
     //A.input();
     out << "insertion(3,5,1,1) " << A.molesmi << endl;
-
 
     A.addition(4,2,2);
     //A.mds2smi();
