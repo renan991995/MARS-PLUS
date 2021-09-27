@@ -1,0 +1,15 @@
+Original SMILES: Cc1ccccc1
+TOLERANCE: 210
+Canonical SMILES: Cc1ccccc1
+Canonical SMILES (3Dbuilder->smi): Cc1ccccc1
+    1                                                                      c1ccc(C)cc1
+    2                                                                      c1c(C)cccc1
+    3                                                                        c1ccccc1C
+    4                                                                      c1cc(ccc1)C
+    5                                                                      c1cccc(C)c1
+    6                                                                      c1cccc(c1)C
+    7                                                                      c1(C)ccccc1
+    8                                                                      c1(ccccc1)C
+    9                                                                      c1cc(C)ccc1
+   10                                                                      c1ccc(cc1)C
+   11                                                                      c1c(cccc1)C

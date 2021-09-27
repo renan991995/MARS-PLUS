@@ -1,0 +1,6 @@
+c1ccccc1c1ccccc1
+Cc1ccccc1
+C/C=C/[C@H](n1cc[n+](c1)C)F
+C/C=C/[C@H](n1cc[n+](c1c1cccc[nH+]1)C)F
+C[C@@](C[P@](=O)(OC[C@@H](I)S)[O-])(Cl)O
+CC(C)(C)OC(=O)CC(=O)OC

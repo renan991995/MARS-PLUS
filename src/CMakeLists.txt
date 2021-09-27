@@ -1,7 +1,6 @@
 cmake_minimum_required (VERSION 2.6)
 
 
-#set(CMAKE_CXX_COMPILER g++)
 set(CMAKE_CXX_COMPILER "/home/tom61212/bin/gcc920/bin/g++")
 set(CMAKE_C_COMPILER "/home/tom61212/bin/gcc920/bin/gcc")
 
@@ -18,14 +17,11 @@ set(filename
 		main.cpp			
 	)
 
-project(GA)
-add_executable(MARS ${filename})
-#target_link_libraries(MARS "/home/akitainu/bin/openbabel-install/lib/libopenbabel.so.5")
-#include_directories("/home/akitainu/bin/openbabel-install/include/openbabel-2.0")
-target_link_libraries(MARS "/home/tom61212/bin/obabel-install/lib/libopenbabel.so.7")
+project(MARS-PLUS)
+add_executable(MARS-PLUS ${filename})
+target_link_libraries(MARS-PLUS "/home/tom61212/bin/obabel-install/lib/libopenbabel.so.7")
 include_directories("/home/tom61212/bin/obabel-install/include/openbabel3")
 include_directories("/home/tom61212/share/Eigen3/eigen-3.3.7/build/include/eigen3")
-#include_directories("/home/akitainu/bin/openbabel-install/lib")
 
 message("Default build type is ${CMAKE_BUILD_TYPE}")
 
