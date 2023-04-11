@@ -266,65 +266,69 @@ unsigned int exhaustive_subtraction(MOLECULE &A) {
 
     out << setw(7) << left << "No." << " "
         << setw(65) << left << "MOL_subtr" << " "
-        << setw(17) << left << "MOL_subtr_pt" <<  endl;
+        << setw(17) << left << "MOL_subtr_pt" << " " 
+		<< setw(17) << left << "MOL_subtr_bndfrm" << endl;
 
 
 	for (i=0;i<A.Cindex.size();i++) {
-		unsigned int ACi=A.Cindex.at(i);
-		if (A.subtraction(i,1)) {
-			//count++;
-			//A.mds2smi();
-			A.canonicalize_SMILES();
-			A.smiles=A.molesmi;  
-			//A.input();
-			
-			//out<<A.molesmi<<endl;
+		for (unsigned int bd=0;bd<4;bd++) {
+			unsigned int ACi=A.Cindex.at(i);
+			if (A.subtraction(i,bd,0)) {
+				//count++;
+				//A.mds2smi();
+				A.canonicalize_SMILES();
+				A.smiles=A.molesmi;  
+				//A.input();
+				
+				//out<<A.molesmi<<endl;
 
-            string mm=A.molesmi;
-            for (unsigned int q=0;q<mm.length();q++) {
-                if (mm[q]=='/') mm[q]='u';
-                if (mm[q]=='\\') mm[q]='d';
-                if (mm[q]=='*') mm[q]='x';
-            }
-
-            //system(("ls "+para.programdir+"mds/ | grep -F \""+A.molesmi+"_\" > ./tmp1 2> /dev/null").c_str());
-            system(("grep -F \"/"+mm+"_\" "+para.programdir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
-			//system(("grep -Fw \""+A.molesmi+"\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
-            ifstream inf("./tmp1");
-            inf >> ws;
-
-            if (inf.eof()) {
-                count++;
-                if (1) cout << "EXHAUSTIVE SUBTRACTION: " << smi << " { " << ACi << " } -> " << A.molesmi << " {No. " << count << " }" << endl;
-
-                out << setw(7) << left << count << " "
-                    << setw(65) << left << A.molesmi << " "
-                    << setw(17) << left << ACi << endl;
-				if (para.ifwritemds) {
-            		ofstream outs((para.programdir+"mds/"+mm+"_subtr.enc").c_str());
-					//ofstream outs((para.mdsdir+mm+"_subtr.enc").c_str());
-           			A.printmds(outs);
-            		outs.close();
+				string mm=A.molesmi;
+				for (unsigned int q=0;q<mm.length();q++) {
+					if (mm[q]=='/') mm[q]='u';
+					if (mm[q]=='\\') mm[q]='d';
+					if (mm[q]=='*') mm[q]='x';
 				}
 
-           		ofstream outs((para.programdir+"mds/DATLIST.txt").c_str(),ios::app);
-				//ofstream outs((para.mdsdir+"DATLIST.txt").c_str(),ios::app);
-            	outs << setw(50) << left << A.molesmi << "   " << left << (para.programdir+"mds/"+mm+"_subtr.enc") << endl;
-				//outs << setw(50) << left << A.molesmi << "   " << left << (para.mdsdir+mm+"_subtr.enc") << endl;
-            	outs.close();
+				//system(("ls "+para.programdir+"mds/ | grep -F \""+A.molesmi+"_\" > ./tmp1 2> /dev/null").c_str());
+				system(("grep -F \"/"+mm+"_\" "+para.programdir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+				//system(("grep -Fw \""+A.molesmi+"\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+				ifstream inf("./tmp1");
+				inf >> ws;
 
-				if (para.glbouf.is_open()) para.glbouf << A.molesmi << endl;
+				if (inf.eof()) {
+					count++;
+					if (1) cout << "EXHAUSTIVE SUBTRACTION: " << smi << " { " << ACi << " } -> " << A.molesmi << " {No. " << count << " }" << endl;
 
-				if (para.enumeration) SMI_Enumerator(A.molesmi);
-            }
-            inf.close();
+					out << setw(7) << left << count << " "
+						<< setw(65) << left << A.molesmi << " "
+						<< setw(17) << left << ACi << " "
+						<< setw(17) << left << bd << endl;
+					if (para.ifwritemds) {
+						ofstream outs((para.programdir+"mds/"+mm+"_subtr.enc").c_str());
+						//ofstream outs((para.mdsdir+mm+"_subtr.enc").c_str());
+						A.printmds(outs);
+						outs.close();
+					}
 
-			
-			if (0) {
-				A.smiles=smi;
-				A.input();
+					ofstream outs((para.programdir+"mds/DATLIST.txt").c_str(),ios::app);
+					//ofstream outs((para.mdsdir+"DATLIST.txt").c_str(),ios::app);
+					outs << setw(50) << left << A.molesmi << "   " << left << (para.programdir+"mds/"+mm+"_subtr.enc") << endl;
+					//outs << setw(50) << left << A.molesmi << "   " << left << (para.mdsdir+mm+"_subtr.enc") << endl;
+					outs.close();
+
+					if (para.glbouf.is_open()) para.glbouf << A.molesmi << endl;
+
+					if (para.enumeration) SMI_Enumerator(A.molesmi);
+				}
+				inf.close();
+
+				
+				if (0) {
+					A.smiles=smi;
+					A.input();
+				}
+				if (1) A.replace(buf[0]);
 			}
-			if (1) A.replace(buf[0]);
 		}
 	}
 	
@@ -1095,7 +1099,7 @@ unsigned int exhaustive_change_chirality(MOLECULE &A) {
 
     for (i=0;i<A.Cindex.size();i++) {
         unsigned int ACi=A.Cindex.at(i);
-        unsigned int AMi=A.Mindex.at(i);
+        unsigned int Achi=A.chi.at(i);
 
         for (j=0;j<stereoC.size();j++) {
             if (A.change_chirality(i,stereoC.at(j))) {
@@ -1123,13 +1127,13 @@ unsigned int exhaustive_change_chirality(MOLECULE &A) {
 
                 if (inf.eof()) {
                     count++;
-                    if (0) cout << "EXHAUSTIVE CHANGE_CHIRALITY: " << smi << " {CAT: "<< ACi << " | " << AMi << " to " << A.Mindex.at(i) << " } -> " << A.molesmi << " {No. " << count << " }" << endl;
+                    if (0) cout << "EXHAUSTIVE CHANGE_CHIRALITY: " << smi << " {CAT: "<< ACi << " | " << Achi << " to " << A.chi.at(i) << " } -> " << A.molesmi << " {No. " << count << " }" << endl;
 
                     out << setw(7) << left << count << " "
                         << setw(65) << left << A.molesmi << " "
                         << setw(17) << left << ACi << " "
-                        << setw(17) << left << AMi << " "
-                        << setw(17) << left << A.Mindex.at(i) << endl;
+                        << setw(17) << left << Achi << " "
+                        << setw(17) << left << A.chi.at(i) << endl;
 
 					if (para.ifwritemds) {
                     	ofstream outs((para.programdir+"mds/"+mm+"_chchir.enc").c_str());

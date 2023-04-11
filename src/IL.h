@@ -66,7 +66,7 @@ class IL {
 		unsigned int crossover(IL &il,unsigned int pp,unsigned int jj,unsigned int pp1,unsigned int jj1);
 		unsigned int addition(unsigned int pt,unsigned int id,unsigned int b,unsigned int pt1,unsigned int id1,unsigned int b1);
 		unsigned int insertion(unsigned int n,unsigned int id,unsigned int bnd2par,unsigned int bnd2des,bool cistrans,unsigned int n1,unsigned int id1,unsigned int bnd2par1,unsigned int bnd2des1,bool cistrans1);
-		unsigned int subtraction(unsigned int n,unsigned int mode,unsigned int n1,unsigned int mode1);
+		unsigned int subtraction(unsigned int n,unsigned int bndfrm,unsigned int n1,unsigned int bndfrm1);
 		unsigned int combination(IL &il,unsigned int k,unsigned int p,unsigned int b,unsigned int k1,unsigned int p1,unsigned int b1);
 		unsigned int change_bnd(unsigned int n,unsigned int id,unsigned int id2,unsigned int bond,unsigned int n_1,unsigned int id_1,unsigned int id2_1,unsigned int bond_1);
 		unsigned int change_ele(unsigned int n,unsigned int id,unsigned int bnd2par,unsigned int bnd2des,unsigned int n_1,unsigned int id_1,unsigned int bnd2par_1,unsigned int bnd2des_1);

@@ -340,76 +340,81 @@ unsigned int exhaustive_subtraction1(IL &A) {
 			count=0;
 		    out << setw(7) << left << "No." << " "
 		        << setw(65) << left << "IL_cat_subtr" << " "
-		        << setw(17) << left << "cat_subtr_pt" <<  endl;			
+		        << setw(17) << left << "cat_subtr_pt" << " "
+				<< setw(17) << left << "cat_subtr_bndfrm" << endl;			
 		}
 		if (s==1) {
 			count=0;
 		    out << setw(7) << left << "No." << " "
 		        << setw(65) << left << "IL_an_subtr" << " "
-		        << setw(17) << left << "an_subtr_pt" <<  endl;			
+		        << setw(17) << left << "an_subtr_pt" << " " 
+				<< setw(17) << left << "an_subtr_bndfrm" << endl;			
 		}
 	
 		for (i=0;i<A.ion[s].Cindex.size();i++) {
-			unsigned int ACi=A.ion[s].Cindex.at(i);
+			for (unsigned int bd=0;bd<4;bd++){
+				unsigned int ACi=A.ion[s].Cindex.at(i);
 
-			if (A.ion[s].subtraction(i,1)) {
-				//A.ion[s].mds2smi();
-				if (0) {
-            		A.ion[s].smiles=A.ion[s].molesmi;
-					A.ion[s].input();
-				}
-				if (1) A.ion[s].canonicalize_SMILES();
+				if (A.ion[s].subtraction(i,bd,0)) {
+					//A.ion[s].mds2smi();
+					if (0) {
+        	    		A.ion[s].smiles=A.ion[s].molesmi;
+						A.ion[s].input();
+					}
+					if (1) A.ion[s].canonicalize_SMILES();
 				
-				A.molesmi=A.ion[0].molesmi+"."+A.ion[1].molesmi;
-				//out<<A.molesmi<<endl;
+					A.molesmi=A.ion[0].molesmi+"."+A.ion[1].molesmi;
+					//out<<A.molesmi<<endl;
 
-                string mm=A.ion[s].molesmi;
-                for (unsigned int q=0;q<mm.length();q++) {
-                    if (mm[q]=='/') mm[q]='u';
-                    if (mm[q]=='\\') mm[q]='d';
-					if (mm[q]=='*') mm[q]='x';
-                }
+                	string mm=A.ion[s].molesmi;
+                	for (unsigned int q=0;q<mm.length();q++) {
+                    	if (mm[q]=='/') mm[q]='u';
+                    	if (mm[q]=='\\') mm[q]='d';
+						if (mm[q]=='*') mm[q]='x';
+                	}
 
-                system(("grep -F \"/"+mm+"_\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
-                ifstream inf("./tmp1");
-                inf >> ws;
+                	system(("grep -F \"/"+mm+"_\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+                	ifstream inf("./tmp1");
+                	inf >> ws;
 
-				if (inf.eof() || 1) {
-					count++;
-					if (1) {
-						if (s==0) cout << "EXHAUSTIVE SUBTRACTION: " << (smi1_cat) << " { "<<ACi<<" } -> " << A.ion[s].molesmi << " {No. " << count << " }" << endl;
-						if (s==1) cout << "EXHAUSTIVE SUBTRACTION: " << (smi1_an) << " { "<<ACi<<" } -> " << A.ion[s].molesmi << " {No. " << count << " }" << endl;
-					}
+					if (inf.eof() || 1) {
+						count++;
+						if (1) {
+							if (s==0) cout << "EXHAUSTIVE SUBTRACTION: " << (smi1_cat) << " { "<<ACi<<" } -> " << A.ion[s].molesmi << " {No. " << count << " }" << endl;
+							if (s==1) cout << "EXHAUSTIVE SUBTRACTION: " << (smi1_an) << " { "<<ACi<<" } -> " << A.ion[s].molesmi << " {No. " << count << " }" << endl;
+						}
  
-            		out << setw(7) << left << count << " "
-                    	<< setw(65) << left << A.ion[s].molesmi << " "
-                    	<< setw(17) << left << ACi << endl;
+            			out << setw(7) << left << count << " "
+                    		<< setw(65) << left << A.ion[s].molesmi << " "
+                    		<< setw(17) << left << ACi << " "
+							<< setw(17) << left << bd << endl;
 
-					if (para.ifwritemds) {
-						ofstream outs((para.mdsdir+mm+"_subtr_IL.enc").c_str());
-						A.ion[s].printmds(outs);
-						outs.close();
+						if (para.ifwritemds) {
+							ofstream outs((para.mdsdir+mm+"_subtr_IL.enc").c_str());
+							A.ion[s].printmds(outs);
+							outs.close();
+						}
+
+						ofstream outs((para.mdsdir+"DATLIST.txt").c_str(),ios::app);
+						outs << setw(50) << left << A.ion[s].molesmi << "   " << left << (para.mdsdir+mm+"_subtr_IL.enc") << endl;
+                    	outs.close();
+
+                    	if (para.glbouf.is_open() && s==0) para.glbouf << A.ion[s].molesmi << endl;
+                    	if (para.glbouf1.is_open() && s==1) para.glbouf1 << A.ion[s].molesmi << endl;
+
+						if (para.enumeration) SMI_Enumerator(A.ion[s].molesmi);
 					}
-
-					ofstream outs((para.mdsdir+"DATLIST.txt").c_str(),ios::app);
-					outs << setw(50) << left << A.ion[s].molesmi << "   " << left << (para.mdsdir+mm+"_subtr_IL.enc") << endl;
-                    outs.close();
-
-                    if (para.glbouf.is_open() && s==0) para.glbouf << A.ion[s].molesmi << endl;
-                    if (para.glbouf1.is_open() && s==1) para.glbouf1 << A.ion[s].molesmi << endl;
-
-					if (para.enumeration) SMI_Enumerator(A.ion[s].molesmi);
-				}
-				inf.close();
+					inf.close();
 	
-				if (0) {			
-					if (s==0) A.ion[s].smiles=smi1_cat;
-					if (s==1) A.ion[s].smiles=smi1_an;
-					A.ion[s].input();
-				}
-				if (1) {
-					A.ion[s].replace(buf[0].ion[s]);
-					//A.ion[s].reset();
+					if (0) {			
+						if (s==0) A.ion[s].smiles=smi1_cat;
+						if (s==1) A.ion[s].smiles=smi1_an;
+						A.ion[s].input();
+					}
+					if (1) {
+						A.ion[s].replace(buf[0].ion[s]);
+						//A.ion[s].reset();
+					}
 				}
 			}
 		}	
@@ -868,11 +873,11 @@ unsigned int exhaustive_change_ele1(IL &A) {
                 << setw(17) << left << "an_bnd2des" << endl;
         }
 
-    	for (i=1;i<A.ion[s].Cindex.size();i++) {
+    	for (i=0;i<A.ion[s].Cindex.size();i++) {
         	for (j=1;j<A.ion[s].data->num;j++) {
             	if (A.ion[s].data->a[j].probability>0) {
-                	for (k=1;k<4;k++) {
-						for (m=1;m<4;m++) {
+                	for (k=0;k<4;k++) {
+						for (m=0;m<4;m++) {
                         	unsigned int ACi=A.ion[s].Cindex.at(i);
 
                         	if (A.ion[s].change_ele(i,j,k,m)) {
@@ -1251,7 +1256,7 @@ unsigned int exhaustive_change_chirality1(IL &A) {
 
         for (i=0;i<A.ion[s].Cindex.size();i++) {
             unsigned int ACi=A.ion[s].Cindex.at(i);
-			unsigned int AMi=A.ion[s].Mindex.at(i);
+			unsigned int Achi=A.ion[s].chi.at(i);
 
 			for (j=0;j<stereoC.size();j++) {
             	if (A.ion[s].change_chirality(i,stereoC.at(j))) {
@@ -1279,18 +1284,18 @@ unsigned int exhaustive_change_chirality1(IL &A) {
                     	count++;
 						if (1) {
                     		if (s==0) {
-                        		cout << "EXHAUSTIVE CHANGE_CHIRALITY: " << (smi1_cat) << " {CAT: "<< ACi << " | " << AMi << " to " << A.ion[s].Mindex.at(i) << " } -> " << A.ion[s].molesmi << " {No. " << count << " }" << endl;
+                        		cout << "EXHAUSTIVE CHANGE_CHIRALITY: " << (smi1_cat) << " {CAT: "<< ACi << " | " << Achi << " to " << A.ion[s].chi.at(i) << " } -> " << A.ion[s].molesmi << " {No. " << count << " }" << endl;
                     		}
                     		if (s==1) {
-                        		cout << "EXHAUSTIVE CHANGE_CHIRALITY: " << (smi1_an) << " {AN: "<< ACi << " | " << AMi << " to " << A.ion[s].Mindex.at(i) << " } -> " << A.ion[s].molesmi << " {No. " << count << " }" << endl;
+                        		cout << "EXHAUSTIVE CHANGE_CHIRALITY: " << (smi1_an) << " {AN: "<< ACi << " | " << Achi << " to " << A.ion[s].chi.at(i) << " } -> " << A.ion[s].molesmi << " {No. " << count << " }" << endl;
                     		}
 						}
 
                     	out << setw(7) << left << count << " "
                         	<< setw(65) << left << A.ion[s].molesmi << " "
                         	<< setw(17) << left << ACi << " "
-                        	<< setw(17) << left << AMi << " "
-                        	<< setw(17) << left << A.ion[s].Mindex.at(i) << endl;
+                        	<< setw(17) << left << Achi << " "
+                        	<< setw(17) << left << A.ion[s].chi.at(i) << endl;
 
 						if (para.ifwritemds) {
 							ofstream outs((para.mdsdir+mm+"_chchir_IL.enc").c_str());

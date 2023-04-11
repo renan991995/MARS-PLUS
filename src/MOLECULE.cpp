@@ -719,8 +719,8 @@ unsigned int MOLECULE::crossover(MOLECULE &aaa,unsigned int pp,unsigned int jj,b
 
 	del_unpaired_ring_no();
 	aaa.del_unpaired_ring_no();
-	decyc_small_ring(5);
-	aaa.decyc_small_ring(5);
+	//decyc_small_ring(5);
+	//aaa.decyc_small_ring(5);
 
 	vector<unsigned int> PCofct(0);
     for (unsigned int i=0;i<Cindex.size();i++) {
@@ -1054,7 +1054,7 @@ unsigned int MOLECULE::cyclization(unsigned int pt1,unsigned int pt2,unsigned in
 	Cybnd.at(if_circle-1)=pbnd;
 
     del_unpaired_ring_no();
-    decyc_small_ring(5);
+    //decyc_small_ring(5);
 
 	//chk_cistrans(); //20200806
 	if (!chk_imine_ct(0,Cindex.size()-1)) mds2smi();
@@ -4109,7 +4109,7 @@ unsigned int MOLECULE::insertion(unsigned int n,unsigned int id,unsigned int bnd
     //reset();
 
     del_unpaired_ring_no(); //20200627
-    decyc_small_ring(5);
+    //decyc_small_ring(5);
 
     //reset();
     //chk_cistrans(); //20200806
@@ -4120,7 +4120,7 @@ unsigned int MOLECULE::insertion(unsigned int n,unsigned int id,unsigned int bnd
 	return 1;
 }
 
-unsigned int MOLECULE::subtraction(unsigned int n,bool mode,bool cistrans) {
+unsigned int MOLECULE::subtraction(unsigned int n,unsigned int bndfrm,bool cistrans) {
 	// mode 1: subtract an atom
 	// mode 2: subtract all atoms between Cindex=n and the end of the corresponding branch
 	//vector<int> ref,pr;
@@ -4159,70 +4159,128 @@ unsigned int MOLECULE::subtraction(unsigned int n,bool mode,bool cistrans) {
 	bool isnotend=0;
 
 	vector<unsigned int> Merge_C(0);
-	if (mode==1) {  //20200131
-		//bool bndchk=0;
-		unsigned int P=Pindex.at(n);
-		if (P>0) {
-			Merge_C.push_back(Cindex.at(P-1));
-			//bndchk=0;
+	//bool bndchk=0;
+	unsigned int P=Pindex.at(n);
 
-			unsigned int bndsum=0; // # of bonds of atom P if atom j is deleted and P is connected with each of the descendant atom k
-			if (Rindex.at(P-1)>0) bndsum+=Rindex.at(P-1);  
-			vector<unsigned int> ordcount(6,0); // count # of bonds atom k1 will use for the connection with atom k (in each bond order respectively)
-			if (Rindex.at(P-1)>0) ordcount.at(Rindex.at(P-1)-1)+=1;  //20200712
-	        if (Cyindex.at(P-1).size()) {
-            	for (unsigned int k1=0;k1<Cyindex.at(P-1).size();k1++) {
-                	bndsum+=Cybnd.at(Cyindex.at(P-1).at(k1)-1);
-                	ordcount.at(Cybnd.at(Cyindex.at(P-1).at(k1)-1)-1)++;
-            	}
-        	}
-            //if (Cyindex.at(n).size() && 1) {
-            //    for (int k1=0;k1<Cyindex.at(n).size();k1++) {
-            //        bndsum-=Cybnd.at(Cyindex.at(n).at(k1)-1);
-            //        ordcount.at(Cybnd.at(Cyindex.at(n).at(k1)-1)-1)--;
-            //    }
-            //}
-			for (unsigned int k=0;k<Cindex.size();k++) { 
-				if (Pindex.at(k)==Cindex.at(n)) { // For each descendant atom k of atom j // orig Pindex.at(k)==Cindex.at(j)
-					isnotend=1;
-					Merge_C.push_back(Cindex.at(k));
+
+	if (P>0) {
+		Merge_C.push_back(Cindex.at(P-1));
+		//bndchk=0;
+
+		unsigned int bndsum=0; // # of bonds of atom P if atom j is deleted and P is connected with each of the descendant atom k
+		if (Rindex.at(P-1)>0) bndsum+=Rindex.at(P-1);  
+		vector<unsigned int> ordcount(6,0); // count # of bonds atom k1 will use for the connection with atom k (in each bond order respectively)
+		if (Rindex.at(P-1)>0) ordcount.at(Rindex.at(P-1)-1)+=1;  //20200712
+		if (Cyindex.at(P-1).size()) {
+			for (unsigned int k1=0;k1<Cyindex.at(P-1).size();k1++) {
+				bndsum+=Cybnd.at(Cyindex.at(P-1).at(k1)-1);
+				ordcount.at(Cybnd.at(Cyindex.at(P-1).at(k1)-1)-1)++;
+			}
+		}
+		//if (Cyindex.at(n).size() && 1) {
+		//    for (int k1=0;k1<Cyindex.at(n).size();k1++) {
+		//        bndsum-=Cybnd.at(Cyindex.at(n).at(k1)-1);
+		//        ordcount.at(Cybnd.at(Cyindex.at(n).at(k1)-1)-1)--;
+		//    }
+		//}
+		for (unsigned int k=0;k<Cindex.size();k++) { 
+			if (Pindex.at(k)==Cindex.at(n)) { // For each descendant atom k of atom j // orig Pindex.at(k)==Cindex.at(j)
+				isnotend=1;
+				Merge_C.push_back(Cindex.at(k));
+				if (bndfrm>0) {
+					bndsum+=bndfrm; //bndsum+=Rindex.at(k);
+					ordcount.at(bndfrm-1)++; //ordcount.at(Rindex.at(k)-1)++;
+				}
+				else {
 					bndsum+=Rindex.at(k);
 					ordcount.at(Rindex.at(k)-1)++;
-					//if (Rindex.at(k)==2) usepibnd=1;
 				}
-				if (Pindex.at(k)==P && k!=n) {
-                	bndsum+=Rindex.at(k);
-                	ordcount.at(Rindex.at(k)-1)++;
-				}
+				//if (Rindex.at(k)==2) usepibnd=1;
 			}
-			
-
-			int maxbnd=0; // max available # of bonds for parental atom k1 (calc. from pool)
-			for (int k2=0;k2<6;k2++) { 
-				maxbnd+=data->a[Mindex.at(P-1)].order.at(k2);
+			if (Pindex.at(k)==P && k!=n) {
+				bndsum+=Rindex.at(k);
+				ordcount.at(Rindex.at(k)-1)++;
 			}
-
-			for (int k2=0;k2<3;k2++) {  // chk if "the bond orders of k1 after connecting with k" match the definition of atom k1 in pool
-				if (ordcount.at(k2)>data->a[Mindex.at(P-1)].bd[k2]) { // orig ordcount.at(k2)>data.a[Mindex.at(P-1)].order.at(k2)
-					//bndchk=0;
-					return 0;
-				}
-				else if (k2>=2 && ordcount.at(k2)<=data->a[Mindex.at(P-1)].bd[k2]) { // orig k2>=5 && ordcount.at(k2)<=data.a[Mindex.at(P-1)].order.at(k2)
-					//bndchk=1;
-				}
-			}
-
 		}
-		else {
-			Merge_C.push_back(0);
-            for (unsigned int k=0;k<Cindex.size();k++) {
-                if (Pindex.at(k)==Cindex.at(n)) { // For each descendant atom k of atom j // orig Pindex.at(k)==Cindex.at(j)
-                    Merge_C.push_back(Cindex.at(k));
-                }
-            }
-			if (Merge_C.size()!=2) return 0;
+		
+
+		int maxbnd=0; // max available # of bonds for parental atom k1 (calc. from pool)
+		for (int k2=0;k2<6;k2++) { 
+			maxbnd+=data->a[Mindex.at(P-1)].order.at(k2);
 		}
+
+		for (int k2=0;k2<3;k2++) {  // chk if "the bond orders of k1 after connecting with k" match the definition of atom k1 in pool
+			if (ordcount.at(k2)>data->a[Mindex.at(P-1)].bd[k2]) { // orig ordcount.at(k2)>data.a[Mindex.at(P-1)].order.at(k2)
+				//bndchk=0;
+				return 0;
+			}
+			else if (k2>=2 && ordcount.at(k2)<=data->a[Mindex.at(P-1)].bd[k2]) { // orig k2>=5 && ordcount.at(k2)<=data.a[Mindex.at(P-1)].order.at(k2)
+				//bndchk=1;
+			}
+		}
+
 	}
+	else {
+		Merge_C.push_back(0);
+		for (unsigned int k=0;k<Cindex.size();k++) {
+			if (Pindex.at(k)==Cindex.at(n)) { // For each descendant atom k of atom j // orig Pindex.at(k)==Cindex.at(j)
+				Merge_C.push_back(Cindex.at(k));
+			}
+		}
+		if (Merge_C.size()!=2) return 0;
+	}
+
+    // Ensure the bonds of atom des(n) are OK if bond order of des(n) is changed to $bndfrm.
+	if (isnotend) {
+    	for (unsigned int k1=0;k1<Cindex.size();k1++) {
+        	if (Pindex.at(k1)==Cindex.at(n) && Mindex.at(k1)!=70) { // For the descendant atoms C(k1) of atom C(n)
+            	//bool bndchk=0;
+
+				int bndsum=0; // # of bonds of atom C(k1) if its bond order R(k1) changes into .
+            	vector<unsigned int> ordcount(6,0); // count # of bonds atom C(k1) will use after connecting with atom C(n) (in each bond order respectively)
+
+                if (bndfrm>0) {
+                    bndsum+=bndfrm; 
+                    ordcount.at(bndfrm-1)++; 
+                }
+                else {
+                    bndsum+=Rindex.at(k1);
+                    ordcount.at(Rindex.at(k1)-1)++;
+                }
+
+	        	if (Cyindex.at(k1).size()) {
+		            for (unsigned int k2=0;k2<Cyindex.at(k1).size();k2++) {
+                		bndsum+=Cybnd.at(Cyindex.at(k1).at(k2)-1);
+                		ordcount.at(Cybnd.at(Cyindex.at(k1).at(k2)-1)-1)++;
+            		}
+        		}
+            	for (unsigned int k=0;k<Cindex.size();k++) { // For each des(k1) atom
+                    if (Pindex.at(k)==Cindex.at(k1)) {
+                        bndsum+=Rindex.at(k); // calc. the total # of bonds des(k1) atoms used to connect with C(k1).
+                        ordcount.at(Rindex.at(k)-1)+=1;
+                    }
+                }
+
+                int maxbnd=0; // max available # of bonds for C(k1) (calc. from pool)
+                for (int k2=0;k2<6;k2++) {
+                    maxbnd+=data->a[Mindex.at(k1)].order.at(k2);
+                }
+
+                for (int k2=0;k2<3;k2++) {  // chk if "the bond orders of k1 after connecting with des(k1) atoms" match the definition of atom k1 in pool
+                    if (ordcount.at(k2)>data->a[Mindex.at(k1)].bd[k2]) { // orig ordcount.at(k2)>data.a[Mindex.at(k1)].order.at(k2)
+                        //bndchk=0;
+						return 0;
+                    }
+                    else if (k2>=2 && ordcount.at(k2)<=data->a[Mindex.at(k1)].bd[k2]) { // orig k2>=5 && ordcount.at(k2)<=data.a[Mindex.at(k1)].order.at(k2)
+                        //bndchk=1;
+                    }
+                }
+
+            }
+        }
+
+    }
+
 
 	if (Cyindex.at(n).size()) {
 		if (Cyindex.at(n).size()>1) sort(Cyindex.at(n).begin(),Cyindex.at(n).end());
@@ -4341,6 +4399,9 @@ unsigned int MOLECULE::subtraction(unsigned int n,bool mode,bool cistrans) {
 			for (unsigned int k=1;k<Merge_C.size();k++) {
 				Pindex.at(Merge_C.at(k)-1)=Merge_C.at(0);
 				if (!Merge_C.at(0)) Rindex.at(Merge_C.at(k)-1)=0;//-1;
+				else {
+					if (bndfrm) Rindex.at(Merge_C.at(k)-1)=bndfrm;
+				}
 			}
 		}
 		
@@ -4379,7 +4440,7 @@ unsigned int MOLECULE::subtraction(unsigned int n,bool mode,bool cistrans) {
 	*/
 
 	del_unpaired_ring_no();
-	decyc_small_ring(5);
+	//decyc_small_ring(5);
 
 	//reset();
 	//chk_cistrans(); //20200806
@@ -4537,7 +4598,7 @@ unsigned int MOLECULE::change_bnd(unsigned int n,unsigned int id1,unsigned int i
     //reset();
 
     del_unpaired_ring_no(); //20200627
-    decyc_small_ring(5);
+    //decyc_small_ring(5);
 
     //reset();
     //chk_cistrans(); //20200806
@@ -4560,10 +4621,13 @@ unsigned int MOLECULE::change_ele(unsigned int n,unsigned int id,unsigned int bn
 
     if (para.protect) {
         if (protect.at(n)) return 0;
-        if (P>0) if (protect.at(P-1)) return 0;
+        //if (P>0) if (protect.at(P-1)) return 0;
     }
-    if (bnd2par>3 || bnd2par<=0) return 0;
-    if (bnd2des>3 || bnd2des<=0) return 0;
+    //if (bnd2par>3 || bnd2par<=0) return 0;
+    //if (bnd2des>3 || bnd2des<=0) return 0;
+	if (bnd2par>3) return 0;
+	if (bnd2des>3) return 0;
+	if (bnd2par<=0 && Cindex.at(n)!=1) return 0;
     if (data->a[id].chg!=data->a[Mindex.at(n)].chg) return 0;
 	//else if (data->a[id].chg==data->a[Mindex.at(n)].chg && data->a[id].chg!=0) {
 	//	if (data->a[id].index<=2 && data->a[Mindex.at(n)].index>=7) return 0;
@@ -4593,9 +4657,11 @@ unsigned int MOLECULE::change_ele(unsigned int n,unsigned int id,unsigned int bn
         //bool bndchk=0;
 
 	    int id_bndsum=0; // max available # of bonds of element(id) (calc. from pool)
-		if (P>0) id_bndsum+=bnd2par;
 		vector<unsigned int> id_ordcount(6,0);
-		if (P>0) id_ordcount.at(bnd2par-1)+=1;
+		if (P>0 && bnd2par>0) {
+			id_bndsum+=bnd2par;
+			id_ordcount.at(bnd2par-1)+=1;
+		}
 		if (Cyindex.at(n).size()) {
             for (unsigned int k1=0;k1<Cyindex.at(n).size();k1++) {
                 id_bndsum+=Cybnd.at(Cyindex.at(n).at(k1)-1);
@@ -4605,11 +4671,14 @@ unsigned int MOLECULE::change_ele(unsigned int n,unsigned int id,unsigned int bn
     	for (unsigned int k1=0;k1<Cindex.size();k1++) {
         	if (Pindex.at(k1)==Cindex.at(n)) {
 				isnotend=1;
-				id_bndsum+=bnd2des;
-				id_ordcount.at(bnd2des-1)+=1;
+				if (bnd2des>0) {
+					id_bndsum+=bnd2des;
+					id_ordcount.at(bnd2des-1)+=1;
+				}
 				if (Rindex.at(k1)==2) usepibnd=1;
 			}
 		}
+		if (isnotend && bnd2des<=0) return 0;
 
         int id_maxbnd=0; // max available # of bonds for atom C(n) (calc. from pool)
         for (int k2=0;k2<6;k2++) {
@@ -4649,8 +4718,10 @@ unsigned int MOLECULE::change_ele(unsigned int n,unsigned int id,unsigned int bn
                 ordcount.at(Rindex.at(k)-1)+=1;
             }
         }
-		bndsum+=bnd2par;
-		ordcount.at(bnd2par-1)+=1;
+		if (bnd2par>0) {
+			bndsum+=bnd2par;
+			ordcount.at(bnd2par-1)+=1;
+		}
 
         int maxbnd=0; // max available # of bonds for atom P(n) (calc. from pool)
         for (int k2=0;k2<6;k2++) {
@@ -4675,10 +4746,12 @@ unsigned int MOLECULE::change_ele(unsigned int n,unsigned int id,unsigned int bn
         	if (Pindex.at(k1)==Cindex.at(n) && Mindex.at(k1)!=70) { // For the descendant atoms C(k1) of atom C(n)
             	//bool bndchk=0;
 
-            	int bndsum=0; // # of bonds of atom C(k1) if atom C(n) is changed to atom(id) and is connected with C(k1) with a $bnd2des bond.
-				bndsum+=bnd2des;  
+				int bndsum=0; // # of bonds of atom C(k1) if atom M(k1) is changed to atom(id) and use a $bnd2des bond to connect des(n).
             	vector<unsigned int> ordcount(6,0); // count # of bonds atom C(k1) will use after connecting with atom C(n) (in each bond order respectively)
-        		ordcount.at(bnd2des-1)+=1;  //20200712
+				if (bnd2des>0) {
+					bndsum+=bnd2des;
+        			ordcount.at(bnd2des-1)+=1;  //20200712
+				}
 	        	if (Cyindex.at(k1).size()) {
 		            for (unsigned int k2=0;k2<Cyindex.at(k1).size();k2++) {
                 		bndsum+=Cybnd.at(Cyindex.at(k1).at(k2)-1);
@@ -4761,7 +4834,7 @@ unsigned int MOLECULE::change_ele(unsigned int n,unsigned int id,unsigned int bn
 
 
     del_unpaired_ring_no(); //20200627
-    decyc_small_ring(5);
+    //decyc_small_ring(5);
 
     //reset();
 	//chk_cistrans(); //20200806
@@ -4808,7 +4881,7 @@ unsigned int MOLECULE::decyclization(unsigned int ringnum) {
 	if_circle--;
 
     del_unpaired_ring_no();
-    decyc_small_ring(5);
+    //decyc_small_ring(5);
 
 	if (!chk_imine_ct(0,Cindex.size()-1)) mds2smi();
 	//chk_imine_ct(0,Cindex.size()-1);

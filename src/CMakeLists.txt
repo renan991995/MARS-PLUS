@@ -1,8 +1,8 @@
 cmake_minimum_required (VERSION 2.6)
 
 
-set(CMAKE_CXX_COMPILER "/home/tom61212/bin/gcc920/bin/g++")
-set(CMAKE_C_COMPILER "/home/tom61212/bin/gcc920/bin/gcc")
+set(CMAKE_CXX_COMPILER "/home/tom61212/share/Miniconda3/envs/RDK/bin/x86_64-conda-linux-gnu-g++")
+set(CMAKE_C_COMPILER "/home/tom61212/share/Miniconda3/envs/RDK/bin/x86_64-conda-linux-gnu-gcc")
 
 
 set(filename	
@@ -18,10 +18,28 @@ set(filename
 	)
 
 project(MARS-PLUS)
-add_executable(MARS-PLUS ${filename})
-target_link_libraries(MARS-PLUS "/home/tom61212/bin/obabel-install/lib/libopenbabel.so.7")
-include_directories("/home/tom61212/bin/obabel-install/include/openbabel3")
+
+#OBabel setting
+#include_directories("/home/akitainu/bin/openbabel-install/include/openbabel-2.0")   # .../openbabel-2.0 or .../openbabel3
+#link_directories( "/home/akitainu/bin/openbabel-install/lib/libopenbabel.so.5" )
+#link_libraries( "/home/tom61212/bin/obabel-install/lib/libopenbabel.so.7" )
+#include_directories("/home/tom61212/bin/obabel-install/include/openbabel3")
+#link_libraries( "/home/tom61212/share/Miniconda3/envs/RDK/lib/libopenbabel.so.7" )
+include_directories( "/home/tom61212/share/Miniconda3/envs/RDK/include/openbabel3" )
+
+#GCC 11.2.0 setting
+#include_directories("/home/tom61212/bin/gcc920/lib64")
+include_directories("/home/tom61212/share/Miniconda3/envs/RDK/x86_64-conda-linux-gnu/include")
+
+
 include_directories("/home/tom61212/share/Eigen3/eigen-3.3.7/build/include/eigen3")
+
+
+
+add_executable(MARS-PLUS ${filename})
+target_link_libraries(MARS-PLUS "/home/tom61212/share/Miniconda3/envs/RDK/lib/libopenbabel.so.7" ) 
+
+
 
 message("Default build type is ${CMAKE_BUILD_TYPE}")
 

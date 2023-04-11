@@ -29,11 +29,11 @@ if_circle 0
 Cybnd    
 
 No.     IL_cat_chir                                                       cat_chir_pt       cat_chir_ori      cat_chir_after   
-1       C/C=C/[C@@H](n1cc[n+](c1)C)F                                      7                 1                 1                
+1       C/C=C/[C@@H](n1cc[n+](c1)C)F                                      7                 1                 2                
 No.     IL_an_chir                                                        an_chir_pt        an_chir_ori       an_chir_after    
-1       S[C@@H](CO[P@](=O)(OC[C@](Cl)(O)C)[O-])I                          1                 32                32               
-2       S[C@@H](CO[P@@](=O)(OC[C@@](Cl)(O)C)[O-])I                        4                 1                 1                
-3       S[C@H](CO[P@@](=O)(OC[C@](Cl)(O)C)[O-])I                          10                1                 1                
+1       S[C@@H](CO[P@](=O)(OC[C@](Cl)(O)C)[O-])I                          1                 2                 1                
+2       S[C@@H](CO[P@@](=O)(OC[C@@](Cl)(O)C)[O-])I                        4                 1                 2                
+3       S[C@H](CO[P@@](=O)(OC[C@](Cl)(O)C)[O-])I                          10                2                 1                
 IL: C/C=C/[C@H](n1cc[n+](c1)C)F.N#C[B-](C#N)(C#N)C#N
 SMILES   C/C=C/[C@H](n1cc[n+](c1)C)F
 orig_SMILES [CH3]([NH0+](=C%(1))(C(=C(N%(1)([CH1@](F)(/C(=C/([CH3]))))))))
@@ -65,7 +65,7 @@ if_circle 0
 Cybnd    
 
 No.     IL_cat_chir                                                       cat_chir_pt       cat_chir_ori      cat_chir_after   
-1       C/C=C/[C@@H](n1cc[n+](c1)C)F                                      7                 1                 1                
+1       C/C=C/[C@@H](n1cc[n+](c1)C)F                                      7                 1                 2                
 No.     IL_an_chir                                                        an_chir_pt        an_chir_ori       an_chir_after    
 IL: C/C=C(/[C@@](/C(=C(/C(C)C)\C)/C)(/C(=C(/[n+]1ccccc1)\CC)/C=C)C)\C.S[C@@H](CO[P@@](=O)(OC[C@](Cl)(O)C)[O-])I
 SMILES   C/C=C(/[C@@](/C(=C(/C(C)C)\C)/C)(/C(=C(/[n+]1ccccc1)\CC)/C=C)C)\C
@@ -98,11 +98,11 @@ if_circle 0
 Cybnd    
 
 No.     IL_cat_chir                                                       cat_chir_pt       cat_chir_ori      cat_chir_after   
-1       C/C=C(/[C@](/C(=C(/C(C)C)\C)/C)(/C(=C(/[n+]1ccccc1)\CC)/C=C)C)\C  4                 1                 1                
+1       C/C=C(/[C@](/C(=C(/C(C)C)\C)/C)(/C(=C(/[n+]1ccccc1)\CC)/C=C)C)\C  4                 2                 1                
 No.     IL_an_chir                                                        an_chir_pt        an_chir_ori       an_chir_after    
-1       S[C@@H](CO[P@](=O)(OC[C@](Cl)(O)C)[O-])I                          1                 32                32               
-2       S[C@@H](CO[P@@](=O)(OC[C@@](Cl)(O)C)[O-])I                        4                 1                 1                
-3       S[C@H](CO[P@@](=O)(OC[C@](Cl)(O)C)[O-])I                          10                1                 1                
+1       S[C@@H](CO[P@](=O)(OC[C@](Cl)(O)C)[O-])I                          1                 2                 1                
+2       S[C@@H](CO[P@@](=O)(OC[C@@](Cl)(O)C)[O-])I                        4                 1                 2                
+3       S[C@H](CO[P@@](=O)(OC[C@](Cl)(O)C)[O-])I                          10                2                 1                
 IL: C/C=C(/[C@@](/C(=C(/C(C)C)\C)/C)(/C(=C(/[n+]1ccccc1)\CC)/C=C)C)\C.N#C[B-](C#N)(C#N)C#N
 SMILES   C/C=C(/[C@@](/C(=C(/C(C)C)\C)/C)(/C(=C(/[n+]1ccccc1)\CC)/C=C)C)\C
 orig_SMILES [CH3](/C(=C/([CH0@@](/C(=C/([CH1]([CH3])([CH3]))([CH3]))([CH3]))(/C(=C/([NH0+]%(1)(C(=C(C(=C(C(=)%(1)))))))([CH2]([CH3])))(C(=C)))([CH3]))([CH3])))
@@ -134,5 +134,5 @@ if_circle 0
 Cybnd    
 
 No.     IL_cat_chir                                                       cat_chir_pt       cat_chir_ori      cat_chir_after   
-1       C/C=C(/[C@](/C(=C(/C(C)C)\C)/C)(/C(=C(/[n+]1ccccc1)\CC)/C=C)C)\C  4                 1                 1                
+1       C/C=C(/[C@](/C(=C(/C(C)C)\C)/C)(/C(=C(/[n+]1ccccc1)\CC)/C=C)C)\C  4                 2                 1                
 No.     IL_an_chir                                                        an_chir_pt        an_chir_ori       an_chir_after    

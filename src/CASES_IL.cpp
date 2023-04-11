@@ -314,60 +314,68 @@ unsigned int exhaustive_subtraction(IL &A) {
     out << setw(7) << left << "No." << " "
         << setw(65) << left << "IL_subtr" << " "
         << setw(17) << left << "cat_subtr_pt" << " "
-        << setw(17) << left << "an_subtr_pt" << endl;
+		<< setw(17) << left << "cat_subtr_bndfrm" << " "
+        << setw(17) << left << "an_subtr_pt" << " " 
+		<< setw(17) << left << "an_subtr_bndfrm" << endl;
 
 	for (i=0;i<A.ion[0].Cindex.size();i++) {
-		for (j=0;j<A.ion[1].Cindex.size();j++) {
-			unsigned int ACi=A.ion[0].Cindex.at(i);
-			unsigned int ACj=A.ion[1].Cindex.at(j);
+		for (unsigned int bd=0;bd<4;bd++) {
+			for (j=0;j<A.ion[1].Cindex.size();j++) {
+				for (unsigned int bd1=0;bd1<4;bd1++) {
+					unsigned int ACi=A.ion[0].Cindex.at(i);
+					unsigned int ACj=A.ion[1].Cindex.at(j);
 
-            bool go1=0;
-            if (A.ion[0].subtraction(i,1)) go1=1;
-            if (A.ion[1].subtraction(j,1)) go1=1;
+		            bool go1=0;
+		            if (A.ion[0].subtraction(i,bd,0)) go1=1;
+		            if (A.ion[1].subtraction(j,bd1,0)) go1=1;
 
-			if (go1) {
-				A.mds2smi();
-				if (0) {
-            		A.ion[0].smiles=A.ion[0].molesmi;
-            		A.ion[1].smiles=A.ion[1].molesmi; 
-					A.input();
-				}
-				if (1) A.canonicalize_SMILES();
+					if (go1) {
+						A.mds2smi();
+						if (0) {
+            				A.ion[0].smiles=A.ion[0].molesmi;
+            				A.ion[1].smiles=A.ion[1].molesmi; 
+							A.input();
+						}
+						if (1) A.canonicalize_SMILES();
 				
-				A.molesmi=A.ion[0].molesmi+"."+A.ion[1].molesmi;
-				//out<<A.molesmi<<endl;
+						A.molesmi=A.ion[0].molesmi+"."+A.ion[1].molesmi;
+						//out<<A.molesmi<<endl;
 
-                //system(("ls "+para.programdir+"mds/ | grep -Fw \""+A.molesmi+"_\" > ./tmp1 2> /dev/null").c_str());
-                system(("grep -Fw \""+A.molesmi+"\" "+para.programdir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
-                ifstream inf("./tmp1");
-                inf >> ws;
+                		//system(("ls "+para.programdir+"mds/ | grep -Fw \""+A.molesmi+"_\" > ./tmp1 2> /dev/null").c_str());
+                		system(("grep -Fw \""+A.molesmi+"\" "+para.programdir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+                		ifstream inf("./tmp1");
+                		inf >> ws;
 
-				if (inf.eof()) {
-					count++;
-					cout << "EXHAUSTIVE SUBTRACTION: " << (smi1_cat+"."+smi1_an) << " { "<<i<<" , "<<j<<" } -> " << A.molesmi << " {No. " << count << " }" << endl;
-                	out << setw(7) << left << count << " "
-                    	<< setw(65) << left << A.molesmi << " "
-                    	<< setw(17) << left << ACi << " "
-                    	<< setw(17) << left << ACj << endl;
+						if (inf.eof()) {
+							count++;
+							cout << "EXHAUSTIVE SUBTRACTION: " << (smi1_cat+"."+smi1_an) << " { "<<i<<" , "<<j<<" } -> " << A.molesmi << " {No. " << count << " }" << endl;
+                			out << setw(7) << left << count << " "
+                    			<< setw(65) << left << A.molesmi << " "
+                    			<< setw(17) << left << ACi << " "
+								<< setw(17) << left << bd << " "
+                    			<< setw(17) << left << ACj << " "
+								<< setw(17) << left << bd1 << endl;
 
-		    		ofstream outs((para.programdir+"mds/"+A.molesmi+"_subtr_IL.enc").c_str());
-					A.printmds(outs);
-					outs.close();
+		    				ofstream outs((para.programdir+"mds/"+A.molesmi+"_subtr_IL.enc").c_str());
+							A.printmds(outs);
+							outs.close();
 
-                    outs.open((para.programdir+"mds/DATLIST.txt").c_str(),ios::app);
-                    outs << setw(50) << left << A.molesmi << "   " << left << (para.programdir+"mds/"+A.molesmi+"_subtr_IL.enc") << endl;
-                    outs.close();
-				}
-				inf.close();
+                    		outs.open((para.programdir+"mds/DATLIST.txt").c_str(),ios::app);
+                    		outs << setw(50) << left << A.molesmi << "   " << left << (para.programdir+"mds/"+A.molesmi+"_subtr_IL.enc") << endl;
+                    		outs.close();
+						}
+						inf.close();
 	
-				if (0) {			
-					A.ion[0].smiles=smi1_cat;
-					A.ion[1].smiles=smi1_an;
-					A.input();
-				}
-				if (1) {
-					A.replace(buf[0]);
-					A.reset();
+						if (0) {			
+							A.ion[0].smiles=smi1_cat;
+							A.ion[1].smiles=smi1_an;
+							A.input();
+						}
+						if (1) {
+							A.replace(buf[0]);
+							A.reset();
+						}
+					}
 				}
 			}
 		}
@@ -803,79 +811,79 @@ unsigned int exhaustive_cyclization(IL &A) {
 	for (i=0;i<A.ion[0].Cindex.size();i++) {
 		for (j=i+1;j<A.ion[0].Cindex.size();j++) {
 			for (unsigned int k=1;k<=3;k++) {
-			for (unsigned int i1=0;i<A.ion[1].Cindex.size();i1++) {
-				for (unsigned int j1=i1+1;j1<A.ion[1].Cindex.size();j1++) {
-					for (unsigned int k1=1;k1<=3;k1++) {
-					unsigned int ACi=A.ion[0].Cindex.at(i);
-					unsigned int ACj=A.ion[0].Cindex.at(j);
-					unsigned int ACi1=A.ion[1].Cindex.at(i1);
-					unsigned int ACj1=A.ion[1].Cindex.at(j1);
+				for (unsigned int i1=0;i<A.ion[1].Cindex.size();i1++) {
+					for (unsigned int j1=i1+1;j1<A.ion[1].Cindex.size();j1++) {
+						for (unsigned int k1=1;k1<=3;k1++) {
+							unsigned int ACi=A.ion[0].Cindex.at(i);
+							unsigned int ACj=A.ion[0].Cindex.at(j);
+							unsigned int ACi1=A.ion[1].Cindex.at(i1);
+							unsigned int ACj1=A.ion[1].Cindex.at(j1);
 
-                    bool go1=0;
-					if (!cat_taboo.at(i).at(j)) {
-                    	if (A.ion[0].cyclization(i,j,k)) go1=1;
-						else cat_taboo.at(i).at(j)=1;
-					}
-					//else cat_taboo.at(i).at(j)=1;
+							bool go1=0;
+							if (!cat_taboo.at(i).at(j)) {
+								if (A.ion[0].cyclization(i,j,k)) go1=1;
+								else cat_taboo.at(i).at(j)=1;
+							}
+							//else cat_taboo.at(i).at(j)=1;
 
-                    if (!an_taboo.at(i1).at(j1)) {
-                		if (A.ion[1].cyclization(i1,j1,k1)) go1=1;
-                        else an_taboo.at(i1).at(j1)=1;
-                    }
-                    //else an_taboo.at(i1).at(j1)=1;
+							if (!an_taboo.at(i1).at(j1)) {
+								if (A.ion[1].cyclization(i1,j1,k1)) go1=1;
+								else an_taboo.at(i1).at(j1)=1;
+							}
+							//else an_taboo.at(i1).at(j1)=1;
 
-					if (go1) {
-						A.mds2smi();
-						if (0) {
-            				A.ion[0].smiles=A.ion[0].molesmi;
-            				A.ion[1].smiles=A.ion[1].molesmi; 
-							A.input();			
+							if (go1) {
+								A.mds2smi();
+								if (0) {
+									A.ion[0].smiles=A.ion[0].molesmi;
+									A.ion[1].smiles=A.ion[1].molesmi; 
+									A.input();			
+								}
+								if (1) A.canonicalize_SMILES();
+								
+								A.molesmi=A.ion[0].molesmi+"."+A.ion[1].molesmi;
+								//out<<A.molesmi<<endl;
+
+								//system(("ls "+para.programdir+"mds/ | grep -Fw \""+A.molesmi+"_\" > ./tmp1 2> /dev/null").c_str());
+								system(("grep -Fw \""+A.molesmi+"\" "+para.programdir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+								ifstream inf("./tmp1");
+								inf >> ws;
+
+								if (inf.eof()) {
+									count++;
+									cout << "EXHAUSTIVE CYCLIZATION: " << (smi1_cat+"."+smi1_an) << " {CAT: "<< j << " , " << i <<" | AN: "<< j1 << " , " << i1 <<" } -> " << A.molesmi << " {No. " << count << " }" << endl;
+
+									out << setw(7) << left << count << " "
+										<< setw(65) << left << A.molesmi << " "
+										<< setw(17) << left << ACi << " "
+										<< setw(17) << left << ACj << " "
+										<< setw(17) << left << ACi1 << " "
+										<< setw(17) << left << ACj1 << endl;
+
+									ofstream outs((para.programdir+"mds/"+A.molesmi+"_cyc_IL.enc").c_str());
+									A.printmds(outs);
+									outs.close();
+
+									outs.open((para.programdir+"mds/DATLIST.txt").c_str(),ios::app);
+									outs << setw(50) << left << A.molesmi << "   " << left << (para.programdir+"mds/"+A.molesmi+"_cyc_IL.enc") << endl;
+									outs.close();
+
+								}
+								inf.close();
+								
+								if (0) {
+									A.ion[0].smiles=smi1_cat;
+									A.ion[1].smiles=smi1_an;
+									A.input();	
+								}	
+								if (1) {
+									A.replace(buf[0]);			
+									A.reset();
+								}
+							}
 						}
-						if (1) A.canonicalize_SMILES();
-						
-						A.molesmi=A.ion[0].molesmi+"."+A.ion[1].molesmi;
-						//out<<A.molesmi<<endl;
-
-                        //system(("ls "+para.programdir+"mds/ | grep -Fw \""+A.molesmi+"_\" > ./tmp1 2> /dev/null").c_str());
-                        system(("grep -Fw \""+A.molesmi+"\" "+para.programdir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
-                        ifstream inf("./tmp1");
-                        inf >> ws;
-
-						if (inf.eof()) {
-							count++;
-							cout << "EXHAUSTIVE CYCLIZATION: " << (smi1_cat+"."+smi1_an) << " {CAT: "<< j << " , " << i <<" | AN: "<< j1 << " , " << i1 <<" } -> " << A.molesmi << " {No. " << count << " }" << endl;
-
-    						out << setw(7) << left << count << " "
-        						<< setw(65) << left << A.molesmi << " "
-        						<< setw(17) << left << ACi << " "
-        						<< setw(17) << left << ACj << " "
-        						<< setw(17) << left << ACi1 << " "
-        						<< setw(17) << left << ACj1 << endl;
-
-							ofstream outs((para.programdir+"mds/"+A.molesmi+"_cyc_IL.enc").c_str());
-							A.printmds(outs);
-							outs.close();
-
-                            outs.open((para.programdir+"mds/DATLIST.txt").c_str(),ios::app);
-                            outs << setw(50) << left << A.molesmi << "   " << left << (para.programdir+"mds/"+A.molesmi+"_cyc_IL.enc") << endl;
-                            outs.close();
-
-						}
-						inf.close();
-						
-						if (0) {
-							A.ion[0].smiles=smi1_cat;
-							A.ion[1].smiles=smi1_an;
-							A.input();	
-						}	
-						if (1) {
-							A.replace(buf[0]);			
-							A.reset();
-						}
-					}
 					}
 				}
-			}
 			}
 		}
 	}

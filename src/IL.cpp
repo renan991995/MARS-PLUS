@@ -73,9 +73,9 @@ unsigned int IL::addition(unsigned int pt,unsigned int id,unsigned int b,unsigne
 	return 1;
 }
 
-unsigned int IL::subtraction(unsigned int n,unsigned int mode,unsigned int n1,unsigned int mode1) {
-	ion[0].subtraction(n,mode);
-	ion[1].subtraction(n1,mode1);
+unsigned int IL::subtraction(unsigned int n,unsigned int bndfrm,unsigned int n1,unsigned int bndfrm1) {
+	ion[0].subtraction(n,bndfrm);
+	ion[1].subtraction(n1,bndfrm1);
 	return 1;
 }
 

@@ -101,7 +101,7 @@ class MOLECULE
 		}
 
 		unsigned int cyclization(unsigned int,unsigned int,unsigned int);
-        unsigned int subtraction(unsigned int,bool mode=1,bool cistrans=0);
+        unsigned int subtraction(unsigned int,unsigned int bndfrm=0,bool cistrans=0);
         unsigned int insertion(unsigned int,unsigned int,unsigned int,unsigned int,bool cistrans=0);
         unsigned int addition(unsigned int,unsigned int,unsigned int,bool cistrans=0);
         unsigned int change_ele(unsigned int,unsigned int,unsigned int,unsigned int,bool cistrans=0);
