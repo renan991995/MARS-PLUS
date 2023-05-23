@@ -91,3 +91,6 @@
   CHEMICAL_IUPUTLIST                    ../INPUTS/INPUT_CHEMICALS/IL4.txt
   #CHEMICAL_IUPUTLIST                   ../INPUTS/INPUT_CHEMICALS/IL5.txt
 
+#Reducing the generation of duplicates
+  #REDU_DUPLICATES						1
+  REDU_DUPLICATES						0

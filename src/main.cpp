@@ -73,55 +73,100 @@ int main(int argc, char **argv) {
 				else smi=rd_1molsmi((para.logdir+"mol-"+num.str()+"gen.txt"),i);
 
 				if (para.operation=="Change_ele" || para.operation=="All") {
-					gs[0].molesmi=gs[0].smiles=smi;   gs[0].input();
+					if (para.round==1) {
+						gs[0].molesmi=gs[0].smiles=smi;   
+						gs[0].input();
+					}
+					else gs[0].readmds(smi);
+
 					cout<<"Do exhaustive element change"<<endl;
 					exhaustive_change_ele(gs[0]);
 				}
 
 				if (para.operation=="Change_bnd" || para.operation=="All") {
-					gs[0].molesmi=gs[0].smiles=smi;   gs[0].input();
+                    if (para.round==1) {
+                        gs[0].molesmi=gs[0].smiles=smi;
+                        gs[0].input();
+                    }
+                    else gs[0].readmds(smi);
+
 					cout<<"Do exhaustive bond change"<<endl;
 					exhaustive_change_bnd(gs[0]);
 				}
 
 				if (para.operation=="Addition" || para.operation=="All") {
-					gs[0].molesmi=gs[0].smiles=smi;   gs[0].input();
+                    if (para.round==1) {
+                        gs[0].molesmi=gs[0].smiles=smi;
+                        gs[0].input();
+                    }
+                    else gs[0].readmds(smi);
+					
 					cout<<"Do exhaustive addition"<<endl;
 					exhaustive_addition(gs[0]);
 				}
 
 				if (para.operation=="Insertion" || para.operation=="All") {
-					gs[0].molesmi=gs[0].smiles=smi;   gs[0].input();
+                    if (para.round==1) {
+                        gs[0].molesmi=gs[0].smiles=smi;
+                        gs[0].input();
+                    }
+                    else gs[0].readmds(smi);
+
 					cout<<"Do exhaustive insertion"<<endl;
 					exhaustive_insertion(gs[0]);
 				}
 
 				if (para.operation=="Subtraction" || para.operation=="All") {
-					gs[0].molesmi=gs[0].smiles=smi;   gs[0].input();
+                    if (para.round==1) {
+                        gs[0].molesmi=gs[0].smiles=smi;
+                        gs[0].input();
+                    }
+                    else gs[0].readmds(smi);
+
 					cout<<"Do exhaustive subtraction"<<endl;
 					exhaustive_subtraction(gs[0]);
 				}
 
 				if (para.operation=="Cistrans_inversion" || para.operation=="All") {
-					gs[0].molesmi=gs[0].smiles=smi;   gs[0].input();
+                    if (para.round==1) {
+                        gs[0].molesmi=gs[0].smiles=smi;
+                        gs[0].input();
+                    }
+                    else gs[0].readmds(smi);
+
 					cout<<"Do exhaustive cis-trans inversion"<<endl;
 					exhaustive_change_cistrans(gs[0]);
 				}
 
 				if (para.operation=="Chirality_inversion" || para.operation=="All") {
-					gs[0].molesmi=gs[0].smiles=smi;   gs[0].input();
+                    if (para.round==1) {
+                        gs[0].molesmi=gs[0].smiles=smi;
+                        gs[0].input();
+                    }
+                    else gs[0].readmds(smi);
+
 					cout<<"Do exhaustive chirality inversion"<<endl;
 					exhaustive_change_chirality(gs[0]);
 				}
 
 				if (para.operation=="Cyclization" || para.operation=="All") {
-					gs[0].molesmi=gs[0].smiles=smi;   gs[0].input();
+                    if (para.round==1) {
+                        gs[0].molesmi=gs[0].smiles=smi;
+                        gs[0].input();
+                    }
+                    else gs[0].readmds(smi);
+
 					cout<<"Do exhaustive cyclization"<<endl;
 					exhaustive_cyclization(gs[0]);
 				}
 
 				if (para.operation=="Decyclization" || para.operation=="All") {
-					gs[0].molesmi=gs[0].smiles=smi;   gs[0].input();
+                    if (para.round==1) {
+                        gs[0].molesmi=gs[0].smiles=smi;
+                        gs[0].input();
+                    }
+                    else gs[0].readmds(smi);
+
 					cout<<"Do exhaustive decyclization"<<endl;
 					exhaustive_decyclization(gs[0]);
 				}
@@ -133,15 +178,29 @@ int main(int argc, char **argv) {
 					else smi2=rd_1molsmi((para.logdir+"mol-"+num.str()+"gen.txt"),j);
 
 					if (para.operation=="Crossover" || para.operation=="All") {
-						gs[0].molesmi=gs[0].smiles=smi; gs[0].input();
-						gs[1].molesmi=gs[1].smiles=smi2; gs[1].input();
+	                    if (para.round==1) {
+    	                    gs[0].molesmi=gs[0].smiles=smi;   gs[0].input();
+							gs[1].molesmi=gs[1].smiles=smi2;   gs[1].input();
+            	        }
+                	    else {
+							gs[0].readmds(smi);
+							gs[1].readmds(smi2);
+						}
+
 						cout<<"Do exhaustive crossover"<<endl;
 						exhaustive_crossover(gs[0],gs[1]);
 					}
 
 					if (para.operation=="Combination" || para.operation=="All") {
-						gs[0].molesmi=gs[0].smiles=smi; gs[0].input();
-						gs[1].molesmi=gs[1].smiles=smi2; gs[1].input();
+                        if (para.round==1) {
+                            gs[0].molesmi=gs[0].smiles=smi;   gs[0].input();
+                            gs[1].molesmi=gs[1].smiles=smi2;   gs[1].input();
+                        }
+                        else {
+                            gs[0].readmds(smi);
+                            gs[1].readmds(smi2);
+                        }
+
 						cout<<"Do exhaustive combination"<<endl;
 						exhaustive_combination(gs[0],gs[1]);
 					}
@@ -191,7 +250,7 @@ int main(int argc, char **argv) {
 			para.glbouf.open((para.logdir+"cat-"+num1.str()+"gen.txt").c_str());
 			para.glbouf1.open((para.logdir+"an-"+num1.str()+"gen.txt").c_str());
 
-			for (int i=0;i<ncat;i++) { 
+			for (int i=0;i<ncat;i++) {
 				for (int j=0;j<nan;j++) {
 					string smicat="",smian=""; //gsion[0].ion[0].molesmi //gsion[0].ion[1].molesmi
 
@@ -202,81 +261,144 @@ int main(int argc, char **argv) {
 					}
 
 					if (para.operation=="Cistrans_inversion" || para.operation=="All") {
-						gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
-						gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
-						gsion[0].input();
+						if (para.round==1) {
+							gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
+							gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
+							gsion[0].input();
+						}
+						else {
+							gsion[0].ion[0].readmds(smicat);
+							gsion[0].ion[1].readmds(smian);
+						}
+
 						cout<<"Do exhaustive change_cistrans"<<endl;
 						exhaustive_change_cistrans1(gsion[0]);
 						//system("rm ./mds/* 2> /dev/null");
 					}
 
 					if (para.operation=="Chirality_inversion" || para.operation=="All") {
-						gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
-						gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
-						gsion[0].input();
+                        if (para.round==1) {
+                            gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
+                            gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
+                            gsion[0].input();
+                        }
+                        else {
+                            gsion[0].ion[0].readmds(smicat);
+                            gsion[0].ion[1].readmds(smian);
+                        }
+
 						cout<<"Do exhaustive change_chirality"<<endl;
 						exhaustive_change_chirality1(gsion[0]);
 						//system("rm ./mds/* 2> /dev/null");
 					}
 
 					if (para.operation=="Subtraction" || para.operation=="All") {
-						gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
-						gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
-						gsion[0].input();
+                        if (para.round==1) {
+                            gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
+                            gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
+                            gsion[0].input();
+                        }
+                        else {
+                            gsion[0].ion[0].readmds(smicat);
+                            gsion[0].ion[1].readmds(smian);
+                        }
+
 						cout<<"Do exhaustive subtraction"<<endl;
 						exhaustive_subtraction1(gsion[0]);
 						//system("rm ./mds/* 2> /dev/null");
 					}
 
 					if (para.operation=="Combination" || para.operation=="All") {
-						gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
-						gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
-						gsion[0].input();
+                        if (para.round==1) {
+                            gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
+                            gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
+                            gsion[0].input();
+                        }
+                        else {
+                            gsion[0].ion[0].readmds(smicat);
+                            gsion[0].ion[1].readmds(smian);
+                        }
+
 						cout<<"Do exhaustive addition"<<endl;
 						exhaustive_addition1(gsion[0]);
 						//system("rm ./mds/* 2> /dev/null");
 					}
 
 					if (para.operation=="Insertion" || para.operation=="All") {
-						gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
-						gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
-						gsion[0].input();
+                        if (para.round==1) {
+                            gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
+                            gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
+                            gsion[0].input();
+                        }
+                        else {
+                            gsion[0].ion[0].readmds(smicat);
+                            gsion[0].ion[1].readmds(smian);
+                        }
+
 						cout<<"Do exhaustive insertion"<<endl;
 						exhaustive_insertion1(gsion[0]);
 						//system("rm ./mds/* 2> /dev/null");
 					}
 
 					if (para.operation=="Change_ele" || para.operation=="All") {
-						gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
-						gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
-						gsion[0].input();
+                        if (para.round==1) {
+                            gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
+                            gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
+                            gsion[0].input();
+                        }
+                        else {
+                            gsion[0].ion[0].readmds(smicat);
+                            gsion[0].ion[1].readmds(smian);
+                        }
+
 						cout<<"Do exhaustive change_ele"<<endl;
 						exhaustive_change_ele1(gsion[0]);
 						//system("rm ./mds/* 2> /dev/null");
 					}
 
 					if (para.operation=="Change_bnd" || para.operation=="All") {
-						gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
-						gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
-						gsion[0].input();
+                        if (para.round==1) {
+                            gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
+                            gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
+                            gsion[0].input();
+                        }
+                        else {
+                            gsion[0].ion[0].readmds(smicat);
+                            gsion[0].ion[1].readmds(smian);
+                        }
+
 						cout<<"Do exhaustive change_bnd"<<endl;
 						exhaustive_change_bnd1(gsion[0]);
 						//system("rm ./mds/* 2> /dev/null");
 					}
 
 					if (para.operation=="Cyclization" || para.operation=="All") {
-						gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
-						gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
-						gsion[0].input();
+                        if (para.round==1) {
+                            gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
+                            gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
+                            gsion[0].input();
+                        }
+                        else {
+                            gsion[0].ion[0].readmds(smicat);
+                            gsion[0].ion[1].readmds(smian);
+                        }
+
 						cout<<"Do exhaustive cyclization"<<endl;
 						exhaustive_cyclization1(gsion[0]);
 						//system("rm ./mds/* 2> /dev/null");
 					}
 
 					if (para.operation=="Decyclization" || para.operation=="All") {
-						gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
-						gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
-						gsion[0].input();
+                        if (para.round==1) {
+                            gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;
+                            gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
+                            gsion[0].input();
+                        }
+                        else {
+                            gsion[0].ion[0].readmds(smicat);
+                            gsion[0].ion[1].readmds(smian);
+                        }
+
 						cout<<"Do exhaustive decyclization"<<endl;
 						exhaustive_decyclization1(gsion[0]);
 						//system("rm ./mds/* 2> /dev/null");
@@ -294,26 +416,39 @@ int main(int argc, char **argv) {
 							}
 
 							if (para.operation=="Crossover" || para.operation=="All") {
-								gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;    gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
-								gsion[1].ion[0].molesmi=gsion[1].ion[0].smiles=smicat2;   gsion[1].ion[1].molesmi=gsion[1].ion[1].smiles=smian2;
-								gsion[0].input();
-								gsion[1].input();
+								if (para.round==1) {
+									gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;    gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
+									gsion[1].ion[0].molesmi=gsion[1].ion[0].smiles=smicat2;   gsion[1].ion[1].molesmi=gsion[1].ion[1].smiles=smian2;
+									gsion[0].input();
+									gsion[1].input();
+								}
+								else {
+									gsion[0].ion[0].readmds(smicat);    gsion[0].ion[1].readmds(smian);
+									gsion[1].ion[0].readmds(smicat2);   gsion[1].ion[1].readmds(smian2);
+								}
+
 								cout<<"Do exhaustive crossover"<<endl;
 								exhaustive_crossover1(gsion[0],gsion[1]);
 							}
 
 							if (para.operation=="Combination" || para.operation=="All") {
-								gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;    gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
-								gsion[1].ion[0].molesmi=gsion[1].ion[0].smiles=smicat2;   gsion[1].ion[1].molesmi=gsion[1].ion[1].smiles=smian2;
-								gsion[0].input();
-								gsion[1].input();
+                                if (para.round==1) {
+                                    gsion[0].ion[0].molesmi=gsion[0].ion[0].smiles=smicat;    gsion[0].ion[1].molesmi=gsion[0].ion[1].smiles=smian;
+                                    gsion[1].ion[0].molesmi=gsion[1].ion[0].smiles=smicat2;   gsion[1].ion[1].molesmi=gsion[1].ion[1].smiles=smian2;
+                                    gsion[0].input();
+                                    gsion[1].input();
+                                }
+                                else {
+                                    gsion[0].ion[0].readmds(smicat);    gsion[0].ion[1].readmds(smian);
+                                    gsion[1].ion[0].readmds(smicat2);   gsion[1].ion[1].readmds(smian2);
+                                }
+
 								cout<<"Do exhaustive combination"<<endl;
 								exhaustive_combination1(gsion[0],gsion[1]);
 							}
 						}
 					}
 				}
-
 			}
 			para.glbouf.close();
 			para.glbouf1.close();

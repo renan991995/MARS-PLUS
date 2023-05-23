@@ -27,6 +27,7 @@ unsigned int rd_para(char **&argv){
 		else if (tmp=="IF_OUTPUT_MDS") inf >> para.ifwritemds >> ws;
 		else if (tmp=="EPOCH") inf >> para.epoch >> ws;
 		else if (tmp=="ELEMENT_LIST") inf >> para.element_list >> ws;
+		else if (tmp=="REDU_DUPLICATES") inf >> para.redu_duplicates >> ws;
     }
     inf.close();
 
@@ -41,6 +42,7 @@ unsigned int output_para(){
         << left << setw(25) << "PROGRAM_DIR" << " " << left << setw(45) << para.programdir << endl
         << left << setw(25) << "MDS_DIR" << " " << left << setw(45) << para.mdsdir << endl
         << left << setw(25) << "ELEMENT_LIST" << " " << left << setw(45) << para.element_list << endl
+		<< left << setw(25) << "REDU_DUPLICATES" << " " << left << setw(45) << para.redu_duplicates << endl
 		<< left << setw(25) << "EPOCH" << " " << left << setw(45) << para.epoch << " " << endl
         << left << setw(25) << "IF_ION" << " " << left << setw(45) << para.ion << endl
         << left << setw(25) << "IF_PROTECT" << " " << left << setw(45) << para.protect << " " << endl
@@ -224,20 +226,22 @@ unsigned int cal_nIL(string r_inputlist) {
 string rd_1molsmi(string r_inputlist,unsigned int num) {
 	string smi="";
     ifstream inf((r_inputlist).c_str());
-	inf >> ws;
-    for (unsigned int i=0;i<=num;i++) {
-		if (inf.eof()) break;
-        smi="";
-		unsigned int cur=inf.tellg();
-        inf >> smi >> ws;
-        if (smi=="" || smi[0]=='#') {
-            inf.seekg(cur);
-            getline(inf,smi);
-            inf >> ws;
-			i--;
+	if (inf.is_open()) {
+		inf >> ws;
+		for (unsigned int i=0;i<=num;i++) {
+			if (inf.eof()) break;
 			smi="";
-        }
-    }
+			unsigned int cur=inf.tellg();
+			inf >> smi >> ws;
+			if (smi=="" || smi[0]=='#') {
+				inf.seekg(cur);
+				getline(inf,smi);
+				inf >> ws;
+				i--;
+				smi="";
+			}
+		}
+	}
     inf.close();
 
 	cout << "Current step : read molecule " << (num+1) << " , " << smi << endl;
@@ -249,22 +253,24 @@ string rd_1molsmi(string r_inputlist,unsigned int num) {
 unsigned int rd_1ILsmi(string r_inputlist,unsigned int numcat,unsigned int numan,string &catsmi,string &ansmi) {
     string smi="",smi1="";
     ifstream inf((r_inputlist).c_str());
-    inf >> ws;
-    for (unsigned int i=0;i<=numcat;i++) {
-        if (inf.eof()) break;
-        smi="";
-		smi1="";
-        unsigned int cur=inf.tellg();
-        inf >> smi >> ws >> smi1 >> ws;
-        if (smi=="" || smi[0]=='#') {
-            inf.seekg(cur);
-            getline(inf,smi);
-            inf >> ws;
-            i--;
-            smi="";
+	if (inf.is_open()) {
+		inf >> ws;
+		for (unsigned int i=0;i<=numcat;i++) {
+			if (inf.eof()) break;
+			smi="";
 			smi1="";
-        }
-    }
+			unsigned int cur=inf.tellg();
+			inf >> smi >> ws >> smi1 >> ws;
+			if (smi=="" || smi[0]=='#') {
+				inf.seekg(cur);
+				getline(inf,smi);
+				inf >> ws;
+				i--;
+				smi="";
+				smi1="";
+			}
+		}
+	}
     inf.close();
 
 	catsmi=smi;
@@ -275,22 +281,24 @@ unsigned int rd_1ILsmi(string r_inputlist,unsigned int numcat,unsigned int numan
     smi1="";
 
     inf.open((r_inputlist).c_str());
-    inf >> ws;
-    for (unsigned int i=0;i<=numan;i++) {
-        if (inf.eof()) break;
-        smi="";
-        smi1="";
-        unsigned int cur=inf.tellg();
-        inf >> smi >> ws >> smi1 >> ws;
-        if (smi=="" || smi[0]=='#') {
-            inf.seekg(cur);
-            getline(inf,smi);
-            inf >> ws;
-            i--;
-            smi="";
-            smi1="";
-        }
-    }
+	if (inf.is_open()) {
+		inf >> ws;
+		for (unsigned int i=0;i<=numan;i++) {
+			if (inf.eof()) break;
+			smi="";
+			smi1="";
+			unsigned int cur=inf.tellg();
+			inf >> smi >> ws >> smi1 >> ws;
+			if (smi=="" || smi[0]=='#') {
+				inf.seekg(cur);
+				getline(inf,smi);
+				inf >> ws;
+				i--;
+				smi="";
+				smi1="";
+			}
+		}
+	}
     inf.close();
 
     ansmi=smi1;

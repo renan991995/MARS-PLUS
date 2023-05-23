@@ -361,6 +361,7 @@ unsigned int MOLECULE::crossover(MOLECULE &aaa,unsigned int pp,unsigned int jj,b
 			for (unsigned int n=0;n<pri.size();n++) if (pri.at(n)) return 0;
 			for (unsigned int n=0;n<prj.size();n++) if (prj.at(n)) return 0;
     		if (para.ion) {
+				/*
 				bool michg=0,mjchg=0;
     			for (unsigned int k1=0;k1<mi_ref.size();k1++) {
 					if (data->a[mi_ref.at(k1)].chg) {
@@ -375,6 +376,17 @@ unsigned int MOLECULE::crossover(MOLECULE &aaa,unsigned int pp,unsigned int jj,b
                 	}
             	}
 				if (michg!=mjchg) return 0;
+				*/
+				double michg=0,mjchg=0;
+				double mirefchg=0,mjrefchg=0;
+				for (unsigned int k1=0;k1<Mindex.size();k1++) michg+=data->a.at(Mindex.at(k1)).chg;
+				for (unsigned int k1=0;k1<aaa.Mindex.size();k1++) mjchg+=aaa.data->a.at(aaa.Mindex.at(k1)).chg;
+				for (unsigned int k1=0;k1<mi_ref.size();k1++) mirefchg+=data->a.at(mi_ref.at(k1)).chg;
+				for (unsigned int k1=0;k1<mj_ref.size();k1++) mjrefchg+=data->a.at(mj_ref.at(k1)).chg;
+
+				if ((michg-mirefchg)*mjrefchg<0) return 0;
+				if ((mjchg-mjrefchg)*mirefchg<0) return 0;
+		
 			}
 		}
 
@@ -4133,7 +4145,7 @@ unsigned int MOLECULE::subtraction(unsigned int n,unsigned int bndfrm,bool cistr
     //    if (Mindex.at(i)==70) Csize1--;
     //}
 	//if (Csize1<2) return 0;
-	if (n>=Cindex.size()) return 0;
+	if (n>=Cindex.size() || Cindex.size()<=1) return 0;
 	if (n<=0 && 0) {
 		//ofstream log("molecule.log",ios::app);
 		//log<<"Warning : This molecule would be empty because of point, "<<n<<endl;
@@ -4151,6 +4163,8 @@ unsigned int MOLECULE::subtraction(unsigned int n,unsigned int bndfrm,bool cistr
 
 	//ref.push_back(Cindex.at(n));
 	//ref.push_back(n);  // wrong? 20190721
+	
+	if (bndfrm && !Pindex.at(n)) return 0;
 
     if (1) if (para.protect && protect.at(n)) return 0;   // terminate if it would subtract protected atom
     if (1) if (data->a.at(Mindex.at(n)).chg) return 0;  // terminate if it would subtract charged atom
@@ -4192,9 +4206,11 @@ unsigned int MOLECULE::subtraction(unsigned int n,unsigned int bndfrm,bool cistr
 					ordcount.at(bndfrm-1)++; //ordcount.at(Rindex.at(k)-1)++;
 				}
 				else {
-					bndsum+=Rindex.at(k);
-					ordcount.at(Rindex.at(k)-1)++;
+					//bndsum+=Rindex.at(k);
+					//ordcount.at(Rindex.at(k)-1)++;
+					return 0;
 				}
+
 				//if (Rindex.at(k)==2) usepibnd=1;
 			}
 			if (Pindex.at(k)==P && k!=n) {
@@ -4229,6 +4245,9 @@ unsigned int MOLECULE::subtraction(unsigned int n,unsigned int bndfrm,bool cistr
 		}
 		if (Merge_C.size()!=2) return 0;
 	}
+	if (!isnotend && bndfrm) {
+		return 0;
+	}
 
     // Ensure the bonds of atom des(n) are OK if bond order of des(n) is changed to $bndfrm.
 	if (isnotend) {
@@ -4244,8 +4263,9 @@ unsigned int MOLECULE::subtraction(unsigned int n,unsigned int bndfrm,bool cistr
                     ordcount.at(bndfrm-1)++; 
                 }
                 else {
-                    bndsum+=Rindex.at(k1);
-                    ordcount.at(Rindex.at(k1)-1)++;
+                    //bndsum+=Rindex.at(k1);
+                    //ordcount.at(Rindex.at(k1)-1)++;
+					if (P) return 0;
                 }
 
 	        	if (Cyindex.at(k1).size()) {
@@ -4469,6 +4489,24 @@ unsigned int MOLECULE::change_bnd(unsigned int n,unsigned int id1,unsigned int i
     }
     if (bnd>3 || bnd<0) return 0;
     if (data->a[id2].chg!=data->a[Mindex.at(n)].chg) return 0;
+
+
+
+	if (P>0) {
+		bool id1same=0,id2same=0;
+		if (Mindex.at(P-1)==id1) id1same=1;
+		if (data->a[id1].index<7 && data->a[Mindex.at(P-1)].index<7) {
+			if (data->a[Mindex.at(P-1)].atm==data->a[id1].atm && data->a[id1].atm!="Group") id1same=1;
+		}
+
+		if (Mindex.at(n)==id2) id2same=1;
+		if (data->a[id2].index<7 && data->a[Mindex.at(n)].index<7) {
+			if (data->a[Mindex.at(n)].atm==data->a[id2].atm && data->a[id2].atm!="Group") id2same=1;
+		}
+
+		if (id1same && id2same && bnd==R) return 0;
+	}
+
     //else if (data->a[id2].chg==data->a[Mindex.at(n)].chg && data->a[id2].chg!=0) {
     //    if (data->a[id2].index<=2 && data->a[Mindex.at(n)].index>=7) return 0;
     //    if (data->a[id2].index>=7 && data->a[Mindex.at(n)].index<=7) return 0;
@@ -4487,7 +4525,6 @@ unsigned int MOLECULE::change_bnd(unsigned int n,unsigned int id1,unsigned int i
 
     //reset();
     //vector<int> tmp;
-
 
     // Ensure the bonds of atom C(n) are OK if M(n) is changed to atom(id) and use a $bnd2par bond to connect P(n)
     if (1) {
@@ -4629,6 +4666,9 @@ unsigned int MOLECULE::change_ele(unsigned int n,unsigned int id,unsigned int bn
 	if (bnd2des>3) return 0;
 	if (bnd2par<=0 && Cindex.at(n)!=1) return 0;
     if (data->a[id].chg!=data->a[Mindex.at(n)].chg) return 0;
+	if (!P && bnd2par>0) return 0;
+
+
 	//else if (data->a[id].chg==data->a[Mindex.at(n)].chg && data->a[id].chg!=0) {
 	//	if (data->a[id].index<=2 && data->a[Mindex.at(n)].index>=7) return 0;
 	//	if (data->a[id].index>=7 && data->a[Mindex.at(n)].index<=7) return 0;
@@ -4649,6 +4689,7 @@ unsigned int MOLECULE::change_ele(unsigned int n,unsigned int id,unsigned int bn
     //reset();
     //vector<int> tmp;
 
+	vector<unsigned int> desbnds(0);
 	bool isnotend=0;
 	bool usepibnd=0;
 
@@ -4670,6 +4711,8 @@ unsigned int MOLECULE::change_ele(unsigned int n,unsigned int id,unsigned int bn
 		}
     	for (unsigned int k1=0;k1<Cindex.size();k1++) {
         	if (Pindex.at(k1)==Cindex.at(n)) {
+				desbnds.push_back(Rindex.at(k1));
+
 				isnotend=1;
 				if (bnd2des>0) {
 					id_bndsum+=bnd2des;
@@ -4696,7 +4739,33 @@ unsigned int MOLECULE::change_ele(unsigned int n,unsigned int id,unsigned int bn
         }
 
 	}
+	if (desbnds.size()) {
+		for (unsigned int k1=0;k1<desbnds.size();k1++) {
+			if (desbnds.at(k1)!=bnd2des) {
+				vector<unsigned int>().swap(desbnds);
+				break;
+			}
+			else if (k1>=desbnds.size()-1 && desbnds.at(k1)==bnd2des) {
+				vector<unsigned int>().swap(desbnds);
+				if (P>0) {
+					if (data->a[Mindex.at(n)].atm==data->a[id].atm && bnd2par==R) return 0;
+				}
+				else {
+					if (data->a[Mindex.at(n)].atm==data->a[id].atm) return 0;
+				}
+			}
+		}
+	}
+	else {
+		if (bnd2des>0) return 0;
 
+        if (P>0) {
+            if (data->a[Mindex.at(n)].atm==data->a[id].atm && bnd2par==R) return 0;
+        }
+        else {
+            if (data->a[Mindex.at(n)].atm==data->a[id].atm) return 0;
+        }
+	}
 
 	// Ensure the bonds of atom P(n) are OK if M(n) is changed to atom(id) and use a $bnd2par bond to connect P(n)
 	if (P>0) {
@@ -5338,7 +5407,7 @@ unsigned int MOLECULE::chk_imine_ct(unsigned int lpos,unsigned int hpos,bool cis
     for (int i=lpos;i<=(int)hpos;i++) {
         if (Mindex.at(i)==70) {
 			bool do1=1;
-			for (int j=i+1;j<=(int)hpos;j++) {
+			for (int j=i+1;j<(int)Cindex.size();j++) {
 				if (Pindex.at(j)==Cindex.at(i) && Mindex.at(j)!=8) {
 					if (subtraction(i)) {
 						i--;
@@ -5347,6 +5416,25 @@ unsigned int MOLECULE::chk_imine_ct(unsigned int lpos,unsigned int hpos,bool cis
 						change1=1;
 						do1=0;
 						break;
+					}
+				}
+				else if (Pindex.at(j)==Cindex.at(i) && Mindex.at(j)==8) {
+					bool del=1;
+					for (int g=j+1;g<(int)Cindex.size();g++) {
+						if (Pindex.at(g)==Cindex.at(j) && Rindex.at(g)==2) {
+							del=0;
+							break;
+						}
+					}
+					if (del) {
+						if (subtraction(i)) {
+							i--;
+							j--;
+							hpos=Cindex.size()-1;
+							change1=1;
+							do1=0;
+							break;
+						}
 					}
 				}
 			}
@@ -5359,6 +5447,22 @@ unsigned int MOLECULE::chk_imine_ct(unsigned int lpos,unsigned int hpos,bool cis
 						change1=1;
 					}
                 }
+				else if (Mindex.at(Pindex.at(i)-1)==8 && Rindex.at(Pindex.at(i)-1)!=2) {
+					bool del=1;
+					for (int g=0;g<(int)Cindex.size();g++) {
+						if (Pindex.at(i)==Pindex.at(g) && g!=i && Rindex.at(g)==2) {
+							del=0;
+							break;
+						}
+					}
+                    if (del) {
+                        if (subtraction(i)) {
+                            i--;
+                            hpos=Cindex.size()-1;
+                            change1=1;
+                        }
+                    }
+				}
             }
         }
     }
@@ -5372,6 +5476,17 @@ unsigned int MOLECULE::chk_imine_ct(unsigned int lpos,unsigned int hpos,bool cis
 						break;
 					}
 				}
+                if (Pindex.at(i)>0 && if_addDu) {
+                    if (Rindex.at(Pindex.at(i)-1)!=1) if_addDu=0;
+                    if (if_addDu) {
+                        for (int j=Pindex.at(i);j<(int)hpos;j++) {
+                            if (Pindex.at(j)==Pindex.at(i) && j!=i && Rindex.at(j)!=1) {
+                                if_addDu=0;
+                                break;
+                            }
+                        }
+                    }
+                }
 				if (if_addDu) {
 					if (addition(i,70,1,cistrans)) {
 						change2=1;
@@ -5381,21 +5496,41 @@ unsigned int MOLECULE::chk_imine_ct(unsigned int lpos,unsigned int hpos,bool cis
 			}
 			//else if (Rindex.at(i)==0) {
 			else {
-                bool usepibnd=0,hassigbnd=0;
-				if (Rindex.at(i)==1) hassigbnd=1;
-                for (int j=i+1;j<(int)hpos;j++) {
-                    if (Pindex.at(j)==Cindex.at(i)) {
-                        if (Rindex.at(j)==2) usepibnd=1;
-                        else if (Rindex.at(j)==1) hassigbnd=1;
+				if (0) {
+					bool usepibnd=0,hassigbnd=0;
+					if (Rindex.at(i)==1) hassigbnd=1;
+					for (int j=i+1;j<(int)hpos;j++) {
+						if (Pindex.at(j)==Cindex.at(i)) {
+							if (Rindex.at(j)==2) usepibnd=1;
+							else if (Rindex.at(j)==1) hassigbnd=1;
+						}
+					}
+
+					if (usepibnd && !hassigbnd) {
+						if (addition(i,70,1,cistrans)) {
+							change2=1;
+							hpos=Cindex.size()-1;
+						}
+					}
+				}
+                if (1) {
+                    bool do2=0;
+                    if (Rindex.at(i)==1) {
+                        for (int j=i+1;j<(int)hpos;j++) {
+                            if (Pindex.at(j)==Cindex.at(i) && Rindex.at(j)==2) {
+                                do2=1;
+                                break;
+                            }
+                        }
+                    }
+                    if (do2) {
+                        if (addition(i,70,1,cistrans)) {
+                            change2=1;
+                            hpos=Cindex.size()-1;
+                        }
                     }
                 }
 
-                if (usepibnd && !hassigbnd) {
-					if (addition(i,70,1,cistrans)) {
-						change2=1;
-						hpos=Cindex.size()-1;
-					}
-				}
 
 				if (hpos>2) {
 					if (ctsisomer.at(0).at(0)!="" && ctsisomer.at(1).at(1)!="" && Rindex.at(1)==2 && Pindex.at(1)==1) {
@@ -5436,4 +5571,128 @@ unsigned int MOLECULE::chk_imine_ct(unsigned int lpos,unsigned int hpos,bool cis
 	else return 1;
 }
 
+
+unsigned int MOLECULE::readmds(string a) {
+    //for (unsigned int i=0;i<a.length();i++) {
+    //    if (a[i]=='/') a[i]='u';
+    //    if (a[i]=='\\') a[i]='d';
+    //    if (a[i]=='*') a[i]='x';
+    //}
+
+    ifstream inf(a.c_str());
+    string b,b1;
+    unsigned int i=0,j=0,k=0;
+    inf >> ws;
+
+	Pindex.resize(0);
+	Cindex.resize(0);
+	Mindex.resize(0);
+	Rindex.resize(0);
+	Cyindex.resize(0,vector<unsigned int>(0));
+	protect.resize(0);
+	chi.resize(0);
+    ctsisomer.resize(0,vector<string>(0));
+    ctsisomer.resize(2,vector<string>(0));
+
+    while (!inf.eof()) {
+        b="";
+        inf>>b>>ws;
+        if (b=="natom") inf>>j>>ws;
+        else if (b=="Pindex") {
+            for (i=0;i<j;i++) {
+                inf>>k>>ws;
+                Pindex.push_back(k);
+            }
+        }
+        else if (b=="Cindex") {
+            for (i=0;i<j;i++) {
+                inf>>k>>ws;
+                Cindex.push_back(k);
+            }
+        }
+        else if (b=="Cyindex") {
+            Cyindex.resize(j,vector<unsigned int>(0));
+            for (i=0;i<j;i++) {
+                b1="";
+                inf>>b1>>ws;
+
+                string buf="";
+                for (unsigned int k1=0;k1<b1.length();k1++) {
+                    if (b1[k1]!=',') buf+=b1[k1];
+                    if (b1[k1]==',') {
+                        if (buf!="") {
+                            Cyindex.at(i).push_back(atoi(buf.c_str()));
+                        }
+                        buf="";
+                    }
+                    if (b1[k1]!=',' && k1>=b1.length()-1) {
+                        if (buf!="0") {
+                            Cyindex.at(i).push_back(atoi(buf.c_str()));
+                        }
+                        buf="";
+                    }
+                }
+            }
+        }
+        else if (b=="Rindex") {
+            for (i=0;i<j;i++) {
+                inf>>k>>ws;
+                Rindex.push_back(k);
+            }
+        }
+        else if (b=="if_circle") {
+            inf>>k>>ws;
+            if_circle=k;
+        }
+        else if (b=="Mindex") {
+            for (i=0;i<j;i++) {
+                inf>>k>>ws;
+                Mindex.push_back(k);
+            }
+        }
+        else if (b=="ctsisomer_start") {
+            for (i=0;i<j;i++) {
+                b1="";
+                inf>>b1>>ws;
+
+                if (b1=="_") ctsisomer.at(0).push_back("");
+                else ctsisomer.at(0).push_back(b1);
+            }
+        }
+        else if (b=="ctsisomer_end") {
+            for (i=0;i<j;i++) {
+                b1="";
+                inf>>b1>>ws;
+
+                if (b1=="_") ctsisomer.at(1).push_back("");
+                else ctsisomer.at(1).push_back(b1);
+            }
+        }
+        else if (para.protect && b=="protection") {
+            for (i=0;i<j;i++) {
+                inf>>k>>ws;
+                protect.push_back(k);
+            }
+        }
+        else if (b=="Cybnd") {
+            for (i=0;i<if_circle;i++) {
+                inf>>k>>ws;
+                Cybnd.push_back(k);
+            }
+        }
+        else if (b=="Chirality") {
+            for (i=0;i<j;i++) {
+                inf>>k>>ws;
+                chi.push_back(k);
+            }
+        }
+        else if (b=="SMILES") {
+        	b1="";
+            inf>>b1>>ws;
+        	molesmi=smiles=b1;
+        }
+    }
+    inf.close();
+    return 1;
+}
 

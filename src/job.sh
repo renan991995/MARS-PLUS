@@ -1,8 +1,8 @@
 #!/bin/bash
-#PBS -N MARS-PLUS0408
+#PBS -N MARS-PLUS_1r
 #PBS -q work-8cpu
-#PBS -l nodes=cn16:ppn=1
-#PBS -o MARS-PLUS0408.out
+#PBS -l nodes=cn17:ppn=1
+#PBS -o MARS-PLUS_1r.out
 #PBS -j oe
 #PBS -m a
 #PBS -M b03504028@ntu.edu.tw

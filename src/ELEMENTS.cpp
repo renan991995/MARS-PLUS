@@ -929,3 +929,24 @@ unsigned int POOL::read_in() {
 	}
 	else return 0;
 }
+
+unsigned int POOL::get_ele(string typ,unsigned int bd1,unsigned int bd2,unsigned int bd3,unsigned int bd4,unsigned int bd5,unsigned int bd6) {
+    for (unsigned int i=0;i<num;i++) {
+		if (a.at(i).atm==typ) {
+			if (a.at(i).order.at(0)==bd1) {
+				if (a.at(i).order.at(1)==bd2) {
+					if (a.at(i).order.at(2)==bd3) {
+						if (a.at(i).order.at(3)==bd4) {
+							if (a.at(i).order.at(4)==bd5) {
+								if (a.at(i).order.at(5)==bd6) {
+									return a.at(i).id;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+    }
+	return 0;
+}

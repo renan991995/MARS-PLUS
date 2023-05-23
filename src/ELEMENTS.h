@@ -100,11 +100,11 @@ class POOL
                 }
                 a.resize(0);
             }
-
 		}
 		unsigned int num;
 		vector<ATOM> a;		
 		unsigned int set_up();
+		unsigned int get_ele(string typ,unsigned int bd1=0,unsigned int bd2=0,unsigned int bd3=0,unsigned int bd4=0,unsigned int bd5=0,unsigned int bd6=0);
 		unsigned int read_in();
 
 	private:

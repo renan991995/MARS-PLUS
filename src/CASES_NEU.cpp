@@ -49,7 +49,7 @@ unsigned int exhaustive_combination(MOLECULE &A, MOLECULE &B) {
 						if (mm[q]=='*') mm[q]='x';
                 	}
 
-                	system(("grep -F \"/"+mm+"_\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str()); //A.ion[s].molesmi
+                	system(("fgrep -F \""+para.mdsdir+mm+"_\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str()); //A.ion[s].molesmi
                 	ifstream inf("./tmp1");
                 	inf >> ws;
 
@@ -73,7 +73,7 @@ unsigned int exhaustive_combination(MOLECULE &A, MOLECULE &B) {
 						outs << setw(50) << left << A.molesmi << "   " << left << (para.mdsdir+mm+"_comb.enc") << endl;
                 		outs.close();
 
-						if (para.glbouf.is_open()) para.glbouf << A.molesmi << endl;
+						if (para.glbouf.is_open()) para.glbouf << (para.mdsdir+mm+"_comb.enc") << endl; //A.molesmi
 
 						if (para.enumeration) SMI_Enumerator(A.molesmi);
 					}
@@ -159,7 +159,7 @@ unsigned int exhaustive_crossover(MOLECULE &A, MOLECULE &B) {
                     if (mm[q]=='*') mm[q]='x';
                 }
 
-                system(("grep -F \"/"+mm+"_\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+                system(("fgrep -F \""+para.mdsdir+mm+"_\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
                 ifstream inf("./tmp1");
                 inf >> ws;
 
@@ -176,7 +176,7 @@ unsigned int exhaustive_crossover(MOLECULE &A, MOLECULE &B) {
 					outs << setw(50) << left << A.molesmi << "   " << left << (para.mdsdir+mm+"_cros.enc") << endl;
                 	outs.close();
 
-					if (para.glbouf.is_open()) para.glbouf << A.molesmi << endl;
+					if (para.glbouf.is_open()) para.glbouf << (para.mdsdir+mm+"_cros.enc") << endl; //A.molesmi
 
 					if (para.enumeration) SMI_Enumerator(A.molesmi);
 				}
@@ -189,15 +189,15 @@ unsigned int exhaustive_crossover(MOLECULE &A, MOLECULE &B) {
                     if (mm[q]=='*') mm[q]='x';
                 }
 
-                system(("grep -F \"/"+mm+"_\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+                system(("fgrep -F \""+para.mdsdir+mm+"_\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
                 inf.open("./tmp1");
                 inf >> ws;
 
                 if (inf.eof()) {
 
 					if (para.ifwritemds) {
-                		ofstream outs((para.programdir+"mds/"+mm+"_cros.enc").c_str());
-						//ofstream outs((para.mdsdir+mm+"_cros.enc").c_str());
+                		//ofstream outs((para.programdir+"mds/"+mm+"_cros.enc").c_str());
+						ofstream outs((para.mdsdir+mm+"_cros.enc").c_str());
                 		B.printmds(outs);
                 		outs.close();
 					}
@@ -206,7 +206,7 @@ unsigned int exhaustive_crossover(MOLECULE &A, MOLECULE &B) {
 					outs << setw(50) << left << B.molesmi << "   " << left << (para.mdsdir+mm+"_cros.enc") << endl;
                 	outs.close();
 
-					if (para.glbouf.is_open()) para.glbouf << B.molesmi << endl;
+					if (para.glbouf.is_open()) para.glbouf << (para.mdsdir+mm+"_cros.enc") << endl; // B.molesmi
 
 					if (para.enumeration) SMI_Enumerator(B.molesmi);
                 }
@@ -290,8 +290,8 @@ unsigned int exhaustive_subtraction(MOLECULE &A) {
 				}
 
 				//system(("ls "+para.programdir+"mds/ | grep -F \""+A.molesmi+"_\" > ./tmp1 2> /dev/null").c_str());
-				system(("grep -F \"/"+mm+"_\" "+para.programdir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
-				//system(("grep -Fw \""+A.molesmi+"\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+				//system(("grep -F \"/"+mm+"_\" "+para.programdir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+				system(("fgrep -F \""+para.mdsdir+mm+"_\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
 				ifstream inf("./tmp1");
 				inf >> ws;
 
@@ -303,20 +303,21 @@ unsigned int exhaustive_subtraction(MOLECULE &A) {
 						<< setw(65) << left << A.molesmi << " "
 						<< setw(17) << left << ACi << " "
 						<< setw(17) << left << bd << endl;
+
 					if (para.ifwritemds) {
-						ofstream outs((para.programdir+"mds/"+mm+"_subtr.enc").c_str());
-						//ofstream outs((para.mdsdir+mm+"_subtr.enc").c_str());
+						//ofstream outs((para.programdir+"mds/"+mm+"_subtr.enc").c_str());
+						ofstream outs((para.mdsdir+mm+"_subtr.enc").c_str());
 						A.printmds(outs);
 						outs.close();
 					}
 
-					ofstream outs((para.programdir+"mds/DATLIST.txt").c_str(),ios::app);
-					//ofstream outs((para.mdsdir+"DATLIST.txt").c_str(),ios::app);
-					outs << setw(50) << left << A.molesmi << "   " << left << (para.programdir+"mds/"+mm+"_subtr.enc") << endl;
-					//outs << setw(50) << left << A.molesmi << "   " << left << (para.mdsdir+mm+"_subtr.enc") << endl;
+					//ofstream outs((para.programdir+"mds/DATLIST.txt").c_str(),ios::app);
+					ofstream outs((para.mdsdir+"DATLIST.txt").c_str(),ios::app);
+					//outs << setw(50) << left << A.molesmi << "   " << left << (para.programdir+"mds/"+mm+"_subtr.enc") << endl;
+					outs << setw(50) << left << A.molesmi << "   " << left << (para.mdsdir+mm+"_subtr.enc") << endl;
 					outs.close();
 
-					if (para.glbouf.is_open()) para.glbouf << A.molesmi << endl;
+					if (para.glbouf.is_open()) para.glbouf << (para.mdsdir+mm+"_subtr.enc") << endl; //A.molesmi
 
 					if (para.enumeration) SMI_Enumerator(A.molesmi);
 				}
@@ -386,8 +387,8 @@ unsigned int exhaustive_addition(MOLECULE &A) {
                         }
 
                     	//system(("ls "+para.programdir+"mds/ | grep -F \""+A.molesmi+"_\" > ./tmp1 2> /dev/null").c_str());
-                    	system(("grep -F \"/"+mm+"_\" "+para.programdir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
-						//system(("grep -Fw \""+A.molesmi+"\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+                    	//system(("grep -F \"/"+mm+"_\" "+para.programdir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+						system(("fgrep -F \""+para.mdsdir+mm+"_\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
                     	ifstream inf("./tmp1");
                     	inf >> ws;
 
@@ -402,19 +403,19 @@ unsigned int exhaustive_addition(MOLECULE &A) {
                             	<< setw(30) << left << A.data->a[j].name << endl;
 
 							if (para.ifwritemds) {
-                				ofstream outs((para.programdir+"mds/"+mm+"_add.enc").c_str());
-								//ofstream outs((para.mdsdir+mm+"_add.enc").c_str());
+                				//ofstream outs((para.programdir+"mds/"+mm+"_add.enc").c_str());
+								ofstream outs((para.mdsdir+mm+"_add.enc").c_str());
                 				A.printmds(outs);
                 				outs.close();
 							}
 
-                			ofstream outs((para.programdir+"mds/DATLIST.txt").c_str(),ios::app);
-							//ofstream outs((para.mdsdir+"mds/DATLIST.txt").c_str(),ios::app);
-                			outs << setw(50) << left << A.molesmi << "   " << left << (para.programdir+"mds/"+mm+"_add.enc") << endl;
-							//outs << setw(50) << left << A.molesmi << "   " << left << (para.mdsdir+mm+"_add.enc") << endl;
+                			//ofstream outs((para.programdir+"mds/DATLIST.txt").c_str(),ios::app);
+							ofstream outs((para.mdsdir+"DATLIST.txt").c_str(),ios::app);
+                			//outs << setw(50) << left << A.molesmi << "   " << left << (para.programdir+"mds/"+mm+"_add.enc") << endl;
+							outs << setw(50) << left << A.molesmi << "   " << left << (para.mdsdir+mm+"_add.enc") << endl;
                 			outs.close();
 
-							if (para.glbouf.is_open()) para.glbouf << A.molesmi << endl;
+							if (para.glbouf.is_open()) para.glbouf << (para.mdsdir+mm+"_add.enc") << endl; // A.molesmi
 
 							if (para.enumeration) SMI_Enumerator(A.molesmi);
                     	}
@@ -485,8 +486,8 @@ unsigned int exhaustive_insertion(MOLECULE &A) {
                                 if (mm[q]=='*') mm[q]='x';
                             }
 
-                            system(("grep -F \"/"+mm+"_\" "+para.programdir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
-							//system(("grep -Fw \""+A.molesmi+"\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+                            //system(("grep -F \"/"+mm+"_\" "+para.programdir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+							system(("fgrep -F \""+para.mdsdir+mm+"_\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
                             ifstream inf("./tmp1");
                             inf >> ws;
 
@@ -511,19 +512,19 @@ unsigned int exhaustive_insertion(MOLECULE &A) {
                             	}
 
 								if (para.ifwritemds) {
-                            		ofstream outs((para.programdir+"mds/"+mm+"_ins.enc").c_str());
-									//ofstream outs((para.mdsdir+"mds/"+mm+"_ins.enc").c_str());
+                            		//ofstream outs((para.programdir+"mds/"+mm+"_ins.enc").c_str());
+									ofstream outs((para.mdsdir+mm+"_ins.enc").c_str());
                             		A.printmds(outs);
                             		outs.close();
 								}
 
-                            	ofstream outs((para.programdir+"mds/DATLIST.txt").c_str(),ios::app);
-								//ofstream outs((para.mdsdir+"DATLIST.txt").c_str(),ios::app);
-                            	outs << setw(50) << left << A.molesmi << "   " << left << (para.programdir+"mds/"+mm+"_ins.enc") << endl;
-								//outs << setw(50) << left << A.molesmi << "   " << left << (para.mdsdir+mm+"_ins.enc") << endl;
+                            	//ofstream outs((para.programdir+"mds/DATLIST.txt").c_str(),ios::app);
+								ofstream outs((para.mdsdir+"DATLIST.txt").c_str(),ios::app);
+                            	//outs << setw(50) << left << A.molesmi << "   " << left << (para.programdir+"mds/"+mm+"_ins.enc") << endl;
+								outs << setw(50) << left << A.molesmi << "   " << left << (para.mdsdir+mm+"_ins.enc") << endl;
                             	outs.close();
 
-								if (para.glbouf.is_open()) para.glbouf << A.molesmi << endl;
+								if (para.glbouf.is_open()) para.glbouf << (para.mdsdir+mm+"_ins.enc") << endl; //A.molesmi
 
 								if (para.enumeration) SMI_Enumerator(A.molesmi);
                             }
@@ -603,8 +604,8 @@ unsigned int exhaustive_change_bnd(MOLECULE &A) {
                                     if (mm[q]=='*') mm[q]='x';
                                 }
 
-                                system(("grep -F \"/"+mm+"_\" "+para.programdir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
-								//system(("grep -Fw \""+A.molesmi+"\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+                                //system(("grep -F \"/"+mm+"_\" "+para.programdir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+								system(("fgrep -F \""+para.mdsdir+mm+"_\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
                                 ifstream inf("./tmp1");
                                 inf >> ws;
 
@@ -626,19 +627,19 @@ unsigned int exhaustive_change_bnd(MOLECULE &A) {
                                         << setw(17) << left << m << endl;
 
 									if (para.ifwritemds) {
-                                    	ofstream outs((para.programdir+"mds/"+mm+"_chbnd.enc").c_str());
-										//ofstream outs((para.mdsdir+mm+"_chbnd.enc").c_str());
+                                    	//ofstream outs((para.programdir+"mds/"+mm+"_chbnd.enc").c_str());
+										ofstream outs((para.mdsdir+mm+"_chbnd.enc").c_str());
                                     	A.printmds(outs);
                                     	outs.close();
 									}
 
-                                    ofstream outs((para.programdir+"mds/DATLIST.txt").c_str(),ios::app);
-									//ofstream outs((para.mdsdir+"DATLIST.txt").c_str(),ios::app);
-                                    outs << setw(50) << left << A.molesmi << "   " << left << (para.programdir+"mds/"+mm+"_chbnd.enc") << endl;
-									//outs << setw(50) << left << A.molesmi << "   " << left << (para.mdsdir+mm+"_chbnd.enc") << endl;
+                                    //ofstream outs((para.programdir+"mds/DATLIST.txt").c_str(),ios::app);
+									ofstream outs((para.mdsdir+"DATLIST.txt").c_str(),ios::app);
+                                    //outs << setw(50) << left << A.molesmi << "   " << left << (para.programdir+"mds/"+mm+"_chbnd.enc") << endl;
+									outs << setw(50) << left << A.molesmi << "   " << left << (para.mdsdir+mm+"_chbnd.enc") << endl;
                                     outs.close();
 
-                                    if (para.glbouf.is_open()) para.glbouf << A.molesmi << endl;
+                                    if (para.glbouf.is_open()) para.glbouf << (para.mdsdir+mm+"_chbnd.enc") << endl; //A.molesmi
 
                                     if (para.enumeration) SMI_Enumerator(A.molesmi);
                                 }
@@ -715,8 +716,8 @@ unsigned int exhaustive_change_ele(MOLECULE &A) {
                                 if (mm[q]=='*') mm[q]='x';
                             }
 
-                            system(("grep -F \"/"+mm+"_\" "+para.programdir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
-							//system(("grep -Fw \""+A.molesmi+"\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+                            //system(("grep -F \"/"+mm+"_\" "+para.programdir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+							system(("fgrep -F \""+para.mdsdir+mm+"_\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
                             ifstream inf("./tmp1");
                             inf >> ws;
 
@@ -734,19 +735,19 @@ unsigned int exhaustive_change_ele(MOLECULE &A) {
                                     << setw(17) << left << m << endl;
 
 								if (para.ifwritemds) {
-                					ofstream outs((para.programdir+"mds/"+mm+"_chele.enc").c_str());
-									//ofstream outs((para.mdsdir+mm+"_chele.enc").c_str());
+                					//ofstream outs((para.programdir+"mds/"+mm+"_chele.enc").c_str());
+									ofstream outs((para.mdsdir+mm+"_chele.enc").c_str());
                 					A.printmds(outs);
                 					outs.close();
 								}
 
-                				ofstream outs((para.programdir+"mds/DATLIST.txt").c_str(),ios::app);
-								//ofstream outs((para.mdsdir+"DATLIST.txt").c_str(),ios::app);
-                				outs << setw(50) << left << A.molesmi << "   " << left << (para.programdir+"mds/"+mm+"_chele.enc") << endl;
-								//outs << setw(50) << left << A.molesmi << "   " << left << (para.mdsdir+mm+"_chele.enc") << endl;
+                				//ofstream outs((para.programdir+"mds/DATLIST.txt").c_str(),ios::app);
+								ofstream outs((para.mdsdir+"DATLIST.txt").c_str(),ios::app);
+                				//outs << setw(50) << left << A.molesmi << "   " << left << (para.programdir+"mds/"+mm+"_chele.enc") << endl;
+								outs << setw(50) << left << A.molesmi << "   " << left << (para.mdsdir+mm+"_chele.enc") << endl;
                 				outs.close();
 
-								if (para.glbouf.is_open()) para.glbouf << A.molesmi << endl;
+								if (para.glbouf.is_open()) para.glbouf << (para.mdsdir+mm+"_chele.enc") << endl; //A.molesmi
 
 								if (para.enumeration) SMI_Enumerator(A.molesmi);
                             }
@@ -817,8 +818,8 @@ unsigned int exhaustive_cyclization(MOLECULE &A) {
                     }
 
                     //system(("ls "+para.programdir+"mds/ | grep -Fw \""+A.molesmi+"_\" > ./tmp1 2> /dev/null").c_str());
-                    system(("grep -F \"/"+mm+"_\" "+para.programdir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
-					//system(("grep -Fw \""+A.molesmi+"\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+                    //system(("grep -F \"/"+mm+"_\" "+para.programdir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+					system(("fgrep -F \""+para.mdsdir+mm+"_\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
                     ifstream inf("./tmp1");
                     inf >> ws;
 
@@ -834,19 +835,19 @@ unsigned int exhaustive_cyclization(MOLECULE &A) {
 							<< setw(17) << left << k << endl;
 
 						if (para.ifwritemds) {
-                			ofstream outs((para.programdir+"mds/"+mm+"_cyc.enc").c_str());
-							//ofstream outs((para.mdsdir+mm+"_cyc.enc").c_str());
+                			//ofstream outs((para.programdir+"mds/"+mm+"_cyc.enc").c_str());
+							ofstream outs((para.mdsdir+mm+"_cyc.enc").c_str());
                 			A.printmds(outs);
                 			outs.close();
 						}
 
-                		ofstream outs((para.programdir+"mds/DATLIST.txt").c_str(),ios::app);
-						//ofstream outs((para.mdsdir+"DATLIST.txt").c_str(),ios::app);
-                		outs << setw(50) << left << A.molesmi << "   " << left << (para.programdir+"mds/"+mm+"_cyc.enc") << endl;
-						//outs << setw(50) << left << A.molesmi << "   " << left << (para.mdsdir+mm+"_cyc.enc") << endl;
+                		//ofstream outs((para.programdir+"mds/DATLIST.txt").c_str(),ios::app);
+						ofstream outs((para.mdsdir+"DATLIST.txt").c_str(),ios::app);
+                		//outs << setw(50) << left << A.molesmi << "   " << left << (para.programdir+"mds/"+mm+"_cyc.enc") << endl;
+						outs << setw(50) << left << A.molesmi << "   " << left << (para.mdsdir+mm+"_cyc.enc") << endl;
                 		outs.close();
 
-						if (para.glbouf.is_open()) para.glbouf << A.molesmi << endl;
+						if (para.glbouf.is_open()) para.glbouf << (para.mdsdir+mm+"_cyc.enc") << endl; //A.molesmi
 
 						if (para.enumeration) SMI_Enumerator(A.molesmi);
                     }
@@ -912,8 +913,8 @@ unsigned int exhaustive_decyclization(MOLECULE &A) {
             }
 
             //system(("ls "+para.programdir+"mds/ | grep -Fw \""+A.molesmi+"_\" > ./tmp1 2> /dev/null").c_str());
-            system(("grep -F \"/"+mm+"_\" "+para.programdir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
-			//system(("grep -Fw \""+A.molesmi+"\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+            //system(("grep -F \"/"+mm+"_\" "+para.programdir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+			system(("dgrep -F \""+para.mdsdir+mm+"_\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
             ifstream inf("./tmp1");
             inf >> ws;
 
@@ -928,19 +929,19 @@ unsigned int exhaustive_decyclization(MOLECULE &A) {
                     << setw(17) << left << cybnd << endl;
 
 				if (para.ifwritemds) {
-                	ofstream outs((para.programdir+"mds/"+mm+"_decyc.enc").c_str());
-					//ofstream outs((para.mdsdir+mm+"_decyc.enc").c_str());
+                	//ofstream outs((para.programdir+"mds/"+mm+"_decyc.enc").c_str());
+					ofstream outs((para.mdsdir+mm+"_decyc.enc").c_str());
                 	A.printmds(outs);
                 	outs.close();
 				}
 
-                ofstream outs((para.programdir+"mds/DATLIST.txt").c_str(),ios::app);
-				//ofstream outs((para.mdsdir+"DATLIST.txt").c_str(),ios::app);
-                outs << setw(50) << left << A.molesmi << "   " << left << (para.programdir+"mds/"+mm+"_decyc.enc") << endl;
-				//outs << setw(50) << left << A.molesmi << "   " << left << (para.mdsdir+mm+"_decyc.enc") << endl;
+                //ofstream outs((para.programdir+"mds/DATLIST.txt").c_str(),ios::app);
+				ofstream outs((para.mdsdir+"DATLIST.txt").c_str(),ios::app);
+                //outs << setw(50) << left << A.molesmi << "   " << left << (para.programdir+"mds/"+mm+"_decyc.enc") << endl;
+				outs << setw(50) << left << A.molesmi << "   " << left << (para.mdsdir+mm+"_decyc.enc") << endl;
                 outs.close();
 
-				if (para.glbouf.is_open()) para.glbouf << A.molesmi << endl;
+				if (para.glbouf.is_open()) para.glbouf << (para.mdsdir+mm+"_decyc.enc") << endl; //A.molesmi
 
 				if (para.enumeration) SMI_Enumerator(A.molesmi);
             }
@@ -1011,8 +1012,8 @@ unsigned int exhaustive_change_cistrans(MOLECULE &A) {
                 }
 
                 //system(("ls "+para.programdir+"mds/ | grep -Fw \""+A.molesmi+"_\" > ./tmp1 2> /dev/null").c_str());
-                system(("grep -F \"/"+mm+"_\" "+para.programdir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
-				//system(("grep -Fw \""+mm+"\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+                //system(("grep -F \"/"+mm+"_\" "+para.programdir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+				system(("fgrep -F \""+para.mdsdir+mm+"_\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
                 ifstream inf("./tmp1");
                 inf >> ws;
                 if (inf.eof()) {
@@ -1031,19 +1032,19 @@ unsigned int exhaustive_change_cistrans(MOLECULE &A) {
                         << setw(17) << left << A.ctsisomer.at(1).at(i) << endl;
 
 					if (para.ifwritemds) {
-                    	ofstream outs((para.programdir+"mds/"+mm+"_chct.enc").c_str());
-						//ofstream outs((para.mdsdir+mm+"_chct.enc").c_str());
+                    	//ofstream outs((para.programdir+"mds/"+mm+"_chct.enc").c_str());
+						ofstream outs((para.mdsdir+mm+"_chct.enc").c_str());
                     	A.printmds(outs);
                     	outs.close();
 					}
 
-                    ofstream outs((para.programdir+"mds/DATLIST.txt").c_str(),ios::app);
-					//ofstream outs((para.mdsdir+"/DATLIST.txt").c_str(),ios::app);
-                    outs << setw(50) << left << A.molesmi << "   " << left << (para.programdir+"mds/"+mm+"_chct.enc") << endl;
-					//outs << setw(50) << left << A.molesmi << "   " << left << (para.mdsdir+mm+"_chct.enc") << endl;
+                    //ofstream outs((para.programdir+"mds/DATLIST.txt").c_str(),ios::app);
+					ofstream outs((para.mdsdir+"DATLIST.txt").c_str(),ios::app);
+                    //outs << setw(50) << left << A.molesmi << "   " << left << (para.programdir+"mds/"+mm+"_chct.enc") << endl;
+					outs << setw(50) << left << A.molesmi << "   " << left << (para.mdsdir+mm+"_chct.enc") << endl;
                     outs.close();
 
-					if (para.glbouf.is_open()) para.glbouf << A.molesmi << endl;
+					if (para.glbouf.is_open()) para.glbouf << (para.mdsdir+mm+"_chct.enc") << endl; //A.molesmi
 
                     if (para.enumeration) SMI_Enumerator(A.molesmi);
                 }
@@ -1120,8 +1121,8 @@ unsigned int exhaustive_change_chirality(MOLECULE &A) {
                 }
 
                 //system(("ls "+para.programdir+"mds/ | grep -Fw \""+A.molesmi+"_\" > ./tmp1 2> /dev/null").c_str());
-                system(("grep -F \"/"+mm+"_\" "+para.programdir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
-				//system(("grep -Fw \""+mm+"\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+                //system(("grep -F \"/"+mm+"_\" "+para.programdir+"mds/DATLIST.txt > ./tmp1 2> /dev/null").c_str());
+				system(("fgrep -F \""+para.mdsdir+mm+"_\" "+para.mdsdir+"DATLIST.txt > ./tmp1 2> /dev/null").c_str());
                 ifstream inf("./tmp1");
                 inf >> ws;
 
@@ -1136,19 +1137,19 @@ unsigned int exhaustive_change_chirality(MOLECULE &A) {
                         << setw(17) << left << A.chi.at(i) << endl;
 
 					if (para.ifwritemds) {
-                    	ofstream outs((para.programdir+"mds/"+mm+"_chchir.enc").c_str());
-						//ofstream outs((para.mdsdir+mm+"_chchir.enc").c_str());
+                    	//ofstream outs((para.programdir+"mds/"+mm+"_chchir.enc").c_str());
+						ofstream outs((para.mdsdir+mm+"_chchir.enc").c_str());
                 		A.printmds(outs);
                     	outs.close();
 					}
 
-                    ofstream outs((para.programdir+"mds/DATLIST.txt").c_str(),ios::app);
-					//ofstream outs((para.mdsdir+"DATLIST.txt").c_str(),ios::app);
-                    outs << setw(50) << left << A.molesmi << "   " << left << (para.programdir+"mds/"+mm+"_chchir.enc") << endl;
-					//outs << setw(50) << left << A.molesmi << "   " << left << (para.mdsdir+mm+"_chchir.enc") << endl;
+                    //ofstream outs((para.programdir+"mds/DATLIST.txt").c_str(),ios::app);
+					ofstream outs((para.mdsdir+"DATLIST.txt").c_str(),ios::app);
+                    //outs << setw(50) << left << A.molesmi << "   " << left << (para.programdir+"mds/"+mm+"_chchir.enc") << endl;
+					outs << setw(50) << left << A.molesmi << "   " << left << (para.mdsdir+mm+"_chchir.enc") << endl;
                     outs.close();
 
-					if (para.glbouf.is_open()) para.glbouf << A.molesmi << endl;
+					if (para.glbouf.is_open()) para.glbouf << (para.mdsdir+mm+"_chchir.enc") << endl; //A.molesmi
 
                     if (para.enumeration) SMI_Enumerator(A.molesmi);
                 }

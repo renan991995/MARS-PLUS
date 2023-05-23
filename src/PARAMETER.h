@@ -35,6 +35,7 @@ class PARAMETER {
 			ion=0;		
 			protect=0;
 			enumeration=0;
+			redu_duplicates=0;
 			operation="All";
 			obabel="";
 			round=1;
@@ -60,6 +61,7 @@ class PARAMETER {
 		bool protect;
 		bool enumeration;
 		bool ifwritemds;
+		bool redu_duplicates;
 		int round;
 		int epoch;
 		string programdir;

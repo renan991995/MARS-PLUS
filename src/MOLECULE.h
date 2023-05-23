@@ -134,7 +134,8 @@ class MOLECULE
 		unsigned int smi2mds_OBabel();
 		unsigned int canonicalize_SMILES();
 		unsigned int rechg();
-		unsigned int fcngroup2mds(unsigned int chirality=2,bool cistrans=0,bool ct_on=0);
+		unsigned int readmds(string);
+		//unsigned int fcngroup2mds(unsigned int chirality=2,bool cistrans=0,bool ct_on=0);
 
 		vector<unsigned int> Pindex; 															// parent index
 		vector<unsigned int> Cindex; 															// child index
