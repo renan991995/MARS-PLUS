@@ -1,3 +1,0 @@
-Job started at :2023-05-23 17:33:55
-Job ended at   :2023-05-23 17:38:42
-Running this job took you 0 Days 0 Hours 4 Mins 47 Secs
