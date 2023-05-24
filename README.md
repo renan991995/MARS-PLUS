@@ -22,18 +22,18 @@ MARS+ is based on the prototype of MARS [3], with various improvements:
 
 1. **The expansion of base element library**
 
-        1-1. Group-like elements are allowed now.
+        1-1. Group-like elements are allowed.
         1-2. Common neutral atoms, ionic cores, and anionic cores are included.
 
 
 
 2. **The generalization of MDS**
 
-		2-1. An extra array of integers is used to bookkeep atomic chirality.
-		2-2. Two extra arrays of integers are used to bookkeep cis-trans isomerism.
-		2-3. An extra array of integers is used to bookkeep cyclic bonds.
-		2-4. Multiple ring numbers on an atom are allowed now.
-		2-5. The representation of 2-component chemical is allowed now. (1:1 ILs are demonstrated here)
+		2-1. An additional array of integers is used to bookkeep optical isomerisms.
+		2-2. Two additional arrays of integers are used to bookkeep cis-trans isomerisms.
+		2-3. An additional array of integers is used to bookkeep cyclic bonds.
+		2-4. Multiple ring numbers on an atom are allowed.
+		2-5. The representation of a 2-component chemical is allowed. Equimolar (1:1) IL is taken as a example.
 
 
 ![MDS](./imgs/MDS.jpg "MDS")
@@ -43,11 +43,13 @@ MARS+ is based on the prototype of MARS [3], with various improvements:
 
 		3-1. Refinement of old operators:
 			 3-1-1. The feasibility of molecular connectivity is ensured after subtraction.
-			 3-1-2. Multiple ring numbers on an atom can happen through cyclization operator.
-			 3-1-3. Most of them are greatly revised using a more consistent approach.
-			 3-1-4. The stability and flexibility are greatly enhanced. 
+			 3-1-2. Multiple ring numbers on an atom can be induced through cyclization operator.
+			 3-1-3. For most of the operators, the codes are revised for better systematicness.
+			        Unnecessary dependencies among variables are reduced.
+			 3-1-4. The stability and flexibility of operators are greatly enhanced. 
 		3-2. Development of new operators: insertion, decyclization, element change, cis-trans inversion, chirality inversion, and component switch.
-		3-3. With better reversibility for the new scheme of operators, undoing an operator is easier. This reduces the bias to certain types of molecules (e.g. polycyclics).
+		3-3. With better reversibility for the new scheme of operators, undoing an operator is much easier. 
+	         This can reduce unintended biases toward certain types of molecules (e.g. polycyclics).
 		3-4. Check cis-trans and chirality after genetic operations. (default: trans and clockwise winding)
 		3-5. For imine substructure, indicate the lone pair of nitrogen atom by null atom "*".
 
@@ -63,7 +65,7 @@ MARS+ is based on the prototype of MARS [3], with various improvements:
 
 4. **Wrapping Open Babel [4] functions into MARS+**
 
-		4-1. This facilitates the inputting of starting structures to the program. Now one only needs to input SMILES.
+		4-1. This facilitates the inputting of starting structures to the program. One only needs to input SMILES.
 		4-2. The isomerism perception for inputted molecules is more robust.
 
 
@@ -88,11 +90,11 @@ The MARS+ source code consists of 7 header files and 7 cpp files: (see `./src/` 
     
 Before compiling MARS+, relevant softwares should be installed. 
 It is recommended to use [Miniconda](https://docs.conda.io/en/latest/miniconda.html) or [Anaconda](https://www.anaconda.com/download) for that. 
-With conda, one can import `MARS+` environment and its associated packages from `./MARS+_env.yml`.
+With conda, one can directly import `MARS+` environment and its associated packages from `./MARS+_env.yml`.
 
     conda env create --file ./MARS+_env.yml
     
-Now activate the `MARS+` environment and compile. 
+Now activate the `MARS+` environment and compile the source code. 
 
     conda activate MARS+
     cd ./src
@@ -100,7 +102,7 @@ Now activate the `MARS+` environment and compile.
     cmake ./CMakeLists.txt
     make -j [N]                 ("-j [N]" is optional. Parallel compiling with N jobs at once)
 
-An executable file `MARS-PLUS` will be generated in `./src/`.
+An executable `MARS-PLUS` will be generated in `./src/`.
 
 
 
@@ -113,14 +115,13 @@ There are 3 input files for MARS+: (see `./INPUTS/` directory)
     ./INPUTS/INPUT_CHEMICALS/IL4.txt        : the starting chemicals.
     
 Please read the instructions in `./INPUTS/control.in` and `./INPUTS/ELEMENT_LISTS/element_list.txt`.
-Make sure you have properly set the parameters. 
-Now launch the MARS+.
+Make sure you have properly set the parameters, and then launch the MARS+.
 
 	conda activate MARS+
 	cd ./src/
 	./MARS-PLUS ./INPUTS/control.in
 
-Alternatively, you may use PBS scheduler.
+Alternatively, you may use the PBS scheduler.
 
 	cd ./src/
 	qsub ./job.sh
