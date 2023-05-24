@@ -6,8 +6,8 @@
 In computer-aided molecular design (CAMD) [1][2], the capability of generating new molecular species from existing one is vital. 
 [MARS program](https://github.com/hsuhsuanhao/MARS) [3] is devised for such demand. It consists of two components: 
 
-* **Molecular data structure (MDS):** Base elements and 5 arrays of integers
-* **Genetic operators:** ring formation, addition, subtraction, exchange, crossover, and combination
+* **Molecular data structure (MDS)** : Base elements and 5 arrays of integers
+* **Genetic operators**              : ring formation, addition, subtraction, exchange, crossover, and combination
 
 To initiate a MARS task, one should input the 3D structures of starting molecules. 
 These structures will then be converted into MDS representation, where a structure is recognized as a network of base elements. 
@@ -35,7 +35,9 @@ MARS+ is based on the prototype of MARS [3], with various improvements:
 		2-4. Multiple ring numbers on an atom are allowed now.
 		2-5. The representation of 2-component chemical is allowed now. (1:1 ILs are demonstrated here)
 
+
 ![MDS](./imgs/MDS.jpg "MDS")
+
 
 3. **The generalization of genetic operators**
 
@@ -59,11 +61,10 @@ MARS+ is based on the prototype of MARS [3], with various improvements:
 ![component switch operation](./imgs/component_switch.png "component switch")
 
 
-
 4. **Wrapping Open Babel [4] functions into MARS+**
 
 		4-1. This facilitates the inputting of starting structures to the program. Now one only needs to input SMILES.
-		4-2. The perception for connectivity of inputted molecules are more robust.
+		4-2. The isomerism perception for inputted molecules is more robust.
 
 
 
@@ -78,16 +79,16 @@ MARS+ is based on the prototype of MARS [3], with various improvements:
 
 
 
-## Compiling 
+## Compile MARS+
 
 The MARS+ source code consists of 7 header files and 7 cpp files: (see `./src/` directory)
 
     ELEMENTS.h    MOLECULE.h    CASES_NEU.h    CASES_IL_INDEPENDENT.h    CASES_IL.h    UTILITY.h    PARAMETER.h
     ELEMENTS.cpp  MOLECULE.cpp  CASES_NEU.cpp  CASES_IL_INDEPENDENT.cpp  CASES_IL.cpp  UTILITY.cpp  main.cpp 
     
-Before compiling, relevant softwares should be installed. 
+Before compiling MARS+, relevant softwares should be installed. 
 It is recommended to use [Miniconda](https://docs.conda.io/en/latest/miniconda.html) or [Anaconda](https://www.anaconda.com/download) for that. 
-With conda, one can directly create `MARS+` environment and install the required packages from the provided YML file `./MARS+_env.yml`.
+With conda, one can import `MARS+` environment and its associated packages from `./MARS+_env.yml`.
 
     conda env create --file ./MARS+_env.yml
     
@@ -105,7 +106,7 @@ An executable file `MARS-PLUS` will be generated in `./src/`.
 
 ## Usage
 
-There are several input files for MARS+: (see `./INPUTS/` directory)
+There are 3 input files for MARS+: (see `./INPUTS/` directory)
         
     ./INPUTS/control.in                     : controls the input, output, and calculation options.
     ./INPUTS/ELEMENT_LISTS/element_list.txt : a list that defines base element library.
@@ -119,12 +120,12 @@ Now launch the MARS+.
 	cd ./src/
 	./MARS-PLUS ./INPUTS/control.in
 
-Alternatively, you may use PBS scheduler if available.
+Alternatively, you may use PBS scheduler.
 
 	cd ./src/
 	qsub ./job.sh
 
-The results for each of the operations will be outputted as a file (see `./LOG_FILES/` directory).
+The results for each of the operations will be outputted as a file in `./LOG_FILES/`.
 For example, the results of bond change operation on an IL will be outputted to `./LOG_FILES/change_bnd_IL.txt`.
 
 
