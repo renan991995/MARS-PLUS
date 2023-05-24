@@ -33,7 +33,7 @@ MARS+ is based on the prototype of MARS [3], with various improvements:
 
 ![MDS](./imgs/MDS.jpg "MDS")
 
-3. **The generalization of genetic opertors**
+3. **The generalization of genetic operators**
 
 		3-1. Refinement of old operators:
 			 3-1-1. The feasibility of molecular connectivity is ensured after subtraction.
