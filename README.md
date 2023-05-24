@@ -18,10 +18,10 @@ MARS+ is based on the prototype of MARS [3], with various improvements:
 
 1. **The expansion of base element library**
 
-![MDS](./imgs/MDS.jpg "MDS")
-
         1-1. Group-like elements are allowed now.
         1-2. Common neutral atoms, ionic cores, and anionic cores are included.
+
+![MDS](./imgs/MDS.jpg "MDS")
 
 2. **The generalization of MDS**
 		2-1. An extra array of integers is used to bookkeep atomic chirality.
