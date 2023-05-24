@@ -39,6 +39,12 @@ MARS+ is based on the prototype of MARS [3], with various improvements:
 		3-4. Check cis-trans and chirality after genetic operations. (default: trans and clockwise winding)
 		3-5. For imine substructure, indicate the lone pair of nitrogen atom by null atom "*".
 
+    ![uni-molecular operations](./imgs/uni-molecular_operations.png "uni-molecular operations")
+    
+    ![crossover operation](./imgs/crossover.png "crossover")
+    
+    ![combination operation](./imgs/combination.png "combination")
+
 4. **Wrapping Open Babel [4] functions into MARS+**
 		4-1. This facilitates the inputting of starting structures to the program. Now one only needs to input SMILES.
 		4-2. The perception for connectivity of inputted molecules are more robust.
@@ -122,6 +128,8 @@ Department of Chemical Engineering, National Taiwan University, Taipei, Taiwan
 (https://github.com/hsuhsuanhao/MARS)
 
 [4] O’Boyle, N. M.; Banck, M.; James, C. A.; Morley, C.; Vandermeersch, T.; Hutchison, G. R., Open Babel: An open chemical toolbox. J. Cheminf. 2011. (https://github.com/openbabel/openbabel)
+
+
 
 
 
