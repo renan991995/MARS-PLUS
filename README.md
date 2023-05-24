@@ -81,7 +81,7 @@ The MARS+ source code consists of 7 header files and 7 cpp files: (see `./src/` 
     ELEMENTS.h    MOLECULE.h    CASES_NEU.h    CASES_IL_INDEPENDENT.h    CASES_IL.h    UTILITY.h    PARAMETER.h
     ELEMENTS.cpp  MOLECULE.cpp  CASES_NEU.cpp  CASES_IL_INDEPENDENT.cpp  CASES_IL.cpp  UTILITY.cpp  main.cpp 
     
-Before compiling, relevant softwares should be installed. For simplicity, it is recommended to get them through [Miniconda](https://docs.conda.io/en/latest/miniconda.html) or [Anaconda](https://www.anaconda.com/download). If either of them is available, one can directly creates `MARS+` environment and imports the necessary packages from the provided YML file.
+Before compiling, relevant softwares should be installed. For simplicity, it is recommended to get them through [Miniconda](https://docs.conda.io/en/latest/miniconda.html) or [Anaconda](https://www.anaconda.com/download). If conda is available, one can directly creates `MARS+` environment and imports the necessary packages from the provided YML file.
 
     conda env create --file ./MARS+_env.yml
     
