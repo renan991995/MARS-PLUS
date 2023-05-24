@@ -87,7 +87,7 @@ The MARS+ source code consists of 7 header files and 7 cpp files: (see `./src/` 
     
 Before compiling, relevant softwares should be installed. 
 It is recommended to use [Miniconda](https://docs.conda.io/en/latest/miniconda.html) or [Anaconda](https://www.anaconda.com/download) for that. 
-With conda, one can directly create `MARS+` environment and import the necessary packages from the provided YML file.
+With conda, one can directly create `MARS+` environment and install the required packages from the provided YML file `./MARS+_env.yml`.
 
     conda env create --file ./MARS+_env.yml
     
@@ -113,7 +113,7 @@ There are several input files for MARS+: (see `./INPUTS/` directory)
     
 Please read the instructions in `./INPUTS/control.in` and `./INPUTS/ELEMENT_LISTS/element_list.txt`.
 Make sure you have properly set the parameters. 
-Now launch the MARS+:
+Now launch the MARS+.
 
 	conda activate MARS+
 	cd ./src/
@@ -146,7 +146,8 @@ Department of Chemical Engineering, National Taiwan University, Taipei, Taiwan
 [3] Hsu, H.-H.; Huang, C.-H.; Lin, S.-T., New Data Structure for Computational Molecular Design with Atomic or Fragment Resolution. J. Chem. Inf. Model. 2019, 59, (9), 3703-3713.
 (https://github.com/hsuhsuanhao/MARS)
 
-[4] O’Boyle, N. M.; Banck, M.; James, C. A.; Morley, C.; Vandermeersch, T.; Hutchison, G. R., Open Babel: An open chemical toolbox. J. Cheminf. 2011. (https://github.com/openbabel/openbabel)
+[4] O’Boyle, N. M.; Banck, M.; James, C. A.; Morley, C.; Vandermeersch, T.; Hutchison, G. R., Open Babel: An open chemical toolbox. J. Cheminf. 2011. 
+(https://github.com/openbabel/openbabel)
 
 
 ## Base elements
@@ -154,7 +155,7 @@ Department of Chemical Engineering, National Taiwan University, Taipei, Taiwan
 
 * Neutral elements
 
-| ID   | Name (SMILES representation) | Bond order | charge |
+| ID   | Name                         | Bond order | charge |
 | ---- | ---------------------------- | ---------- | ------ |
 | 1    | \[CH0\](-)(-)(-)(-)          | 1 1 1 1    | 0      |
 | 2    | C(=)(-)(-)                   | 2 1 1      | 0      |
@@ -189,7 +190,7 @@ Department of Chemical Engineering, National Taiwan University, Taipei, Taiwan
 
 * Cationic elements
 
-| ID   |        Name (SMILES representation)      | Bond order | charge |
+| ID   |        Name                              | Bond order | charge |
 | ---- | ---------------------------------------- | ---------- | ------ |
 | 15   | \[NH0+\](-)(-)(-)(-)                     | 1 1 1 1    | 1      |
 | 16   | \[NH0+\](=)(-)(-)                        | 2 1 1      | 1      |
@@ -208,35 +209,35 @@ Department of Chemical Engineering, National Taiwan University, Taipei, Taiwan
 
 * Anionic elements
 
-| ID   |        Name (SMILES representation)      | Bond order | charge |
-| ---- | ---------------------------------------- | ---------- | ------ |
-| 24   | \[F-\]                                                                          | 0             | -1   |
-| 25   | \[Cl-\]                                                                         | 0             | -1   |
-| 26   | \[Br-\]                                                                         | 0             | -1   |
-| 27   | \[I-\]                                                                          | 0             | -1   |
-| 28   | \[OH1-\]                                                                        | 0             | -1   |
-| 29   | \[OH0-\](-)                                                                     | 1             | -1   |
-| 30   | \[PH0-\](-)(-)(-)(-)(-)(-)                                                      | 1 1 1 1 1 1   | -1   |
-| 33   | S(-)(=O)(=O)(\[O-\])                                                            | 1             | -1   |
-| 35   | \[NH0-\](-)(-)                                                                  | 1 1           | -1   |
-| 43   | \[NH0-\](S(=O)(=O)C(F)(F)(F))(S(=O)(=O)C(F)(F)(F))                              | 0             | -1   |
-| 44   | \[BH0-\](-)(-)(-)(-)                                                            | 1 1 1 1       | -1   |
-| 45   | C(-)(-)(-)(C(=O)(\[O-\]))                                                       | 1 1 1         | -1   |
-| 46   | C(#N)(\[S-\])                                                                   | 0             | -1   |
-| 47   | C(-)(-)(-)(OP(=O)(OC)(\[O-\]))                                                  | 1 1 1         | -1   |
-| 48   | C(#N)(\[N-\]C#N)                                                                | 0             | -1   |
-| 49   | \[BH0-\](C#N)(C#N)(C#N)(C#N)                                                    | 0             | -1   |
-| 50   | S(OCCOCCOC)(=O)(=O)(\[O-\])                                                     | 0             | -1   |
-| 51   | S(c(cc1)ccc1C)(=O)(=O)(\[O-\])                                                  | 0             | -1   |
-| 52   | \[PH0-\](F)(F)(F)(C(C(F)(F)F)(F)F)(C(C(F)(F)F)(F)F)(C(C(F)(F)F)(F)F)            | 0             | -1   |
-| 53   | \[NH0-\](S(=O)(=O)C(C(F)(F)F)(F)F)(S(=O)(=O)C(C(F)(F)F)(F)F)                    | 0             | -1   |
-| 54   | \[CH0-\](S(C(F)(F)(F))(=O)(=O))(S(C(F)(F)(F))(=O)(=O))(S(C(F)(F)(F))(=O)(=O))   | 0             | -1   |
-| 55   | \[PH0-\](F)(F)(F)(F)(F)(F)                                                      | 0             | -1   |
-| 56   | \[In+3\](\[Cl-\])(\[Cl-\])(\[Cl-\])(\[Cl-\])                                    | 0             | -1   |
-| 58   | Cl(=O)(=O)(\[O-\])(=O)                                                          | 0             | -1   |
-| 59   | \[CH0-\](-)(-)(-)                                                               | 1 1 1         | -1   |
-| 60   | \[NH0+\](=O)(\[O-\])(\[O-\])                                                    | 0             | -1   |
-| 63   | \[SH0-\](-)                                                                     | 1             | -1   |
+| ID   |        Name                                                                     |   Bond order  | charge |
+| ---- | ------------------------------------------------------------------------------- | ------------- | ------ |
+| 24   | \[F-\]                                                                          | 0             | -1     |
+| 25   | \[Cl-\]                                                                         | 0             | -1     |
+| 26   | \[Br-\]                                                                         | 0             | -1     |
+| 27   | \[I-\]                                                                          | 0             | -1     |
+| 28   | \[OH1-\]                                                                        | 0             | -1     |
+| 29   | \[OH0-\](-)                                                                     | 1             | -1     |
+| 30   | \[PH0-\](-)(-)(-)(-)(-)(-)                                                      | 1 1 1 1 1 1   | -1     |
+| 33   | S(-)(=O)(=O)(\[O-\])                                                            | 1             | -1     |
+| 35   | \[NH0-\](-)(-)                                                                  | 1 1           | -1     |
+| 43   | \[NH0-\](S(=O)(=O)C(F)(F)(F))(S(=O)(=O)C(F)(F)(F))                              | 0             | -1     |
+| 44   | \[BH0-\](-)(-)(-)(-)                                                            | 1 1 1 1       | -1     |
+| 45   | C(-)(-)(-)(C(=O)(\[O-\]))                                                       | 1 1 1         | -1     |
+| 46   | C(#N)(\[S-\])                                                                   | 0             | -1     |
+| 47   | C(-)(-)(-)(OP(=O)(OC)(\[O-\]))                                                  | 1 1 1         | -1     |
+| 48   | C(#N)(\[N-\]C#N)                                                                | 0             | -1     |
+| 49   | \[BH0-\](C#N)(C#N)(C#N)(C#N)                                                    | 0             | -1     |
+| 50   | S(OCCOCCOC)(=O)(=O)(\[O-\])                                                     | 0             | -1     |
+| 51   | S(c(cc1)ccc1C)(=O)(=O)(\[O-\])                                                  | 0             | -1     |
+| 52   | \[PH0-\](F)(F)(F)(C(C(F)(F)F)(F)F)(C(C(F)(F)F)(F)F)(C(C(F)(F)F)(F)F)            | 0             | -1     |
+| 53   | \[NH0-\](S(=O)(=O)C(C(F)(F)F)(F)F)(S(=O)(=O)C(C(F)(F)F)(F)F)                    | 0             | -1     |
+| 54   | \[CH0-\](S(C(F)(F)(F))(=O)(=O))(S(C(F)(F)(F))(=O)(=O))(S(C(F)(F)(F))(=O)(=O))   | 0             | -1     |
+| 55   | \[PH0-\](F)(F)(F)(F)(F)(F)                                                      | 0             | -1     |
+| 56   | \[In+3\](\[Cl-\])(\[Cl-\])(\[Cl-\])(\[Cl-\])                                    | 0             | -1     |
+| 58   | Cl(=O)(=O)(\[O-\])(=O)                                                          | 0             | -1     |
+| 59   | \[CH0-\](-)(-)(-)                                                               | 1 1 1         | -1     |
+| 60   | \[NH0+\](=O)(\[O-\])(\[O-\])                                                    | 0             | -1     |
+| 63   | \[SH0-\](-)                                                                     | 1             | -1     |
 
 
 
