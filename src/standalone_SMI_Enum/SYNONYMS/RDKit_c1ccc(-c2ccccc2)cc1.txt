@@ -1,9 +1,0 @@
-Original SMILES: c1ccccc1c1ccccc1
-TOLERANCE: 1320
-Canonical SMILES: c1ccc(-c2ccccc2)cc1
-         1                                                              c1cccc(-c2ccccc2)c1
-         2                                                                c1ccccc1-c1ccccc1
-         3                                                              c1c(-c2ccccc2)cccc1
-         4                                                              c1cc(-c2ccccc2)ccc1
-         5                                                              c1ccc(-c2ccccc2)cc1
-         6                                                              c1(-c2ccccc2)ccccc1
