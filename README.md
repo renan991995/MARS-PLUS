@@ -1,7 +1,6 @@
 # MARS+: Molecular Assembly and Representation Suite - Plus
 
 
-
 ## The old MARS
 
 In computer-aided molecular design (CAMD) [1][2], the capability of generating new molecular species from existing one is vital. MARS program [3] is devised for such demand. It consists of two components: 
@@ -28,6 +27,8 @@ MARS+ is based on the prototype of MARS [3], with various improvements:
 		2-4. Multiple ring numbers on an atom are allowed now.
 		2-5. The representation of 2-component chemical is allowed now. (1:1 ILs are demonstrated here)
 
+![MDS](./imgs/MDS.jpg "MDS")
+
 3. **The generalization of genetic opertors**
 		3-1. Refinement of old operators:
 			 3-1-1. The feasibility of molecular connectivity is ensured after subtraction.
@@ -39,11 +40,13 @@ MARS+ is based on the prototype of MARS [3], with various improvements:
 		3-4. Check cis-trans and chirality after genetic operations. (default: trans and clockwise winding)
 		3-5. For imine substructure, indicate the lone pair of nitrogen atom by null atom "*".
 
-    ![uni-molecular operations](./imgs/uni-molecular_operations.png "uni-molecular operations")
+![uni-molecular operations](./imgs/uni-molecular_operations.png "uni-molecular operations")
     
-    ![crossover operation](./imgs/crossover.png "crossover")
+![crossover operation](./imgs/crossover.png "crossover")
     
-    ![combination operation](./imgs/combination.png "combination")
+![combination operation](./imgs/combination.png "combination")
+
+![component switch operation](./imgs/component_switch.png "component switch")
 
 4. **Wrapping Open Babel [4] functions into MARS+**
 		4-1. This facilitates the inputting of starting structures to the program. Now one only needs to input SMILES.
@@ -128,6 +131,7 @@ Department of Chemical Engineering, National Taiwan University, Taipei, Taiwan
 (https://github.com/hsuhsuanhao/MARS)
 
 [4] O’Boyle, N. M.; Banck, M.; James, C. A.; Morley, C.; Vandermeersch, T.; Hutchison, G. R., Open Babel: An open chemical toolbox. J. Cheminf. 2011. (https://github.com/openbabel/openbabel)
+
 
 
 
