@@ -17,6 +17,9 @@ To initiate a MARS task, one should input the 3D structures of the starting mole
 MARS+ is based on the prototype of MARS [3], with various improvements:
 
 1. **The expansion of base element library**
+
+![MDS](./imgs/MDS.jpg "MDS")
+
         1-1. Group-like elements are allowed now.
         1-2. Common neutral atoms, ionic cores, and anionic cores are included.
 
@@ -26,9 +29,6 @@ MARS+ is based on the prototype of MARS [3], with various improvements:
 		2-3. An extra array of integers is used to bookkeep cyclic bonds.
 		2-4. Multiple ring numbers on an atom are allowed now.
 		2-5. The representation of 2-component chemical is allowed now. (1:1 ILs are demonstrated here)
-
-
-![MDS](./imgs/MDS.jpg "MDS")
 
 
 3. **The generalization of genetic opertors**
