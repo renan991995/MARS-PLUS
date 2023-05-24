@@ -16,7 +16,7 @@ As a result, a number of new species can be generated.
 
 
 
-## MARS+: What is new in it?
+## MARS+: what is new in it?
 
 MARS+ is based on MARS [3], with various improvements:
 
@@ -85,7 +85,7 @@ MARS+ is based on MARS [3], with various improvements:
 
 
 
-## Compiling MARS+ source code
+## Compiling MARS+ from source code
 
 The MARS+ source code consists of 7 header files and 7 cpp files: (see `./src/` directory)
 
