@@ -28,7 +28,6 @@ MARS+ is based on MARS [3], with various improvements:
 		     It can be appended easily. (See the instructions in ./INPUTS/ELEMENT_LISTS/element_list.txt)
 
 
-
 2. **The generalization of MDS**
 
 		2-1. An additional array of integers is used to bookkeep optical isomerisms.
@@ -37,11 +36,6 @@ MARS+ is based on MARS [3], with various improvements:
 		2-4. Multiple ring numbers on an atom are allowed.
 		2-5. The representation of a two-component chemical is allowed. 
 		     Equimolar ionic liquids (1:1) are taken as examples.
-
-
-* MARS+ MDS:
-
-![MDS](./imgs/MDS.jpg "MDS")
 
 
 3. **The generalization of genetic operators**
@@ -58,23 +52,6 @@ MARS+ is based on MARS [3], with various improvements:
 		3-4. Check isomerisms of substructures after an operation is successfully conducted.
 		     Assign default isomerisms (i.e. trans and clockwise winding) to potentially isomeric substructures.
 		3-5. If an imine-like substructure is present, indicate the lone pair of nitrogen atom by a null atom "*".
-
-
-* Uni-molecular operations - addition, insertion, subtraction, element change, bond change, cyclization, decyclization, cis-trans inversion, and chirality inversion:
-
-![uni-molecular operations](./imgs/uni-molecular_operations.png "uni-molecular operations")
-
-* Bi-molecular operations - crossover:
-
-![crossover operation](./imgs/crossover.png "crossover")
-
-* Bi-molecular operations - combination:
-
-![combination operation](./imgs/combination.png "combination")
-
-* Bi-supermolecular operation - component switch:
-
-![component switch operation](./imgs/component_switch.png "component switch")
 
 
 4. **Wrapping Open Babel [4] functions into MARS+**
@@ -164,7 +141,7 @@ Department of Chemical Engineering, National Taiwan University, Taipei, Taiwan
 (https://github.com/openbabel/openbabel)
 
 
-## Default base elements
+## MARS+: default base elements
 
 
 * Neutral elements
@@ -221,6 +198,7 @@ Department of Chemical Engineering, National Taiwan University, Taipei, Taiwan
 | 64   | \[Ga+3\](-)(-)(-)(-)                     | 1 1 1 1    | 3      |
 | 65   | \[SH0+\](-)(-)(-)                        | 1 1 1      | 1      |
 
+
 * Anionic elements
 
 | ID   |        Name                                                                     |   Bond order  | charge |
@@ -254,4 +232,31 @@ Department of Chemical Engineering, National Taiwan University, Taipei, Taiwan
 | 63   | \[SH0-\](-)                                                                     | 1             | -1     |
 
 
+## MARS+: MDS
+
+
+* MARS+ MDS:
+
+![MDS](./imgs/MDS.jpg "MDS")
+
+
+
+## MARS+: genetic operators
+
+
+* Uni-molecular operations - addition, insertion, subtraction, element change, bond change, cyclization, decyclization, cis-trans inversion, and chirality inversion:
+
+![uni-molecular operations](./imgs/uni-molecular_operations.png "uni-molecular operations")
+
+* Bi-molecular operations - crossover:
+
+![crossover operation](./imgs/crossover.png "crossover")
+
+* Bi-molecular operations - combination:
+
+![combination operation](./imgs/combination.png "combination")
+
+* Bi-supermolecular operation - component switch:
+
+![component switch operation](./imgs/component_switch.png "component switch")
 
