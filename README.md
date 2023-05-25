@@ -93,7 +93,7 @@ Now activate `MARS+` environment and compile the source code.
     make -j [N]                 ("-j [N]" is optional. Parallel compiling with N jobs at once)
 
 An executable `MARS-PLUS` will be generated in `./src/`.
-Make sure the compiling is successful before launching MARS+ tasks, especially when you have made modifications to the codes.
+Make sure the compiling is successful before launching MARS+ tasks, especially when you have made modifications to the code.
 
 
 ## Usage
@@ -110,7 +110,7 @@ Make sure you have properly set the parameters, and then launch the MARS+.
 	cd ./src/
 	./MARS-PLUS ./INPUTS/control.in
 
-Alternatively, you may use the PBS scheduler. A PBS template `.src/job.sh` is provided.
+Alternatively, you may use the PBS scheduler. A PBS template `./src/job.sh` is provided.
 
 	cd ./src/
 	qsub ./job.sh
