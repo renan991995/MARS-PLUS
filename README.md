@@ -4,9 +4,9 @@
 ## MARS: the prototype
 
 In computer-aided molecular design (CAMD) [1][2], the capability of generating new molecular species from existing one is vital. 
-[MARS](https://github.com/hsuhsuanhao/MARS) program [3], devised for such demand, consists of two components: 
+[MARS program](https://github.com/hsuhsuanhao/MARS) [3], devised for such demand, consists of two components: 
 
-* **Molecular data structure (MDS)** : Base elements and 5 arrays of integers
+* **Molecular data structure (MDS)** : base elements and 5 arrays of integers
 * **Genetic operators**              : ring formation, addition, subtraction, exchange, crossover, and combination
 
 To initiate a MARS task, one should input the 3D structures of starting molecules. 
@@ -116,12 +116,12 @@ Now activate `MARS+` environment and compile the source code.
     make -j [N]                 ("-j [N]" is optional. Parallel compiling with N jobs at once)
 
 An executable `MARS-PLUS` will be generated in `./src/`.
-
+Make sure the compiling is successful before launching MARS+ tasks, especially when you have made modifications to the codes.
 
 
 ## Usage
 
-There are 3 input files for MARS+: (see `./INPUTS/` directory)
+There are 3 input files for MARS+: (see `./INPUTS/`)
         
     ./INPUTS/control.in                     : controls the input, output, and calculation options.
     ./INPUTS/ELEMENT_LISTS/element_list.txt : a list that defines base element library.
@@ -130,7 +130,6 @@ There are 3 input files for MARS+: (see `./INPUTS/` directory)
 Please read the instructions in `./INPUTS/control.in` and `./INPUTS/ELEMENT_LISTS/element_list.txt`.
 Make sure you have properly set the parameters, and then launch the MARS+.
 
-	conda activate MARS+
 	cd ./src/
 	./MARS-PLUS ./INPUTS/control.in
 
