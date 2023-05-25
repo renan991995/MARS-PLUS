@@ -4,7 +4,7 @@
 ## MARS: the prototype
 
 In computer-aided molecular design (CAMD) [1][2], the capability of generating new molecular species from existing one is vital. 
-[MARS program](https://github.com/hsuhsuanhao/MARS) [3] is devised for such demand. It consists of two components: 
+[MARS](https://github.com/hsuhsuanhao/MARS) program [3], devised for such demand, consists of two components: 
 
 * **Molecular data structure (MDS)** : Base elements and 5 arrays of integers
 * **Genetic operators**              : ring formation, addition, subtraction, exchange, crossover, and combination
@@ -25,7 +25,7 @@ MARS+ is based on MARS [3], with various improvements:
         1-1. Group-like elements are allowed.
         1-2. Cationic cores and anionic cores are included.
 		1-3. The library is not hard-coded. 
-		     It can be appended easily. (See the instructions in `./INPUTS/ELEMENT_LISTS/element_list.txt`)
+		     It can be appended easily. (See the instructions in ./INPUTS/ELEMENT_LISTS/element_list.txt)
 
 
 
@@ -39,6 +39,8 @@ MARS+ is based on MARS [3], with various improvements:
 		     Equimolar ionic liquids (1:1) are taken as examples.
 
 
+* MARS+ MDS:
+
 ![MDS](./imgs/MDS.jpg "MDS")
 
 
@@ -49,20 +51,28 @@ MARS+ is based on MARS [3], with various improvements:
 			 3-1-2. Multiple ring numbers on an atom can be induced through cyclization operator.
 			 3-1-3. For most of the operators, the codes are revised for better systematicness.
 			        Unnecessary dependencies among variables are reduced.
-			 3-1-4. The stability and flexibility of operators are greatly enhanced. 
+			 3-1-4. The stability and flexibility of operators are enhanced. 
 		3-2. Development of new operators: insertion, decyclization, element change, cis-trans inversion, chirality inversion, and component switch.
-		3-3. Since the new operator scheme has a better reversibility, undoing an operator is much easier. 
+		3-3. Since the new operator scheme has a better reversibility, undoing an operation is much easier now. 
 	         This can reduce unintended biases toward the generation of certain molecules (e.g. polycyclics).
-		3-4. Check cis-trans and optical isomerisms after a genetic operation. (Default: trans and clockwise winding, respectively)
-		3-5. If a imine-like substructure is generated, indicate the lone pair of nitrogen atom by null atom "*".
-		     Also, assign the default cis-trans isomerism for it.
+		3-4. Check isomerisms of substructures after an operation is successfully conducted.
+		     Assign default isomerisms (i.e. trans and clockwise winding) to potentially isomeric substructures.
+		3-5. If an imine-like substructure is present, indicate the lone pair of nitrogen atom by a null atom "*".
 
+
+* Uni-molecular operations - addition, insertion, subtraction, element change, bond change, cyclization, decyclization, cis-trans inversion, and chirality inversion:
 
 ![uni-molecular operations](./imgs/uni-molecular_operations.png "uni-molecular operations")
 
+* Bi-molecular operations - crossover:
+
 ![crossover operation](./imgs/crossover.png "crossover")
 
+* Bi-molecular operations - combination:
+
 ![combination operation](./imgs/combination.png "combination")
+
+* Bi-supermolecular operation - component switch:
 
 ![component switch operation](./imgs/component_switch.png "component switch")
 
@@ -93,12 +103,11 @@ The MARS+ source code consists of 7 header files and 7 cpp files: (see `./src/` 
     ELEMENTS.cpp  MOLECULE.cpp  CASES_NEU.cpp  CASES_IL_INDEPENDENT.cpp  CASES_IL.cpp  UTILITY.cpp  main.cpp 
     
 Before compiling MARS+, relevant softwares should be installed. 
-It is recommended to use [Miniconda](https://docs.conda.io/en/latest/miniconda.html) or [Anaconda](https://www.anaconda.com/download) for that. 
-With conda, one can directly import `MARS+` environment and associated packages from `./MARS+_env.yml`.
+With [Miniconda](https://docs.conda.io/en/latest/miniconda.html) or [Anaconda](https://www.anaconda.com/download), one can directly import `MARS+` environment and required packages from `./MARS+_env.yml`.
 
     conda env create --file ./MARS+_env.yml
     
-Now activate the `MARS+` environment and compile the source code. 
+Now activate `MARS+` environment and compile the source code. 
 
     conda activate MARS+
     cd ./src
@@ -125,13 +134,13 @@ Make sure you have properly set the parameters, and then launch the MARS+.
 	cd ./src/
 	./MARS-PLUS ./INPUTS/control.in
 
-Alternatively, you may use the PBS scheduler.
+Alternatively, you may use the PBS scheduler. A PBS template `.src/job.sh` is provided.
 
 	cd ./src/
 	qsub ./job.sh
 
 The results for each of the operations will be outputted to `./LOG_FILES/`.
-For example, the results of bond change operation on an IL will be outputted to `./LOG_FILES/change_bnd_IL.txt`.
+For instance, the results of bond change operation on an IL will be outputted to `./LOG_FILES/change_bnd_IL.txt`.
 
 
 
