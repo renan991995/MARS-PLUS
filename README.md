@@ -80,43 +80,43 @@ The MARS+ source code consists of 7 header files and 7 cpp files: (see `./src/` 
     ELEMENTS.cpp  MOLECULE.cpp  CASES_NEU.cpp  CASES_IL_INDEPENDENT.cpp  CASES_IL.cpp  UTILITY.cpp  main.cpp 
     
 Before compiling MARS+, relevant softwares should be installed. 
-With [Miniconda](https://docs.conda.io/en/latest/miniconda.html) or [Anaconda](https://www.anaconda.com/download), one can directly import `MARS+` environment and required packages from `./MARS+_env.yml`.
+With [Miniconda](https://docs.conda.io/en/latest/miniconda.html) or [Anaconda](https://www.anaconda.com/download), one can directly import `MARS+` environment and required packages from `MARS+_env.yml`.
 
-    conda env create --file ./MARS+_env.yml
+    conda env create --file MARS+_env.yml
     
 Now activate `MARS+` environment and compile the source code. 
 
     conda activate MARS+
-    cd ./src
-    rm -r ./cmake_install.cmake ./CMakeFiles/ ./CMakeCache.txt 2> /dev/null
+    cd src/
+    rm -r ./cmake_install.cmake ./CMakeFiles ./CMakeCache.txt 2> /dev/null
     cmake ./CMakeLists.txt
-    make -j [N]                 ("-j [N]" is optional. Parallel compiling with N jobs at once)
+    make -j [N]                 ("-j [N]" is optional. It means parallel compiling with N jobs at once.)
 
-An executable `MARS-PLUS` will be generated in `./src/`.
+An executable `MARS-PLUS` will be generated in `src/`.
 Make sure the compiling is successful before launching MARS+ tasks, especially when you have made modifications to the code.
 
 
 ## Usage
 
-There are 3 input files for MARS+: (see `./INPUTS/`)
+There are 3 input files for MARS+: (see `INPUTS/`)
         
-    ./INPUTS/control.in                     : controls the input, output, and calculation options.
-    ./INPUTS/ELEMENT_LISTS/element_list.txt : a list that defines base element library.
-    ./INPUTS/INPUT_CHEMICALS/IL4.txt        : the starting chemicals.
+    INPUTS/control.in                     : controls the input, output, and calculation options.
+    INPUTS/ELEMENT_LISTS/element_list.txt : a list that defines base element library.
+    INPUTS/INPUT_CHEMICALS/IL4.txt        : the starting chemicals.
     
-Please read the instructions in `./INPUTS/control.in` and `./INPUTS/ELEMENT_LISTS/element_list.txt`.
+Please read the instructions in `INPUTS/control.in` and `INPUTS/ELEMENT_LISTS/element_list.txt`.
 Make sure you have properly set the parameters, and then launch the MARS+.
 
-	cd ./src/
-	./MARS-PLUS ./INPUTS/control.in
+	cd src/
+	./MARS-PLUS ../INPUTS/control.in
 
-Alternatively, you may use the PBS scheduler. A PBS template `./src/job.sh` is provided.
+Alternatively, you may use the PBS scheduler. A PBS template `src/job.sh` is provided.
 
-	cd ./src/
+	cd src/
 	qsub ./job.sh
 
-The results for each of the operations will be outputted to `./LOG_FILES/`.
-For instance, the results of bond change operation on an IL will be outputted to `./LOG_FILES/change_bnd_IL.txt`.
+The results for each of the operations will be outputted to `LOG_FILES/`.
+For instance, the results of bond change operation on an IL will be outputted to `LOG_FILES/change_bnd_IL.txt`.
 
 
 
