@@ -25,7 +25,7 @@
 #
 #  MDS_DIR:							The dor where the MDS' are outputted to
 #
-#  LOG_DIR:							The dir where the result files (and some temporary files) are output to
+#  LOG_DIR:							The dir where the result files (and some temporary files) are outputted to
 #
 #  IF_ION:							1: the case of ILs/salts 										0: the case of neutral molecule (single component)
 #
@@ -33,7 +33,7 @@
 #
 #  IF_OUTPUT_MDS:					1: output MDS to MDS_DIR										0: does not output any MDS
 #
-#  IF_ENUMERATION:					1: do SMI enumeration for all the designed molecules/ions		0: does notdo SMI enumeration for any molecules/ions
+#  REDU_DUPLICATES:					1: does not count duplicate species								0: count duplicate species
 #
 ###########################################################################################################
 
@@ -50,10 +50,6 @@
 #Appearance of ions
   #IF_ION					0
   IF_ION					1
-
-#SMILES enumeration
-  IF_ENUMERATION			0
-  #IF_ENUMERATION			1
 
 #output mds in MDS_OUTPUT_DIR
   #IF_OUTPUT_MDS		0
@@ -91,6 +87,6 @@
   CHEMICAL_IUPUTLIST                    ../INPUTS/INPUT_CHEMICALS/IL4.txt
   #CHEMICAL_IUPUTLIST                   ../INPUTS/INPUT_CHEMICALS/IL5.txt
 
-#Reducing the generation of duplicates
+#Set REDU_DUPLICATES to be 1 if you do not count duplicates
   #REDU_DUPLICATES						1
   REDU_DUPLICATES						0

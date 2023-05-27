@@ -25,7 +25,7 @@ MARS+ is based on MARS [3], with various improvements:
         1-1. Group-like elements are allowed.
         1-2. Cationic cores and anionic cores are included.
 		1-3. The library is not hard-coded. 
-		     It can be appended easily. (See the instructions in ./INPUTS/ELEMENT_LISTS/element_list.txt)
+		     It can be appended easily. (See the instructions in INPUTS/ELEMENT_LISTS/element_list.txt)
 
 
 2. **The generalization of MDS**
@@ -54,9 +54,10 @@ MARS+ is based on MARS [3], with various improvements:
 		3-5. If an imine-like substructure is present, indicate the lone pair of nitrogen atom by a null atom "*".
 
 
-4. **Wrapping Open Babel [4] functions into MARS+**
+4. **Wrapping some Open Babel [4] functions into MARS+**
 
-		4-1. This facilitates the inputting of starting structures to the program. One only needs to input SMILES.
+		4-1. This facilitates the inputting of starting structures to the program. 
+		     One only needs to input SMILES now.
 		4-2. The isomerism perception for inputted molecules is more robust.
 
 
@@ -74,7 +75,7 @@ MARS+ is based on MARS [3], with various improvements:
 
 ## Compiling MARS+ from source code
 
-The MARS+ source code consists of 7 header files and 7 cpp files: (see `./src/` directory)
+The MARS+ source code consists of 7 header files and 7 cpp files: (see `src/` directory)
 
     ELEMENTS.h    MOLECULE.h    CASES_NEU.h    CASES_IL_INDEPENDENT.h    CASES_IL.h    UTILITY.h    PARAMETER.h
     ELEMENTS.cpp  MOLECULE.cpp  CASES_NEU.cpp  CASES_IL_INDEPENDENT.cpp  CASES_IL.cpp  UTILITY.cpp  main.cpp 
@@ -116,7 +117,7 @@ Alternatively, you may use the PBS scheduler. A PBS template `src/job.sh` is pro
 	qsub ./job.sh
 
 The results for each of the operations will be outputted to `LOG_FILES/`.
-For instance, the results of bond change operation on an IL will be outputted to `LOG_FILES/change_bnd_IL.txt`.
+For instance, the generated chemicals by applying bond change operation to an IL will be written to `LOG_FILES/change_bnd_IL.txt`.
 
 
 
@@ -234,8 +235,6 @@ Department of Chemical Engineering, National Taiwan University, Taipei, Taiwan
 
 ## MARS+: MDS
 
-
-* MARS+ MDS:
 
 ![MDS](./imgs/MDS.jpg "MDS")
 
