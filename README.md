@@ -100,7 +100,7 @@ Make sure the compiling is successful before launching MARS+ tasks, especially w
 
 ### For Windows users:
 
-Please refer to the repository of [MARS+ Windows version](https://github.com/renan991995/MARS-PLUS-Wins)
+Please refer to the repository of [MARS+ Windows version](https://github.com/renan991995/MARS-PLUS-Wins).
 
 
 ## Usage
