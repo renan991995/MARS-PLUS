@@ -74,6 +74,8 @@ MARS+ is based on MARS [3], with various improvements:
 
 ## Compiling MARS+ from source code
 
+* For Linux users:
+
 The MARS+ source code consists of 7 header files and 7 cpp files: (see `src/` directory)
 
     ELEMENTS.h    MOLECULE.h    CASES_NEU.h    CASES_IL_INDEPENDENT.h    CASES_IL.h    UTILITY.h    PARAMETER.h
@@ -94,6 +96,11 @@ Now activate `MARS+` environment and compile the source code.
 
 An executable `MARS-PLUS` will be generated in `src/`.
 Make sure the compiling is successful before launching MARS+ tasks, especially when you have made modifications to the code.
+
+
+* For Windows users:
+
+Please refer to the repository of [MARS+ Windows version](https://github.com/renan991995/MARS-PLUS-Wins)
 
 
 ## Usage
