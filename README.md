@@ -61,7 +61,6 @@ MARS+ is based on MARS [3], with various improvements:
 		4-2. The isomerism perception for inputted molecules is more robust.
 
 
-
 ## Development environment
 
 * Linux CentOS 7
@@ -118,7 +117,6 @@ Alternatively, you may use the PBS scheduler. A PBS template `src/job.sh` is pro
 
 The results for each of the operations will be outputted to `LOG_FILES/`.
 For instance, the generated chemicals by applying bond change operation to an IL will be written to `LOG_FILES/change_bnd_IL.txt`.
-
 
 
 ## Developers
@@ -233,7 +231,7 @@ Department of Chemical Engineering, National Taiwan University, Taipei, Taiwan
 | 63   | \[SH0-\](-)                                                                     | 1             | -1     |
 
 
-## MARS+: MDS
+## MARS+: molecular data structure (MDS)
 
 
 ![MDS](./imgs/MDS.jpg "MDS")
@@ -259,3 +257,12 @@ Department of Chemical Engineering, National Taiwan University, Taipei, Taiwan
 
 ![component switch operation](./imgs/component_switch.png "component switch")
 
+
+
+## Iterative molecular design
+
+MARS+ supports the iterative molecular. 
+It can be done by subjecting the molecules generated in a round to next round of exhaustive operations.
+A dataset obtained in this way is provided in [MARS-PLUS-IterDesignData repository](https://github.com/renan991995/MARS-PLUS-IterDesignData)
+
+![iterative design](./imgs/iterative_design.png "iterative design")
