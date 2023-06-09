@@ -263,6 +263,6 @@ Department of Chemical Engineering, National Taiwan University, Taipei, Taiwan
 
 MARS+ supports the iterative molecular. 
 It can be done by subjecting the molecules generated in a round to next round of exhaustive operations.
-A dataset obtained in this way is provided in [MARS-PLUS-IterDesignData repository](https://github.com/renan991995/MARS-PLUS-IterDesignData)
+A dataset obtained in this way is provided in [IterDesignData repository](https://github.com/renan991995/MARS-PLUS-IterDesignData).
 
 ![iterative design](./imgs/iterative_design.png "iterative design")
