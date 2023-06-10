@@ -115,6 +115,9 @@ There are 3 input files for MARS+: (see `INPUTS/`)
 Please read the instructions in `INPUTS/control.in` and `INPUTS/ELEMENT_LISTS/element_list.txt`.
 Make sure you have properly set the parameters, and then launch the MARS+.
 
+
+### For Linux users:
+
 	cd src/
 	./MARS-PLUS ../INPUTS/control.in
 
@@ -125,6 +128,11 @@ Alternatively, you may use the PBS scheduler. A PBS template `src/job.sh` is pro
 
 The results for each of the operations will be outputted to `LOG_FILES/`.
 For instance, the generated chemicals by applying bond change operation to an IL will be written to `LOG_FILES/change_bnd_IL.txt`.
+
+
+### For Windows users:
+
+Please refer to the repository of [MARS+ Windows version](https://github.com/renan991995/MARS-PLUS-Wins).
 
 
 ## Developers
