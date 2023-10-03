@@ -49,679 +49,673 @@ unsigned int MOLECULE::replace(MOLECULE &mol) {
 	return 1;
 }
 
-unsigned int MOLECULE::crossover(MOLECULE &aaa,unsigned int pp,unsigned int jj,bool cistrans) {
-	if (para.protect) {
-		if (protect.at(pp)) return 0; 
-		if (aaa.protect.at(jj)) return 0; 
-	}
+unsigned int MOLECULE::crossover(MOLECULE &B,unsigned int pt1,unsigned int pt2,bool cistrans) {
+    if (para.protect) {
+        if (protect.at(pt1)) return 0;
+        if (B.protect.at(pt2)) return 0;
+    }
     unsigned int Csize1=Cindex.size();
     for (unsigned int i=0;i<Cindex.size();i++) {
-		if (Mindex.at(i)==70) Csize1--;
-	}
-    unsigned int Csize2=aaa.Cindex.size();
-    for (unsigned int i=0;i<aaa.Cindex.size();i++) {
-        if (aaa.Mindex.at(i)==70) Csize2--;
+        if (Mindex.at(i)==70) Csize1--;
     }
-    if (Csize1<2 || pp>=Cindex.size()) return 0;
-    if (Csize2<2 || jj>=aaa.Cindex.size()) return 0;
+    unsigned int Csize2=B.Cindex.size();
+    for (unsigned int i=0;i<B.Cindex.size();i++) {
+        if (B.Mindex.at(i)==70) Csize2--;
+    }
+    if (Csize1<2 || pt1>=Cindex.size()) return 0;
+    if (Csize2<2 || pt2>=B.Cindex.size()) return 0;
 
-    //if (Cindex.size()<2 || pp>=Cindex.size()) return 0;
-    //if (aaa.Cindex.size()<2 || jj>=aaa.Cindex.size()) return 0;
+    //if (Cindex.size()<2 || pt1>=Cindex.size()) return 0;
+    //if (B.Cindex.size()<2 || pt2>=B.Cindex.size()) return 0;
 
-	int lenA=0;
-	int lenB=0;
-	vector<unsigned int> t(0),f(0);
-	vector<unsigned int> ci_ref(0),mi_ref(0),pi_ref(0),ri_ref(0),pri(0),cybndi(0),chii(0); 
-	vector<unsigned int> cj_ref(0),mj_ref(0),pj_ref(0),rj_ref(0),prj(0),cybndj(0),chij(0); 
-	vector< vector<unsigned int> > cyi(0,vector<unsigned int>(0));
-	vector< vector<unsigned int> > cyj(0,vector<unsigned int>(0));
-	vector< vector<string> > cti_ref(0),ctj_ref(0);
-	
-	vector<bool> ifchg(4,0);
-	if (para.ion && 0) {
-		for (unsigned int k1=0;k1<Cindex.size();k1++) {
-			if (Cindex.at(k1)<=Cindex.at(pp) && data->a[Mindex.at(k1)].chg) {
-				ifchg.at(0)=1;
-				break;
-			}
-		}
-		for (unsigned int k1=0;k1<Cindex.size();k1++) {
-			if (Cindex.at(k1)>=Cindex.at(pp) && data->a[Mindex.at(k1)].chg) {
-				ifchg.at(1)=1;
-				break;
-			}
-		}
-		for (unsigned int k1=0;k1<aaa.Cindex.size();k1++) {
-			if (aaa.Cindex.at(k1)<=aaa.Cindex.at(jj) && data->a[aaa.Mindex.at(k1)].chg) {
-				ifchg.at(2)=1;
-				break;
-			}
-		}
-		for (unsigned int k1=0;k1<aaa.Cindex.size();k1++) {
-			if (aaa.Cindex.at(k1)>=aaa.Cindex.at(jj) && data->a[aaa.Mindex.at(k1)].chg) {
-				ifchg.at(3)=1;
-				break;
-			}
-		}
-		bool no1=0;
-		//cout << "cros_chg " << ifchg.at(0) << " " << ifchg.at(1) << " " << ifchg.at(2) << " " << ifchg.at(3) << endl;
-		if (0) {
-			if (ifchg.at(0)==1 && ifchg.at(2)==1 && ifchg.at(1)==0 && ifchg.at(3)==0) no1=1;
-			if (ifchg.at(1)==1 && ifchg.at(3)==1 && ifchg.at(0)==0 && ifchg.at(2)==0) no1=1;
-		}
-		if (0) {
-			if (ifchg.at(0)==1 && ifchg.at(3)==1 && ifchg.at(1)==0 && ifchg.at(2)==0) no1=1;
-			if (ifchg.at(1)==1 && ifchg.at(2)==1 && ifchg.at(0)==0 && ifchg.at(3)==0) no1=1;
-		}
-		if (1) {
-			if (ifchg.at(0)==1 && ifchg.at(3)==1) no1=1;
-			if (ifchg.at(1)==0 && ifchg.at(2)==0) no1=1;
-			if (ifchg.at(1)==1 && ifchg.at(2)==1) no1=1;
-			if (ifchg.at(0)==0 && ifchg.at(3)==0) no1=1;
-		}
-		if (no1) {
-			/*
-			cout << "pp: " << pp << " | " 
-				<< "jj: " << jj << " | "
-				<< "cros_chg: fail cros " << ifchg.at(0) << " " << ifchg.at(1) << " " << ifchg.at(2) << " " << ifchg.at(3) << endl;
-			*/
-			return 0;
-		}
-	}
+    int lenA=0;
+    int lenB=0;
+    unsigned int x=0;//ci_ref.at(0);
+    unsigned int y=0;//cj_ref.at(0);
+    unsigned int a=0;//pi_ref.at(0);
+    unsigned int b=0;//pj_ref.at(0);
+    vector<unsigned int> t(0),f(0);
+    bool suffA=0,suffB=0;
+    vector<unsigned int> ci_ref(0),mi_ref(0),pi_ref(0),ri_ref(0),pri(0),cybndi(0),chii(0);
+    vector<unsigned int> cj_ref(0),mj_ref(0),pj_ref(0),rj_ref(0),prj(0),cybndj(0),chij(0);
+    vector< vector<unsigned int> > cyi(0,vector<unsigned int>(0));
+    vector< vector<unsigned int> > cyj(0,vector<unsigned int>(0));
+    vector< vector<string> > cti_ref(0),ctj_ref(0);
+    vector<bool> ifchg(4,0);
+    if (para.ion && 0) {
+        for (unsigned int k1=0;k1<Cindex.size();k1++) {
+            if (Cindex.at(k1)<=Cindex.at(pt1) && data->a[Mindex.at(k1)].chg) {
+                ifchg.at(0)=1;
+                break;
+            }
+        }
+        for (unsigned int k1=0;k1<Cindex.size();k1++) {
+            if (Cindex.at(k1)>=Cindex.at(pt1) && data->a[Mindex.at(k1)].chg) {
+                ifchg.at(1)=1;
+                break;
+            }
+        }
+        for (unsigned int k1=0;k1<B.Cindex.size();k1++) {
+            if (B.Cindex.at(k1)<=B.Cindex.at(pt2) && data->a[B.Mindex.at(k1)].chg) {
+                ifchg.at(2)=1;
+                break;
+            }
+        }
+        for (unsigned int k1=0;k1<B.Cindex.size();k1++) {
+            if (B.Cindex.at(k1)>=B.Cindex.at(pt2) && data->a[B.Mindex.at(k1)].chg) {
+                ifchg.at(3)=1;
+                break;
+            }
+        }
+        bool no1=0;
+        //cout << "cros_chg " << ifchg.at(0) << " " << ifchg.at(1) << " " << ifchg.at(2) << " " << ifchg.at(3) << endl;
+        if (0) {
+            if (ifchg.at(0)==1 && ifchg.at(2)==1 && ifchg.at(1)==0 && ifchg.at(3)==0) no1=1;
+            if (ifchg.at(1)==1 && ifchg.at(3)==1 && ifchg.at(0)==0 && ifchg.at(2)==0) no1=1;
+        }
+        if (0) {
+            if (ifchg.at(0)==1 && ifchg.at(3)==1 && ifchg.at(1)==0 && ifchg.at(2)==0) no1=1;
+            if (ifchg.at(1)==1 && ifchg.at(2)==1 && ifchg.at(0)==0 && ifchg.at(3)==0) no1=1;
+        }
+        if (1) {
+            if (ifchg.at(0)==1 && ifchg.at(3)==1) no1=1;
+            if (ifchg.at(1)==0 && ifchg.at(2)==0) no1=1;
+            if (ifchg.at(1)==1 && ifchg.at(2)==1) no1=1;
+            if (ifchg.at(0)==0 && ifchg.at(3)==0) no1=1;
+        }
+        if (no1) {
+            /*
+            cout << "pt1: " << pt1 << " | "
+                << "pt2: " << pt2 << " | "
+                << "cros_chg: fail cros " << ifchg.at(0) << " " << ifchg.at(1) << " " << ifchg.at(2) << " " << ifchg.at(3) << endl;
+            */
+            return 0;
+        }
+    }
 
     vector<bool> ifcyc(4,0);
     if (para.protect && if_circle && 0) {
         for (unsigned int k1=0;k1<Cindex.size();k1++) {
-            if (Cindex.at(k1)<=Cindex.at(pp) && Cyindex.at(k1).size()) { // && Cyindex.at(k1)
+            if (Cindex.at(k1)<=Cindex.at(pt1) && Cyindex.at(k1).size()) { // && Cyindex.at(k1)
                 ifcyc.at(0)=1;
                 break;
             }
         }
         for (unsigned int k1=0;k1<Cindex.size();k1++) {
-            if (Cindex.at(k1)>=Cindex.at(pp) && Cyindex.at(k1).size()) { // && Cyindex.at(k1)
+            if (Cindex.at(k1)>=Cindex.at(pt1) && Cyindex.at(k1).size()) { // && Cyindex.at(k1)
                 ifcyc.at(1)=1;
                 break;
             }
         }
-        for (unsigned int k1=0;k1<aaa.Cindex.size();k1++) {
-            if (aaa.Cindex.at(k1)<=aaa.Cindex.at(jj) && aaa.Cyindex.at(k1).size()) { // && aaa.Cyindex.a(k1)
+        for (unsigned int k1=0;k1<B.Cindex.size();k1++) {
+            if (B.Cindex.at(k1)<=B.Cindex.at(pt2) && B.Cyindex.at(k1).size()) { // && B.Cyindex.a(k1)
                 ifcyc.at(2)=1;
                 break;
             }
         }
-        for (unsigned int k1=0;k1<aaa.Cindex.size();k1++) {
-            if (aaa.Cindex.at(k1)>=aaa.Cindex.at(jj) && aaa.Cyindex.at(k1).size()) { // && aaa.Cyindex.at(k1)
+        for (unsigned int k1=0;k1<B.Cindex.size();k1++) {
+            if (B.Cindex.at(k1)>=B.Cindex.at(pt2) && B.Cyindex.at(k1).size()) { // && B.Cyindex.at(k1)
                 ifcyc.at(3)=1;
                 break;
             }
         }
-		bool no2=0;
-    	if (1) {
-        	if (ifcyc.at(0)==1 && ifcyc.at(1)==1) no2=1;
-        	if (ifcyc.at(2)==1 && ifcyc.at(3)==1) no2=1;
-    	}
-    	if (no2) {
-			/*
-        	cout << "pp: " << pp << " | "
-            	<< "jj: " << jj << " | "
-            	<< "cros_cyc: fail cros " << ifcyc.at(0) << " " << ifcyc.at(1) << " " << ifcyc.at(2) << " " << ifcyc.at(3) << endl;
-			*/
-        	return 0;
-    	}
-	}
+        bool no2=0;
+        if (1) {
+            if (ifcyc.at(0)==1 && ifcyc.at(1)==1) no2=1;
+            if (ifcyc.at(2)==1 && ifcyc.at(3)==1) no2=1;
+        }
+        if (no2) {
+            /*
+            cout << "pt1: " << pt1 << " | "
+                << "pt2: " << pt2 << " | "
+                << "cros_cyc: fail cros " << ifcyc.at(0) << " " << ifcyc.at(1) << " " << ifcyc.at(2) << " " << ifcyc.at(3) << endl;
+            */
+            return 0;
+        }
+    }
 
-	if (aaa.Rindex.at(jj)==Rindex.at(pp)) {
-		ri_ref.push_back(Rindex.at(pp));
-		rj_ref.push_back(aaa.Rindex.at(jj));
-		ci_ref.push_back(Cindex.at(pp));
-		cj_ref.push_back(aaa.Cindex.at(jj));
-		pi_ref.push_back(Pindex.at(pp));
-		pj_ref.push_back(aaa.Pindex.at(jj));
-		mi_ref.push_back(Mindex.at(pp));
-		mj_ref.push_back(aaa.Mindex.at(jj));
-        chii.push_back(chi.at(pp));
-        chij.push_back(aaa.chi.at(jj));
+    if (B.Rindex.at(pt2)==Rindex.at(pt1)) {
+        ri_ref.push_back(Rindex.at(pt1));
+        rj_ref.push_back(B.Rindex.at(pt2));
+        ci_ref.push_back(Cindex.at(pt1));
+        cj_ref.push_back(B.Cindex.at(pt2));
+        pi_ref.push_back(Pindex.at(pt1));
+        pj_ref.push_back(B.Pindex.at(pt2));
+        mi_ref.push_back(Mindex.at(pt1));
+        mj_ref.push_back(B.Mindex.at(pt2));
+        chii.push_back(chi.at(pt1));
+        chij.push_back(B.chi.at(pt2));
 
         cti_ref.resize(2,vector<string>(0));
-        cti_ref.at(0).push_back(ctsisomer.at(0).at(pp));
-        cti_ref.at(1).push_back(ctsisomer.at(1).at(pp));
+        cti_ref.at(0).push_back(ctsisomer.at(0).at(pt1));
+        cti_ref.at(1).push_back(ctsisomer.at(1).at(pt1));
 
         ctj_ref.resize(2,vector<string>(0));
-        ctj_ref.at(0).push_back(aaa.ctsisomer.at(0).at(jj));
-        ctj_ref.at(1).push_back(aaa.ctsisomer.at(1).at(jj));
+        ctj_ref.at(0).push_back(B.ctsisomer.at(0).at(pt2));
+        ctj_ref.at(1).push_back(B.ctsisomer.at(1).at(pt2));
 
-		cyi.resize(1,vector<unsigned int>(0));
-		for (unsigned int k1=0;k1<Cyindex.at(pp).size();k1++) cyi.at(0).push_back(Cyindex.at(pp).at(k1));
+        cyi.resize(1,vector<unsigned int>(0));
+        for (unsigned int k1=0;k1<Cyindex.at(pt1).size();k1++) cyi.at(0).push_back(Cyindex.at(pt1).at(k1));
 
-		cyj.resize(1,vector<unsigned int>(0));
-		for (unsigned int k1=0;k1<aaa.Cyindex.at(jj).size();k1++) cyj.at(0).push_back(aaa.Cyindex.at(jj).at(k1));
+        cyj.resize(1,vector<unsigned int>(0));
+        for (unsigned int k1=0;k1<B.Cyindex.at(pt2).size();k1++) cyj.at(0).push_back(B.Cyindex.at(pt2).at(k1));
 
-		if (para.protect) pri.push_back(protect.at(pp));
-		if (para.protect) prj.push_back(aaa.protect.at(jj));
+        if (para.protect) pri.push_back(protect.at(pt1));
+        if (para.protect) prj.push_back(B.protect.at(pt2));
 
-		lenA=Cindex.size();
-		lenB=aaa.Cindex.size();
-		if (1) {
-			for (unsigned int n=1;n<Cindex.size();n++) {
-				if (Cindex.at(n) > ci_ref.at(0)) {
-					unsigned int ref = ci_ref.size();
-					for (unsigned int m=0;m<ref;m++) {
-						if (Pindex.at(n) == ci_ref.at(m)) {
-							ci_ref.push_back(Cindex.at(n));
-							mi_ref.push_back(Mindex.at(n));
-							pi_ref.push_back(Pindex.at(n));
-							ri_ref.push_back(Rindex.at(n));
-							chii.push_back(chi.at(n));
-                        	cti_ref.at(0).push_back(ctsisomer.at(0).at(n));
-                        	cti_ref.at(1).push_back(ctsisomer.at(1).at(n));
+        lenA=Cindex.size();
+        lenB=B.Cindex.size();
+        if (0) {
+            for (unsigned int n=1;n<Cindex.size();n++) {
+                if (Cindex.at(n) > ci_ref.at(0)) {
+                    unsigned int ref = ci_ref.size();
+                    for (unsigned int m=0;m<ref;m++) {
+                        if (Pindex.at(n) == ci_ref.at(m)) {
+                            ci_ref.push_back(Cindex.at(n));
+                            mi_ref.push_back(Mindex.at(n));
+                            pi_ref.push_back(Pindex.at(n));
+                            ri_ref.push_back(Rindex.at(n));
+                            chii.push_back(chi.at(n));
+                            cti_ref.at(0).push_back(ctsisomer.at(0).at(n));
+                            cti_ref.at(1).push_back(ctsisomer.at(1).at(n));
 
-							cyi.resize(cyi.size()+1,vector<unsigned int>(0));
-							for (unsigned int k1=0;k1<Cyindex.at(n).size();k1++) cyi.at(cyi.size()-1).push_back(Cyindex.at(n).at(k1));
-						
-							if (para.protect) pri.push_back(protect.at(n));
-						}
-					}
-				}
-			}
-		}
-		else {
-	    	vector<unsigned int> curatm(0);
+                            cyi.resize(cyi.size()+1,vector<unsigned int>(0));
+                            for (unsigned int k1=0;k1<Cyindex.at(n).size();k1++) cyi.at(cyi.size()-1).push_back(Cyindex.at(n).at(k1));
 
-	    	bool goout=0;
-    		curatm.push_back(ci_ref.at(0));
+                            if (para.protect) pri.push_back(protect.at(n));
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            for (unsigned int k2=ci_ref.at(0);k2<Cindex.size();k2++) { //k2=0
+                for (unsigned int k3=0;k3<ci_ref.size();k3++) {
+                    //for (unsigned int k2=ci_ref.at(k3);k2<Cindex.size();k2++)
+                    if (Pindex.at(k2)==ci_ref.at(k3)) {
+                        ci_ref.push_back(Cindex.at(k2));
+                        mi_ref.push_back(Mindex.at(k2));
+                        pi_ref.push_back(Pindex.at(k2));
+                        ri_ref.push_back(Rindex.at(k2));
+                        chii.push_back(chi.at(k2));
+                        cti_ref.at(0).push_back(ctsisomer.at(0).at(k2));
+                        cti_ref.at(1).push_back(ctsisomer.at(1).at(k2));
 
-    		do {
-        		vector<unsigned int> tmpp(0);
-        		for (unsigned int k3=0;k3<curatm.size();k3++) {
-            		for (unsigned int k2=0;k2<Cindex.size();k2++) {
-                		if (Pindex.at(k2)==curatm.at(k3)) {
-	                    	ci_ref.push_back(Cindex.at(k2));
-    	                	mi_ref.push_back(Mindex.at(k2));
-        	            	pi_ref.push_back(Pindex.at(k2));
-            	        	ri_ref.push_back(Rindex.at(k2));
-							chii.push_back(chii.at(k2));
-                    		cti_ref.at(0).push_back(ctsisomer.at(0).at(k2));
-                        	cti_ref.at(1).push_back(ctsisomer.at(1).at(k2));
+                        cyi.resize(cyi.size()+1,vector<unsigned int>(0));
+                        for (unsigned int k1=0;k1<Cyindex.at(k2).size();k1++) cyi.at(cyi.size()-1).push_back(Cyindex.at(k2).at(k1));
 
-                        	cyi.resize(cyi.size()+1,vector<unsigned int>(0));
-							for (unsigned int k1=0;k1<Cyindex.at(k2).size();k1++) cyi.at(cyi.size()-1).push_back(Cyindex.at(k2).at(k1));
+                        if (para.protect) pri.push_back(protect.at(k2));
+                    }
+                }
+            }
 
-                        	if (para.protect) pri.push_back(protect.at(k2));
+            if (0) {
+                for (unsigned int i=0;i<ci_ref.size();i++) {
+                    for (unsigned int j=i+1;j<ci_ref.size();j++) {
+                        if (ci_ref.at(i)>ci_ref.at(j)) {
+                            swap(ci_ref.at(i),ci_ref.at(j));
+                            swap(mi_ref.at(i),mi_ref.at(j));
+                            swap(pi_ref.at(i),pi_ref.at(j));
+                            swap(ri_ref.at(i),ri_ref.at(j));
+                            swap(chii.at(i),chii.at(j));
+                            swap(cti_ref.at(0).at(i),cti_ref.at(0).at(j));
+                            swap(cti_ref.at(1).at(i),cti_ref.at(1).at(j));
+                            swap(cyi.at(i),cyi.at(j));
+                            if (para.protect) swap(pri.at(i),pri.at(j));
+                        }
+                    }
+                }
+            }
+        }
 
-							tmpp.push_back(Cindex.at(k2));
-                		}
-            		}
-        		}
-        		if (tmpp.size()>0) {
-            		curatm.resize(0);
-            		for (unsigned int k4=0;k4<tmpp.size();k4++) curatm.push_back(tmpp.at(k4));
-        		}
-        		else {
-            		goout=1;
-            		break;
-        		}
+        if (0) {
+            for (unsigned int m=1;m<B.Cindex.size();m++) {
+                if (B.Cindex.at(m) > cj_ref.at(0) ) {
+                    unsigned int ref = cj_ref.size();
+                    for (unsigned int n=0;n<ref;n++) {
+                        if (B.Pindex.at(m) == cj_ref.at(n)) {
+                            cj_ref.push_back(B.Cindex.at(m));
+                            mj_ref.push_back(B.Mindex.at(m));
+                            pj_ref.push_back(B.Pindex.at(m));
+                            rj_ref.push_back(B.Rindex.at(m));
+                            chij.push_back(B.chi.at(m));
+                            ctj_ref.at(0).push_back(B.ctsisomer.at(0).at(m));
+                            ctj_ref.at(1).push_back(B.ctsisomer.at(1).at(m));
 
-    		} while (!goout);
+                            cyj.resize(cyj.size()+1,vector<unsigned int>(0));
+                            for (unsigned int k1=0;k1<B.Cyindex.at(m).size();k1++) cyj.at(cyj.size()-1).push_back(B.Cyindex.at(m).at(k1));
 
-			for (unsigned int i=0;i<ci_ref.size();i++) {
-				for (unsigned int j=i+1;j<ci_ref.size();j++) {
-					if (ci_ref.at(i)>ci_ref.at(j)) {
-						swap(ci_ref.at(i),ci_ref.at(j));
-						swap(mi_ref.at(i),mi_ref.at(j));
-						swap(pi_ref.at(i),pi_ref.at(j));
-						swap(ri_ref.at(i),ri_ref.at(j));
-						swap(chii.at(i),chii.at(j));
-						swap(cti_ref.at(0).at(i),cti_ref.at(0).at(j));
-						swap(cti_ref.at(1).at(i),cti_ref.at(1).at(j));
-						swap(cyi.at(i),cyi.at(j));
-						if (para.protect) swap(pri.at(i),pri.at(j));
-					}
-				}
-			}
-		}
+                            if (para.protect) prj.push_back(B.protect.at(m));
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            for (unsigned int k2=cj_ref.at(0);k2<B.Cindex.size();k2++) { //k2=0
+                for (unsigned int k3=0;k3<cj_ref.size();k3++) {
+                    //for (unsigned int k2=cj_ref.at(k3);k2<B.Cindex.size();k2++)
+                    if (B.Pindex.at(k2)==cj_ref.at(k3)) {
+                        cj_ref.push_back(B.Cindex.at(k2));
+                        mj_ref.push_back(B.Mindex.at(k2));
+                        pj_ref.push_back(B.Pindex.at(k2));
+                        rj_ref.push_back(B.Rindex.at(k2));
+                        chij.push_back(B.chi.at(k2));
+                        ctj_ref.at(0).push_back(B.ctsisomer.at(0).at(k2));
+                        ctj_ref.at(1).push_back(B.ctsisomer.at(1).at(k2));
 
-		if (1) {
-			for (unsigned int m=1;m<aaa.Cindex.size();m++) {
-				if (aaa.Cindex.at(m) > cj_ref.at(0) ) {
-					unsigned int ref = cj_ref.size();
-					for (unsigned int n=0;n<ref;n++) {
-						if (aaa.Pindex.at(m) == cj_ref.at(n)) {
-							cj_ref.push_back(aaa.Cindex.at(m));
-							mj_ref.push_back(aaa.Mindex.at(m));
-							pj_ref.push_back(aaa.Pindex.at(m));
-							rj_ref.push_back(aaa.Rindex.at(m));
-							chij.push_back(aaa.chi.at(m));
-                        	ctj_ref.at(0).push_back(aaa.ctsisomer.at(0).at(m));
-                        	ctj_ref.at(1).push_back(aaa.ctsisomer.at(1).at(m));
+                        cyj.resize(cyj.size()+1,vector<unsigned int>(0));
+                        for (unsigned int k1=0;k1<B.Cyindex.at(k2).size();k1++) cyj.at(cyj.size()-1).push_back(B.Cyindex.at(k2).at(k1));
 
-                        	cyj.resize(cyj.size()+1,vector<unsigned int>(0));
-                        	for (unsigned int k1=0;k1<aaa.Cyindex.at(m).size();k1++) cyj.at(cyj.size()-1).push_back(aaa.Cyindex.at(m).at(k1));
-						
-							if (para.protect) prj.push_back(aaa.protect.at(m));
-						}
-					}
-				}
-			}
-		}
-		else {
-            vector<unsigned int> curatm(0);
-            bool goout=0;
-            curatm.push_back(ci_ref.at(0));
+                        if (para.protect) prj.push_back(B.protect.at(k2));
+                    }
+                }
+            }
+        }
+        if (1) {
+            if (para.protect) {
+                for (unsigned int n=0;n<pri.size();n++) {
+                    if (pri.at(n)) return 0;
+                }
+                for (unsigned int n=0;n<prj.size();n++) {
+                    if (prj.at(n)) return 0;
+                }
+            }
+            if (para.ion) {
+                /*
+                bool michg=0,mjchg=0;
+                for (unsigned int k1=0;k1<mi_ref.size();k1++) {
+                    if (data->a[mi_ref.at(k1)].chg) {
+                        michg=1;
+                        break;
+                    }
+                }
+                for (unsigned int k1=0;k1<mj_ref.size();k1++) {
+                    if (data->a[mj_ref.at(k1)].chg) {
+                        mjchg=1;
+                        break;
+                    }
+                }
+                if (michg!=mjchg) return 0;
+                */
+                double michg=0,mjchg=0;
+                double mirefchg=0,mjrefchg=0;
+                for (unsigned int k1=0;k1<Mindex.size();k1++) michg+=data->a.at(Mindex.at(k1)).chg;
+                for (unsigned int k1=0;k1<B.Mindex.size();k1++) mjchg+=B.data->a.at(B.Mindex.at(k1)).chg;
+                for (unsigned int k1=0;k1<mi_ref.size();k1++) mirefchg+=data->a.at(mi_ref.at(k1)).chg;
+                for (unsigned int k1=0;k1<mj_ref.size();k1++) mjrefchg+=data->a.at(mj_ref.at(k1)).chg;
 
-        	do {
-            	vector<unsigned int> tmpp(0);
-            	for (unsigned int k3=0;k3<curatm.size();k3++) {
-                	for (unsigned int k2=0;k2<aaa.Cindex.size();k2++) {
-                    	if (aaa.Pindex.at(k2)==curatm.at(k3)) {
-                        	cj_ref.push_back(aaa.Cindex.at(k2));
-                        	mj_ref.push_back(aaa.Mindex.at(k2));
-                        	pj_ref.push_back(aaa.Pindex.at(k2));
-                        	rj_ref.push_back(aaa.Rindex.at(k2));
-							chij.push_back(aaa.chi.at(k2));
-                        	ctj_ref.at(0).push_back(aaa.ctsisomer.at(0).at(k2));
-                        	ctj_ref.at(1).push_back(aaa.ctsisomer.at(1).at(k2));
-                        	cyj.resize(cyj.size()+1,vector<unsigned int>(0));
-                        	for (unsigned int k1=0;k1<aaa.Cyindex.at(k2).size();k1++) cyj.at(cyj.size()-1).push_back(aaa.Cyindex.at(k2).at(k1));
+                if ((michg-mirefchg)*mjrefchg<0) return 0;
+                if ((mjchg-mjrefchg)*mirefchg<0) return 0;
 
-                        	if (para.protect) prj.push_back(aaa.protect.at(k2));
-						
-							tmpp.push_back(aaa.Cindex.at(k2));
-                    	}
-                	}
-            	}
-            	if (tmpp.size()>0) {
-                	curatm.resize(0);
-                	for (unsigned int k4=0;k4<tmpp.size();k4++) curatm.push_back(tmpp.at(k4));
-            	}
-            	else {
-                	goout=1;
-                	break;
-            	}
+            }
+        }
+        if (1) {
+            //cybndi.resize(if_circle+B.if_circle,0);
+            cybndi.resize(B.if_circle,0);
+            for (unsigned int n=0;n<B.if_circle;n++) cybndi.at(n)=B.Cybnd.at(n);
 
-        	} while (!goout);
+            //cybndj.resize(if_circle+B.if_circle,0);
+            cybndj.resize(if_circle,0);
+            for (unsigned int n=0;n<if_circle;n++) cybndj.at(n)=Cybnd.at(n);
 
-        	for (unsigned int i=0;i<cj_ref.size();i++) {
-            	for (unsigned int j=i+1;j<cj_ref.size();j++) {
-                	if (cj_ref.at(i)>cj_ref.at(j)) {
-                    	swap(cj_ref.at(i),cj_ref.at(j));
-                    	swap(mj_ref.at(i),mj_ref.at(j));
-                    	swap(pj_ref.at(i),pj_ref.at(j));
-                    	swap(rj_ref.at(i),rj_ref.at(j));
-						swap(chij.at(i),chij.at(j));
-                    	swap(ctj_ref.at(0).at(i),ctj_ref.at(0).at(j));
-                    	swap(ctj_ref.at(1).at(i),ctj_ref.at(1).at(j));
-                    	swap(cyj.at(i),cyj.at(j));
-                    	if (para.protect) swap(prj.at(i),prj.at(j));
-                	}
-            	}
-        	}
-		}
-
-		if (1) {
-			for (unsigned int n=0;n<pri.size();n++) if (pri.at(n)) return 0;
-			for (unsigned int n=0;n<prj.size();n++) if (prj.at(n)) return 0;
-    		if (para.ion) {
-				/*
-				bool michg=0,mjchg=0;
-    			for (unsigned int k1=0;k1<mi_ref.size();k1++) {
-					if (data->a[mi_ref.at(k1)].chg) {
-						michg=1;
-						break;
-					}
-				}
-            	for (unsigned int k1=0;k1<mj_ref.size();k1++) {
-                	if (data->a[mj_ref.at(k1)].chg) {
-                    	mjchg=1;
-                    	break;
-                	}
-            	}
-				if (michg!=mjchg) return 0;
-				*/
-				double michg=0,mjchg=0;
-				double mirefchg=0,mjrefchg=0;
-				for (unsigned int k1=0;k1<Mindex.size();k1++) michg+=data->a.at(Mindex.at(k1)).chg;
-				for (unsigned int k1=0;k1<aaa.Mindex.size();k1++) mjchg+=aaa.data->a.at(aaa.Mindex.at(k1)).chg;
-				for (unsigned int k1=0;k1<mi_ref.size();k1++) mirefchg+=data->a.at(mi_ref.at(k1)).chg;
-				for (unsigned int k1=0;k1<mj_ref.size();k1++) mjrefchg+=data->a.at(mj_ref.at(k1)).chg;
-
-				if ((michg-mirefchg)*mjrefchg<0) return 0;
-				if ((mjchg-mjrefchg)*mirefchg<0) return 0;
-		
-			}
-		}
-
-		if (1) {
-			//cybndi.resize(if_circle+aaa.if_circle,0);
-			cybndi.resize(aaa.if_circle,0);
-			for (unsigned int n=0;n<aaa.if_circle;n++) cybndi.at(n)=aaa.Cybnd.at(n);
-		
-			//cybndj.resize(if_circle+aaa.if_circle,0);
-			cybndj.resize(if_circle,0);
-			for (unsigned int n=0;n<if_circle;n++) cybndj.at(n)=Cybnd.at(n);
-		
-			int tm1=if_circle;
-			for (unsigned int n=0;n<cyi.size();n++) {
-				for (unsigned int k1=0;k1<cyi.at(n).size();k1++) {
-					cyi.at(n).at(k1)+=aaa.if_circle;
-				}
-			}
-			for (unsigned int n=0;n<cyj.size();n++) {
+            int tm1=if_circle;
+            for (unsigned int n=0;n<cyi.size();n++) {
+                for (unsigned int k1=0;k1<cyi.at(n).size();k1++) {
+                    cyi.at(n).at(k1)+=B.if_circle;
+                }
+            }
+            for (unsigned int n=0;n<cyj.size();n++) {
                 for (unsigned int k1=0;k1<cyj.at(n).size();k1++) {
                     cyj.at(n).at(k1)+=if_circle;
                 }
-			}
-            if_circle+=aaa.if_circle;
-            aaa.if_circle+=tm1;
-		}
+            }
+            if_circle+=B.if_circle;
+            B.if_circle+=tm1;
+        }
 
-		unsigned int x=ci_ref.at(0);
-		unsigned int y=cj_ref.at(0);
-		unsigned int a=pi_ref.at(0);
-		unsigned int b=pj_ref.at(0);
+        x=ci_ref.at(0);
+        y=cj_ref.at(0);
+        a=pi_ref.at(0);
+        b=pj_ref.at(0);
 
-		if (1) {
-			for (unsigned int n=0;n<ci_ref.size();n++) {
-				for (unsigned int m=0;m<Cindex.size();m++) {
-					if (Cindex.at(m) == ci_ref.at(n)) {
-						Mindex.erase(Mindex.begin()+m);
-						Cindex.erase(Cindex.begin()+m);
-						Pindex.erase(Pindex.begin()+m);
-						Rindex.erase(Rindex.begin()+m);
-						chi.erase(chi.begin()+m);
-						Cyindex.erase(Cyindex.begin()+m);
-                    	ctsisomer.at(0).erase(ctsisomer.at(0).begin()+m);
-                    	ctsisomer.at(1).erase(ctsisomer.at(1).begin()+m);
-						if (para.protect) protect.erase(protect.begin()+m);
+        if (0) {
+            for (unsigned int n=0;n<ci_ref.size();n++) {
+                for (unsigned int m=0;m<Cindex.size();m++) {
+                    if (Cindex.at(m) == ci_ref.at(n)) {
+                        Mindex.erase(Mindex.begin()+m);
+                        Cindex.erase(Cindex.begin()+m);
+                        Pindex.erase(Pindex.begin()+m);
+                        Rindex.erase(Rindex.begin()+m);
+                        chi.erase(chi.begin()+m);
+                        Cyindex.erase(Cyindex.begin()+m);
+                        ctsisomer.at(0).erase(ctsisomer.at(0).begin()+m);
+                        ctsisomer.at(1).erase(ctsisomer.at(1).begin()+m);
+                        if (para.protect) protect.erase(protect.begin()+m);
 
-						break;
-					}
-				}
-			}
-		}
-		else {
-			for (int n=ci_ref.size()-1;n>=0;n--) {
-				Mindex.erase(Mindex.begin()+ci_ref.at(n)-1);
-				Cindex.erase(Cindex.begin()+ci_ref.at(n)-1);
-				Pindex.erase(Pindex.begin()+ci_ref.at(n)-1);
-				Rindex.erase(Rindex.begin()+ci_ref.at(n)-1);
-				chi.erase(chi.begin()+ci_ref.at(n)-1);
-				Cyindex.erase(Cyindex.begin()+ci_ref.at(n)-1);
-				ctsisomer.at(0).erase(ctsisomer.at(0).begin()+ci_ref.at(n)-1);
-				ctsisomer.at(1).erase(ctsisomer.at(1).begin()+ci_ref.at(n)-1);
-				if (para.protect) protect.erase(protect.begin()+ci_ref.at(n)-1);
-			}
-		}
+                        break;
+                    }
+                }
+            }
+        }
+        else {
+            for (int n=ci_ref.size()-1;n>=0;n--) {
+                Mindex.erase(Mindex.begin()+ci_ref.at(n)-1);
+                Cindex.erase(Cindex.begin()+ci_ref.at(n)-1);
+                Pindex.erase(Pindex.begin()+ci_ref.at(n)-1);
+                Rindex.erase(Rindex.begin()+ci_ref.at(n)-1);
+                chi.erase(chi.begin()+ci_ref.at(n)-1);
+                Cyindex.erase(Cyindex.begin()+ci_ref.at(n)-1);
+                ctsisomer.at(0).erase(ctsisomer.at(0).begin()+ci_ref.at(n)-1);
+                ctsisomer.at(1).erase(ctsisomer.at(1).begin()+ci_ref.at(n)-1);
+                if (para.protect) protect.erase(protect.begin()+ci_ref.at(n)-1);
+            }
+        }
 
+        if (0) {
+            for (unsigned int m=0;m<cj_ref.size();m++) {
+                for (unsigned int n=0;n<B.Cindex.size();n++) {
+                    if (B.Cindex.at(n) == cj_ref.at(m)) {
+                        B.Mindex.erase(B.Mindex.begin()+n);
+                        B.Cindex.erase(B.Cindex.begin()+n);
+                        B.Pindex.erase(B.Pindex.begin()+n);
+                        B.Rindex.erase(B.Rindex.begin()+n);
+                        B.chi.erase(B.chi.begin()+n);
+                        B.Cyindex.erase(B.Cyindex.begin()+n);
+                        B.ctsisomer.at(0).erase(B.ctsisomer.at(0).begin()+n);
+                        B.ctsisomer.at(1).erase(B.ctsisomer.at(1).begin()+n);
+                        if (para.protect) B.protect.erase(B.protect.begin()+n);
 
-		if (1) {
-			for (unsigned int m=0;m<cj_ref.size();m++) {
-				for (unsigned int n=0;n<aaa.Cindex.size();n++) {
-					if (aaa.Cindex.at(n) == cj_ref.at(m)) {
-						aaa.Mindex.erase(aaa.Mindex.begin()+n);
-						aaa.Cindex.erase(aaa.Cindex.begin()+n);
-						aaa.Pindex.erase(aaa.Pindex.begin()+n);
-						aaa.Rindex.erase(aaa.Rindex.begin()+n);
-						aaa.chi.erase(aaa.chi.begin()+n);
-						aaa.Cyindex.erase(aaa.Cyindex.begin()+n);
-                    	aaa.ctsisomer.at(0).erase(aaa.ctsisomer.at(0).begin()+n);
-                    	aaa.ctsisomer.at(1).erase(aaa.ctsisomer.at(1).begin()+n);
-						if (para.protect) aaa.protect.erase(aaa.protect.begin()+n);
+                        break;
+                    }
+                }
+            }
+        }
+        else {
+            for (int n=cj_ref.size()-1;n>=0;n--) {
+                B.Mindex.erase(B.Mindex.begin()+cj_ref.at(n)-1);
+                B.Cindex.erase(B.Cindex.begin()+cj_ref.at(n)-1);
+                B.Pindex.erase(B.Pindex.begin()+cj_ref.at(n)-1);
+                B.Rindex.erase(B.Rindex.begin()+cj_ref.at(n)-1);
+                B.chi.erase(B.chi.begin()+cj_ref.at(n)-1);
+                B.Cyindex.erase(B.Cyindex.begin()+cj_ref.at(n)-1);
+                B.ctsisomer.at(0).erase(B.ctsisomer.at(0).begin()+cj_ref.at(n)-1);
+                B.ctsisomer.at(1).erase(B.ctsisomer.at(1).begin()+cj_ref.at(n)-1);
+                if (para.protect) B.protect.erase(B.protect.begin()+cj_ref.at(n)-1);
+            }
+        }
 
-						break;
-					}
-				}
-			}
-		}
-		else {
-        	for (int n=cj_ref.size()-1;n>=0;n--) {
-            	aaa.Mindex.erase(aaa.Mindex.begin()+cj_ref.at(n)-1);
-            	aaa.Cindex.erase(aaa.Cindex.begin()+cj_ref.at(n)-1);
-            	aaa.Pindex.erase(aaa.Pindex.begin()+cj_ref.at(n)-1);
-            	aaa.Rindex.erase(aaa.Rindex.begin()+cj_ref.at(n)-1);
-				aaa.chi.erase(aaa.chi.begin()+cj_ref.at(n)-1);
-            	aaa.Cyindex.erase(aaa.Cyindex.begin()+cj_ref.at(n)-1);
-            	aaa.ctsisomer.at(0).erase(aaa.ctsisomer.at(0).begin()+cj_ref.at(n)-1);
-            	aaa.ctsisomer.at(1).erase(aaa.ctsisomer.at(1).begin()+cj_ref.at(n)-1);
-            	if (para.protect) aaa.protect.erase(aaa.protect.begin()+cj_ref.at(n)-1);
-        	}
-		}
+        if (0) {
+            t.clear();
+            for (unsigned int n=1;n<ci_ref.size();n++) {
+                for (unsigned int m=0;m<ci_ref.size();m++) {
+                    if (pi_ref.at(n) == ci_ref.at(m)) {
+                        t.push_back(m);
+                    }
+                }
+            }
+            f.clear();
+            for (unsigned int n=1;n<cj_ref.size();n++) {
+                for (unsigned int m=0;m<cj_ref.size();m++) {
+                    if (pj_ref.at(n) == cj_ref.at(m)) {
+                        f.push_back(m);
+                    }
+                }
+            }
 
-		if (1) {
-			t.clear();
-			for (unsigned int n=1;n<ci_ref.size();n++) {
-				for (unsigned int m=0;m<ci_ref.size();m++) {
-					if (pi_ref.at(n) == ci_ref.at(m)) {
-						t.push_back(m);
-					}
-				}
-			}
-			f.clear();
-			for (unsigned int n=1;n<cj_ref.size();n++) {
-				for (unsigned int m=0;m<cj_ref.size();m++) {
-					if (pj_ref.at(n) == cj_ref.at(m)) {
-						f.push_back(m);
-					}
-				}
-			}
+            pi_ref.at(0) = b;
+            pj_ref.at(0) = a;
+            ci_ref.at(0) = y;
+            cj_ref.at(0) = x;
 
-			pi_ref.at(0) = b;
-			pj_ref.at(0) = a;
-			ci_ref.at(0) = y;
-			cj_ref.at(0) = x;
+            for (unsigned int n=1;n<ci_ref.size();n++) {
+                ci_ref.at(n) = ci_ref.at(n-1) + 1;
+                pi_ref.at(n) = ci_ref.at(t.at(n-1));
+            }
+            for (unsigned int n=1;n<cj_ref.size();n++) {
+                cj_ref.at(n) = cj_ref.at(n-1) + 1;
+                pj_ref.at(n) = cj_ref.at(f.at(n-1));
+            }
 
-			for (unsigned int n=1;n<ci_ref.size();n++) {
-				ci_ref.at(n) = ci_ref.at(n-1) + 1;
-				pi_ref.at(n) = ci_ref.at(t.at(n-1));
-			}
-			for (unsigned int n=1;n<cj_ref.size();n++) {
-				cj_ref.at(n) = cj_ref.at(n-1) + 1;
-				pj_ref.at(n) = cj_ref.at(f.at(n-1));
-			}
+            t.clear();
+            f.clear();
+            for (unsigned int n=1;n<Cindex.size();n++) {
+                for (unsigned int m=0;m<Cindex.size();m++) {
+                    if (Pindex.at(n) == Cindex.at(m)) {
+                        t.push_back(m);
+                    }
+                }
+            }
+            unsigned int ref=0;
+            for (unsigned int n=1;n<Cindex.size();n++) {
+                if (Cindex.at(n) != Cindex.at(n-1)+1) {
+                    ref=n;
+                    Cindex.at(ref) = Cindex.at(ref-1) + cj_ref.size() + 1;
+                    break;
+                }
+            }
+            if (ref) {
+                for (unsigned int n=ref+1;n<Cindex.size();n++) {
+                    Cindex.at(n) = Cindex.at(n-1) + 1;
+                }
 
-			t.clear();
-			f.clear();
-			for (unsigned int n=1;n<Cindex.size();n++) {
-				for (unsigned int m=0;m<Cindex.size();m++) {
-					if (Pindex.at(n) == Cindex.at(m)) {
-						t.push_back(m);
-					}
-				}
-			}
-			unsigned int ref=0;
-			for (unsigned int n=1;n<Cindex.size();n++) {
-				if (Cindex.at(n) != Cindex.at(n-1)+1) {
-					ref=n;
-					Cindex.at(ref) = Cindex.at(ref-1) + cj_ref.size() + 1;
-					break;
-				}
-			}
-			if (ref) {
-				for (unsigned int n=ref+1;n<Cindex.size();n++) {
-					Cindex.at(n) = Cindex.at(n-1) + 1;
-				}
+                for (unsigned int n=1;n<Cindex.size();n++) {
+                    Pindex.at(n) = Cindex.at(t.at(n-1));
+                }
+            }
+            t.clear();
+            f.clear();
+            for (unsigned int n=1;n<B.Cindex.size();n++) {
+                for (unsigned int m=0;m<B.Cindex.size();m++) {
+                    if (B.Pindex.at(n) == B.Cindex.at(m)) {
+                        t.push_back(m);
+                    }
+                }
+            }
+            ref=0;
+            for (unsigned int n=1;n<B.Cindex.size();n++) {
+                if (B.Cindex.at(n) != B.Cindex.at(n-1)+1) {
+                    ref = n;
+                    B.Cindex.at(ref) = B.Cindex.at(ref-1) + ci_ref.size() + 1;
+                    break;
+                }
+            }
+            if (ref) {
+                for (unsigned int n=ref+1;n<B.Cindex.size();n++) {
+                    B.Cindex.at(n) = B.Cindex.at(n-1) + 1;
+                }
 
-				for (unsigned int n=1;n<Cindex.size();n++) {
-					Pindex.at(n) = Cindex.at(t.at(n-1));
-				}
-			}
-			t.clear();
-			f.clear();
-			for (unsigned int n=1;n<aaa.Cindex.size();n++) {
-				for (unsigned int m=0;m<aaa.Cindex.size();m++) {
-					if (aaa.Pindex.at(n) == aaa.Cindex.at(m)) {
-						t.push_back(m);
-					}
-				}
-			}
-			ref=0;
-			for (unsigned int n=1;n<aaa.Cindex.size();n++) {
-				if (aaa.Cindex.at(n) != aaa.Cindex.at(n-1)+1) {
-					ref = n;
-					aaa.Cindex.at(ref) = aaa.Cindex.at(ref-1) + ci_ref.size() + 1;
-					break;
-				}
-			}
-			if (ref) {
-				for (unsigned int n=ref+1;n<aaa.Cindex.size();n++) {
-					aaa.Cindex.at(n) = aaa.Cindex.at(n-1) + 1;
-				}
+                for (unsigned int n=1;n<B.Cindex.size();n++) {
+                    B.Pindex.at(n) = B.Cindex.at(t.at(n-1));
+                }
+            }
+        }
+        else {
+            for (unsigned int n=0;n<ci_ref.size();n++) {
+                ci_ref.at(n)+=(lenA+lenB+2);
+                pi_ref.at(n)+=(lenA+lenB+2); //if (pi_ref.at(n)!=a)
+            }
+            for (unsigned int n=0;n<cj_ref.size();n++) {
+                cj_ref.at(n)+=(lenA+lenB+2);
+                pj_ref.at(n)+=(lenA+lenB+2); //if (pj_ref.at(n)!=a)
+            }
+        }
+    }
+    else return 0;
+	
+    if (0) {
+        unsigned int n=0;
+        while(n<cj_ref.size()) {
+            for (unsigned int m=0;m<Cindex.size();m++) {
+                if (Cindex.at(m) > cj_ref.at(n) && m >= 1) { // Cindex[m] > cj_ref[n] && Cindex[m-1] < cj_ref[n]  orig // 20191130
+                    if (Cindex.at(m-1) < cj_ref.at(n)) {
+                        Cindex.insert(Cindex.begin() + m, cj_ref.at(n));
+                        Pindex.insert(Pindex.begin() + m, pj_ref.at(n));
+                        Mindex.insert(Mindex.begin() + m, mj_ref.at(n));
+                        Rindex.insert(Rindex.begin() + m, rj_ref.at(n));
+                        chi.insert(chi.begin() + m, chij.at(n));
+                        Cyindex.insert(Cyindex.begin() + m, cyj.at(n));
+                        ctsisomer.at(0).insert(ctsisomer.at(0).begin() + m, ctj_ref.at(0).at(n));
+                        ctsisomer.at(1).insert(ctsisomer.at(1).begin() + m, ctj_ref.at(1).at(n));
+                        if (para.protect) protect.insert(protect.begin() + m, prj.at(n));
+                        n++;
+                        break;
+                    }
+                }
+                else if (Cindex.at(Cindex.size()-1) < cj_ref.at(n)) {
+                    Cindex.push_back(cj_ref.at(n));
+                    Pindex.push_back(pj_ref.at(n));
+                    Mindex.push_back(mj_ref.at(n));
+                    Rindex.push_back(rj_ref.at(n));
+                    chi.push_back(chij.at(n));
+                    Cyindex.resize(Cyindex.size()+1,vector<unsigned int>(0));
+                    for (unsigned int k1=0;k1<cyj.at(n).size();k1++) Cyindex.at(Cyindex.size()-1).push_back(cyj.at(n).at(k1));
+                    ctsisomer.at(0).push_back(ctj_ref.at(0).at(n));
+                    ctsisomer.at(1).push_back(ctj_ref.at(1).at(n));
+                    if (para.protect) protect.push_back(prj.at(n));
+                    n++;
+                    break;
+                }
+            }
+        }
+        unsigned int m=0;
+        unsigned int ref=1;
+        while (m<ci_ref.size()) {
+            for (unsigned int n=0;n<B.Cindex.size();n++) {
+                if (B.Cindex.at(n) > ci_ref.at(m) && n >= 1) { // B.Cindex[n] > ci_ref[m] && B.Cindex[n-1] < ci_ref[m]  orig  //20191130
+                    if (B.Cindex.at(n-1) < ci_ref.at(m)) {
+                        ref=n;
+                        B.Cindex.insert(B.Cindex.begin() + ref, ci_ref.at(m));
+                        B.Pindex.insert(B.Pindex.begin() + ref, pi_ref.at(m));
+                        B.Mindex.insert(B.Mindex.begin() + ref, mi_ref.at(m));
+                        B.Rindex.insert(B.Rindex.begin() + ref, ri_ref.at(m));
+                        B.chi.insert(B.chi.begin() + ref, chii.at(m));
+                        B.Cyindex.insert(B.Cyindex.begin() + ref, cyi.at(m));
+                        B.ctsisomer.at(0).insert(B.ctsisomer.at(0).begin() + ref, cti_ref.at(0).at(m));
+                        B.ctsisomer.at(1).insert(B.ctsisomer.at(1).begin() + ref, cti_ref.at(1).at(m));
+                        m++;
+                        break;
+                    }
+                }
+                else if (B.Cindex.at(B.Cindex.size()-1) < ci_ref.at(m)) {
+                    ref=n;
+                    B.Cindex.push_back(ci_ref.at(m));
+                    B.Pindex.push_back(pi_ref.at(m));
+                    B.Mindex.push_back(mi_ref.at(m));
+                    B.Rindex.push_back(ri_ref.at(m));
+                    B.chi.push_back(chii.at(m));
+                    B.Cyindex.resize(B.Cyindex.size()+1,vector<unsigned int>(0));
+                    for (unsigned int k1=0;k1<cyi.at(m).size();k1++) B.Cyindex.at(B.Cyindex.size()-1).push_back(cyi.at(m).at(k1));
+                    B.ctsisomer.at(0).push_back(cti_ref.at(0).at(m));
+                    B.ctsisomer.at(1).push_back(cti_ref.at(1).at(m));
+                    if (para.protect) B.protect.push_back(pri.at(m));
+                    m++;
+                    break;
+                }
+            }
+        }
+    }
+    else {
+        pj_ref.at(0) = a;
+        if (pt1<Cindex.size()) { //suffA
+            for (unsigned int n=0;n<cj_ref.size();n++) {
+                Cindex.insert(Cindex.begin() + pt1 + n, cj_ref.at(n));
+                Pindex.insert(Pindex.begin() + pt1 + n, pj_ref.at(n));
+                Mindex.insert(Mindex.begin() + pt1 + n, mj_ref.at(n));
+                Rindex.insert(Rindex.begin() + pt1 + n, rj_ref.at(n));
+                chi.insert(chi.begin() + pt1 + n, chij.at(n));
+                Cyindex.insert(Cyindex.begin() + pt1 + n, cyj.at(n));
+                ctsisomer.at(0).insert(ctsisomer.at(0).begin() + pt1 + n, ctj_ref.at(0).at(n));
+                ctsisomer.at(1).insert(ctsisomer.at(1).begin() + pt1 + n, ctj_ref.at(1).at(n));
+                if (para.protect) protect.insert(protect.begin() + pt1 + n, prj.at(n));
+            }
+        }
+        else {
+            for (unsigned int n=0;n<cj_ref.size();n++) {
+                Cindex.push_back(cj_ref.at(n));
+                Pindex.push_back(pj_ref.at(n));
+                Mindex.push_back(mj_ref.at(n));
+                Rindex.push_back(rj_ref.at(n));
+                chi.push_back(chij.at(n));
+                Cyindex.resize(Cyindex.size()+1,vector<unsigned int>(0));
+                for (unsigned int k1=0;k1<cyj.at(n).size();k1++) Cyindex.at(Cyindex.size()-1).push_back(cyj.at(n).at(k1));
+                ctsisomer.at(0).push_back(ctj_ref.at(0).at(n));
+                ctsisomer.at(1).push_back(ctj_ref.at(1).at(n));
+                if (para.protect) protect.push_back(prj.at(n));
+            }
+        }
+        for (unsigned int n=0;n<Cindex.size();n++) {
+            Cindex.at(n)+=Cindex.size();
+            Pindex.at(n)+=Cindex.size();
+        }
 
-				for (unsigned int n=1;n<aaa.Cindex.size();n++) {
-					aaa.Pindex.at(n) = aaa.Cindex.at(t.at(n-1));
-				}
-			}
-		}
-		else {
-	        for (unsigned int n=0;n<ci_ref.size();n++) {
-    	        ci_ref.at(n)+=(lenB+2);
-        	    pi_ref.at(n)+=(lenB+2);
-        	}
-        	for (unsigned int n=0;n<cj_ref.size();n++) {
-            	cj_ref.at(n)+=(lenA+2);
-            	pj_ref.at(n)+=(lenA+2);
-        	}
-		}
-	}
-	else return 0;
+        pi_ref.at(0) = b;
+        if (pt2<B.Cindex.size()) { //suffB
+            for (unsigned int n=0;n<ci_ref.size();n++) {
+                B.Cindex.insert(B.Cindex.begin() + pt2 + n, ci_ref.at(n));
+                B.Pindex.insert(B.Pindex.begin() + pt2 + n, pi_ref.at(n));
+                B.Mindex.insert(B.Mindex.begin() + pt2 + n, mi_ref.at(n));
+                B.Rindex.insert(B.Rindex.begin() + pt2 + n, ri_ref.at(n));
+                B.chi.insert(B.chi.begin() + pt2 + n, chii.at(n));
+                B.Cyindex.insert(B.Cyindex.begin() + pt2 + n, cyi.at(n));
+                B.ctsisomer.at(0).insert(B.ctsisomer.at(0).begin() + pt2 + n, cti_ref.at(0).at(n));
+                B.ctsisomer.at(1).insert(B.ctsisomer.at(1).begin() + pt2 + n, cti_ref.at(1).at(n));
+                if (para.protect) B.protect.insert(B.protect.begin() + pt2 + n, pri.at(n));
+            }
+        }
+        else {
+            for (unsigned int n=0;n<ci_ref.size();n++) {
+                B.Cindex.push_back(ci_ref.at(n));
+                B.Pindex.push_back(pi_ref.at(n));
+                B.Mindex.push_back(mi_ref.at(n));
+                B.Rindex.push_back(ri_ref.at(n));
+                B.chi.push_back(chii.at(n));
+                B.Cyindex.resize(B.Cyindex.size()+1,vector<unsigned int>(0));
+                for (unsigned int k1=0;k1<cyi.at(n).size();k1++) B.Cyindex.at(B.Cyindex.size()-1).push_back(cyi.at(n).at(k1));
+                B.ctsisomer.at(0).push_back(cti_ref.at(0).at(n));
+                B.ctsisomer.at(1).push_back(cti_ref.at(1).at(n));
+                if (para.protect) B.protect.push_back(pri.at(n));
+            }
+        }
+        for (unsigned int n=0;n<B.Cindex.size();n++) {
+            B.Cindex.at(n)+=B.Cindex.size();
+            B.Pindex.at(n)+=B.Cindex.size();
+        }
+        for (unsigned int i=0;i<Cindex.size();i++) {
+            unsigned int j=Cindex.at(i);
+            Cindex.at(i)=(i+1);
+            for (unsigned int k1=i+1;k1<Cindex.size();k1++) { //k1=0
+                if (Pindex.at(k1)==j) Pindex.at(k1)=Cindex.at(i);
+            }
+        }
+        Pindex.at(0)=0;
 
+        for (unsigned int i=0;i<B.Cindex.size();i++) {
+            unsigned int j=B.Cindex.at(i);
+            B.Cindex.at(i)=(i+1);
+            for (unsigned int k1=i+1;k1<B.Cindex.size();k1++) { //k1=0
+                if (B.Pindex.at(k1)==j) B.Pindex.at(k1)=B.Cindex.at(i);
+            }
+        }
+        B.Pindex.at(0)=0;
 
-	if (1) {
-		unsigned int n=0;
-		while(n<cj_ref.size()) {
-			for (unsigned int m=0;m<Cindex.size();m++) {
-				if (Cindex.at(m) > cj_ref.at(n) && m >= 1) { // Cindex[m] > cj_ref[n] && Cindex[m-1] < cj_ref[n]  orig // 20191130
-					if (Cindex.at(m-1) < cj_ref.at(n)) {
-						Cindex.insert(Cindex.begin() + m, cj_ref.at(n));
-						Pindex.insert(Pindex.begin() + m, pj_ref.at(n));
-						Mindex.insert(Mindex.begin() + m, mj_ref.at(n));
-						Rindex.insert(Rindex.begin() + m, rj_ref.at(n));
-						chi.insert(chi.begin() + m, chij.at(n));
-						Cyindex.insert(Cyindex.begin() + m, cyj.at(n));
-                    	ctsisomer.at(0).insert(ctsisomer.at(0).begin() + m, ctj_ref.at(0).at(n));
-                    	ctsisomer.at(1).insert(ctsisomer.at(1).begin() + m, ctj_ref.at(1).at(n));
-						if (para.protect) protect.insert(protect.begin() + m, prj.at(n));
-						n++;
-						break;
-					}
-				} 
-				else if (Cindex.at(Cindex.size()-1) < cj_ref.at(n)) {
-					Cindex.push_back(cj_ref.at(n));
-					Pindex.push_back(pj_ref.at(n));
-					Mindex.push_back(mj_ref.at(n));
-					Rindex.push_back(rj_ref.at(n));
-					chi.push_back(chij.at(n));
-					Cyindex.resize(Cyindex.size()+1,vector<unsigned int>(0));
-					for (unsigned int k1=0;k1<cyj.at(n).size();k1++) Cyindex.at(Cyindex.size()-1).push_back(cyj.at(n).at(k1));
-                	ctsisomer.at(0).push_back(ctj_ref.at(0).at(n));
-                	ctsisomer.at(1).push_back(ctj_ref.at(1).at(n));
-					if (para.protect) protect.push_back(prj.at(n));
-					n++;
-					break;
-				}
-			}
-		}
-		unsigned int m=0;
-		unsigned int ref=1;
-		while (m<ci_ref.size()) {
-			for (unsigned int n=0;n<aaa.Cindex.size();n++) {
-				if (aaa.Cindex.at(n) > ci_ref.at(m) && n >= 1) { // aaa.Cindex[n] > ci_ref[m] && aaa.Cindex[n-1] < ci_ref[m]  orig  //20191130
-					if (aaa.Cindex.at(n-1) < ci_ref.at(m)) {
-						ref=n;
-						aaa.Cindex.insert(aaa.Cindex.begin() + ref, ci_ref.at(m));
-						aaa.Pindex.insert(aaa.Pindex.begin() + ref, pi_ref.at(m));
-						aaa.Mindex.insert(aaa.Mindex.begin() + ref, mi_ref.at(m));
-						aaa.Rindex.insert(aaa.Rindex.begin() + ref, ri_ref.at(m));
-						aaa.chi.insert(aaa.chi.begin() + ref, chii.at(m));
-						aaa.Cyindex.insert(aaa.Cyindex.begin() + ref, cyi.at(m));
-                    	aaa.ctsisomer.at(0).insert(aaa.ctsisomer.at(0).begin() + ref, cti_ref.at(0).at(m));
-                    	aaa.ctsisomer.at(1).insert(aaa.ctsisomer.at(1).begin() + ref, cti_ref.at(1).at(m));
-						m++;
-						break;
-					}
-				} 
-				else if (aaa.Cindex.at(aaa.Cindex.size()-1) < ci_ref.at(m)) {
-					ref=n;
-					aaa.Cindex.push_back(ci_ref.at(m));
-					aaa.Pindex.push_back(pi_ref.at(m));
-					aaa.Mindex.push_back(mi_ref.at(m));
-					aaa.Rindex.push_back(ri_ref.at(m));
-					aaa.chi.push_back(chii.at(m));
-                	aaa.Cyindex.resize(aaa.Cyindex.size()+1,vector<unsigned int>(0));
-                	for (unsigned int k1=0;k1<cyi.at(m).size();k1++) aaa.Cyindex.at(aaa.Cyindex.size()-1).push_back(cyi.at(m).at(k1));
-                	aaa.ctsisomer.at(0).push_back(cti_ref.at(0).at(m));
-                	aaa.ctsisomer.at(1).push_back(cti_ref.at(1).at(m));
-					if (para.protect) aaa.protect.push_back(pri.at(m));
-					m++;
-					break;
-				}
-			}
-		}
-	}
-	else {
-    	for (unsigned int n=0;n<cj_ref.size();n++) {
-        	Cindex.push_back(cj_ref.at(n));
-        	Pindex.push_back(pj_ref.at(n));
-        	Mindex.push_back(mj_ref.at(n));
-        	Rindex.push_back(rj_ref.at(n));
-			chi.push_back(chij.at(n));
-        	Cyindex.resize(Cyindex.size()+1,vector<unsigned int>(0));
-        	for (unsigned int k1=0;k1<cyj.at(n).size();k1++) Cyindex.at(Cyindex.size()-1).push_back(cyj.at(n).at(k1));
-        	ctsisomer.at(0).push_back(ctj_ref.at(0).at(n));
-        	ctsisomer.at(1).push_back(ctj_ref.at(1).at(n));
-        	if (para.protect) protect.push_back(prj.at(n));
-    	}
-
-    	for (unsigned int n=0;n<ci_ref.size();n++) {
-        	aaa.Cindex.push_back(ci_ref.at(n));
-        	aaa.Pindex.push_back(pi_ref.at(n));
-        	aaa.Mindex.push_back(mi_ref.at(n));
-        	aaa.Rindex.push_back(ri_ref.at(n));
-			aaa.chi.push_back(chii.at(n));
-        	aaa.Cyindex.resize(aaa.Cyindex.size()+1,vector<unsigned int>(0));
-        	for (unsigned int k1=0;k1<cyi.at(n).size();k1++) aaa.Cyindex.at(aaa.Cyindex.size()-1).push_back(cyi.at(n).at(k1));
-        	aaa.ctsisomer.at(0).push_back(cti_ref.at(0).at(n));
-        	aaa.ctsisomer.at(1).push_back(cti_ref.at(1).at(n));
-        	if (para.protect) aaa.protect.push_back(pri.at(n));
-    	}
-
-    	for (unsigned int i=0;i<Cindex.size();i++) {
-        	unsigned int j=Cindex.at(i);
-        	Cindex.at(i)=(i+1);
-        	for (unsigned int  k1=0;k1<Cindex.size();k1++) {
-            	if (Pindex.at(k1)==j) Pindex.at(k1)=Cindex.at(i);
-        	}
-    	}
-
-    	for (unsigned int i=0;i<aaa.Cindex.size();i++) {
-        	unsigned int j=aaa.Cindex.at(i);
-        	aaa.Cindex.at(i)=(i+1);
-        	for (unsigned int  k1=0;k1<aaa.Cindex.size();k1++) {
-            	if (aaa.Pindex.at(k1)==j) aaa.Pindex.at(k1)=aaa.Cindex.at(i);
-        	}
-    	}
-
-	}
-
-	//Cybnd.resize(0);
-	//for (unsigned int n=0;n<cybndj.size();n++) Cybnd.push_back(cybndj.at(n));
-    //aaa.Cybnd.resize(0);
-    //for (unsigned int n=0;n<cybndi.size();n++) aaa.Cybnd.push_back(cybndi.at(n));
-
-	for (unsigned int n=0;n<cybndi.size();n++) Cybnd.push_back(cybndi.at(n));
-	for (unsigned int n=0;n<cybndj.size();n++) aaa.Cybnd.push_back(cybndj.at(n));
+    }
+	
+    for (unsigned int n=0;n<cybndi.size();n++) Cybnd.push_back(cybndi.at(n));
+    for (unsigned int n=0;n<cybndj.size();n++) B.Cybnd.push_back(cybndj.at(n));
 
     vector<unsigned int>().swap(t);
     vector<unsigned int>().swap(f);
-	vector<unsigned int>().swap(pi_ref);
+    vector<unsigned int>().swap(pi_ref);
     vector<unsigned int>().swap(ci_ref);
     vector<unsigned int>().swap(mi_ref);
     vector<unsigned int>().swap(ri_ref);
-	vector<unsigned int>().swap(chii);
-	vector<unsigned int>().swap(pj_ref);
+    vector<unsigned int>().swap(chii);
+    vector<unsigned int>().swap(pj_ref);
     vector<unsigned int>().swap(cj_ref);
     vector<unsigned int>().swap(mj_ref);
     vector<unsigned int>().swap(rj_ref);
-	vector<unsigned int>().swap(chij);
+    vector<unsigned int>().swap(chij);
     vector<unsigned int>().swap(prj);
     vector<unsigned int>().swap(pri);
     vector< vector<unsigned int> >().swap(cyj);
@@ -729,62 +723,61 @@ unsigned int MOLECULE::crossover(MOLECULE &aaa,unsigned int pp,unsigned int jj,b
     vector<unsigned int>().swap(cybndj);
     vector<unsigned int>().swap(cybndi);
 
-	del_unpaired_ring_no();
-	aaa.del_unpaired_ring_no();
-	//decyc_small_ring(5);
-	//aaa.decyc_small_ring(5);
+    del_unpaired_ring_no();
+    B.del_unpaired_ring_no();
+    //decyc_small_ring(5);
+    //B.decyc_small_ring(5);
 
-	vector<unsigned int> PCofct(0);
+    vector<unsigned int> PCofct(0);
     for (unsigned int i=0;i<Cindex.size();i++) {
-		if (Rindex.at(i)==2) {
-			PCofct.push_back(Pindex.at(i));
-			PCofct.push_back(Cindex.at(i));
-		}
+        if (Rindex.at(i)==2) {
+            PCofct.push_back(Pindex.at(i));
+            PCofct.push_back(Cindex.at(i));
+        }
     }
-	for (unsigned int i=0;i<PCofct.size();i+=2) {
-		if (PCofct.at(i)>0) {
-			if (ctsisomer.at(0).at(PCofct.at(i)-1)!="" && ctsisomer.at(1).at(PCofct.at(i+1)-1)=="") {
-				if (ctsisomer.at(0).at(PCofct.at(i)-1)=="/") {
-					if (!cistrans) ctsisomer.at(1).at(PCofct.at(i+1)-1)="/";
-					else ctsisomer.at(1).at(PCofct.at(i+1)-1)="\\";
-				}
+    for (unsigned int i=0;i<PCofct.size();i+=2) {
+        if (PCofct.at(i)>0) {
+            if (ctsisomer.at(0).at(PCofct.at(i)-1)!="" && ctsisomer.at(1).at(PCofct.at(i+1)-1)=="") {
+                if (ctsisomer.at(0).at(PCofct.at(i)-1)=="/") {
+                    if (!cistrans) ctsisomer.at(1).at(PCofct.at(i+1)-1)="/";
+                    else ctsisomer.at(1).at(PCofct.at(i+1)-1)="\\";
+                }
                 if (ctsisomer.at(0).at(PCofct.at(i)-1)=="\\") {
                     if (!cistrans) ctsisomer.at(1).at(PCofct.at(i+1)-1)="\\";
                     else ctsisomer.at(1).at(PCofct.at(i+1)-1)="/";
                 }
-			}
-			if (ctsisomer.at(0).at(PCofct.at(i)-1)=="" && ctsisomer.at(1).at(PCofct.at(i+1)-1)!="") {
-				if (ctsisomer.at(1).at(PCofct.at(i+1)-1)=="/") {
-					if (!cistrans) ctsisomer.at(0).at(PCofct.at(i)-1)="/";
-					else ctsisomer.at(0).at(PCofct.at(i)-1)="\\";
-				}
+            }
+            if (ctsisomer.at(0).at(PCofct.at(i)-1)=="" && ctsisomer.at(1).at(PCofct.at(i+1)-1)!="") {
+                if (ctsisomer.at(1).at(PCofct.at(i+1)-1)=="/") {
+                    if (!cistrans) ctsisomer.at(0).at(PCofct.at(i)-1)="/";
+                    else ctsisomer.at(0).at(PCofct.at(i)-1)="\\";
+                }
                 if (ctsisomer.at(1).at(PCofct.at(i+1)-1)=="\\") {
                     if (!cistrans) ctsisomer.at(0).at(PCofct.at(i)-1)="\\";
                     else ctsisomer.at(0).at(PCofct.at(i)-1)="/";
                 }
-			}
-			if (ctsisomer.at(0).at(PCofct.at(i)-1)=="" && ctsisomer.at(1).at(PCofct.at(i+1)-1)=="") {
-				if (!cistrans) {
-					ctsisomer.at(1).at(PCofct.at(i+1)-1)="/";
-					ctsisomer.at(0).at(PCofct.at(i)-1)="/";
-				}
-				else {
+            }
+            if (ctsisomer.at(0).at(PCofct.at(i)-1)=="" && ctsisomer.at(1).at(PCofct.at(i+1)-1)=="") {
+                if (!cistrans) {
+                    ctsisomer.at(1).at(PCofct.at(i+1)-1)="/";
+                    ctsisomer.at(0).at(PCofct.at(i)-1)="/";
+                }
+                else {
                     ctsisomer.at(1).at(PCofct.at(i+1)-1)="\\";
                     ctsisomer.at(0).at(PCofct.at(i)-1)="/";
-				}
-			}
-		}
-	}
+                }
+            }
+        }
+    }
+    if (!chk_imine_ct(0,Cindex.size()-1,cistrans)) mds2smi();
+    if (!B.chk_imine_ct(0,B.Cindex.size()-1,cistrans)) B.mds2smi();
 
-	if (!chk_imine_ct(0,Cindex.size()-1,cistrans)) mds2smi();
-	if (!aaa.chk_imine_ct(0,aaa.Cindex.size()-1,cistrans)) aaa.mds2smi();
+    //chk_imine_ct(0,Cindex.size()-1,cistrans);
+    //mds2smi();
+    //B.chk_imine_ct(0,B.Cindex.size()-1,cistrans);
+    //B.mds2smi();
 
-	//chk_imine_ct(0,Cindex.size()-1,cistrans);
-	//mds2smi();
-	//aaa.chk_imine_ct(0,aaa.Cindex.size()-1,cistrans);
-	//aaa.mds2smi();
-
-	return 1;
+    return 1;
 }
 
 
@@ -906,7 +899,55 @@ unsigned int MOLECULE::read(string a) {
 	return 1;
 }
 
-unsigned int MOLECULE::cyclization(unsigned int pt1,unsigned int pt2,unsigned int pbnd) {
+unsigned int MOLECULE::cycbnd_relocate(unsigned int ringnum) {
+    if (!ringnum) return 0;
+    if (ringnum>if_circle) return 0;
+
+    vector<unsigned int> pos(0);
+    pos.reserve(2);
+    for (unsigned int i=0;i<Cyindex.size();i++) {
+        if (Cyindex.at(i).size()) {
+            for (unsigned int k3=0;k3<Cyindex.at(i).size();k3++) {
+                if (Cyindex.at(i).at(k3)==ringnum) {
+                    pos.push_back(i);
+                    break;
+                }
+            }
+        }
+        if (pos.size()>=2) break;
+    }
+    if (pos.size()>=2) {
+        unsigned int Pd=Pindex.at(pos.at(1));
+        unsigned int Ro=Rindex.at(pos.at(1));
+        if (Pd>0) {
+            for (unsigned int j=0;j<Cyindex.at(pos.at(0)).size();j++) {
+                if (Cyindex.at(pos.at(0)).at(j)==ringnum) {
+                    Cyindex.at(pos.at(0)).erase(Cyindex.at(pos.at(0)).begin()+j);
+                    break;
+                }
+            }
+            Pindex.at(pos.at(1))=Cindex.at(pos.at(0));
+            Rindex.at(pos.at(1))=Cybnd.at(ringnum-1);
+
+
+            Cyindex.at(Pd-1).insert(Cyindex.at(Pd-1).begin(), ringnum);
+            if (Cyindex.at(Pd-1).size()>=2) {
+				for (unsigned int i=0;i<Cyindex.at(Pd-1).size();i++) {
+					for (unsigned int j=i+1;j<Cyindex.at(Pd-1).size();j++) {
+						if (Cyindex.at(Pd-1).at(i)>Cyindex.at(Pd-1).at(j)) swap(Cyindex.at(Pd-1).at(i),Cyindex.at(Pd-1).at(j));
+					}
+				}
+			}
+            Cybnd.at(ringnum-1)=Ro;
+
+        }
+    }
+
+    return 1;
+}
+
+
+unsigned int MOLECULE::cyclization(unsigned int pt1,unsigned int pt2,unsigned int pbnd,bool del_smallring) {
 	if (pt1==pt2) return 0;
 	if (para.protect) {
 		if (protect.at(pt1)) return 0;
@@ -967,7 +1008,7 @@ unsigned int MOLECULE::cyclization(unsigned int pt1,unsigned int pt2,unsigned in
 	    	}
 		}
 		vector<int>().swap(C_ringmember);
-		if (num_rmember<5) return 0;		
+		if (del_smallring && num_rmember<5) return 0;		
 	}
 	
 	// Ensure the bonds of atom P(n) are OK if M(n) is changed to atom(id) and use a $bnd2par bond to connect P(n)
@@ -1746,86 +1787,89 @@ unsigned int MOLECULE::chk_chirality(unsigned int sposi,unsigned int lposi,unsig
 			}
 
 			bool haschirality=1;
-			for (unsigned int g1=0;g1<4;g1++) {
-				for (unsigned int g2=g1+1;g2<4;g2++) {
-					if (chainsM.at(g1).size()==chainsM.at(g2).size()) {
-						if (chainsM.at(g1).size()==0) {
-							haschirality=0;
-							break;
+			if (!Cyindex.at(i).size()) {
+				for (unsigned int g1=0;g1<4;g1++) {
+					for (unsigned int g2=g1+1;g2<4;g2++) {
+						if (chainsM.at(g1).size()==chainsM.at(g2).size()) {
+							if (chainsM.at(g1).size()==0) {
+								haschirality=0;
+								break;
+							}
+							else {
+								for (unsigned int g=0;g<chainsM.at(g1).size();g++) {
+									if (chainsM.at(g2).at(g)-chainsM.at(g1).at(g)) {
+										break;
+									}
+									else if (chainsM.at(g2).at(g)==chainsM.at(g1).at(g) && g>=chainsM.at(g1).size()-1) {
+										haschirality=0;
+									}
+								}
+							}
 						}
-						else {
-							for (unsigned int g=0;g<chainsM.at(g1).size();g++) {
-								if (chainsM.at(g2).at(g)-chainsM.at(g1).at(g)) {
+						else haschirality=1;
+
+						if (!haschirality) break;
+					}
+					if (!haschirality) break;
+				}
+
+				if (!haschirality) {
+					for (unsigned int g1=0;g1<4;g1++) {
+						for (unsigned int g2=g1+1;g2<4;g2++) {
+							if (chainsR.at(g1).size()==chainsR.at(g2).size()) {
+								if (chainsR.at(g1).size()==0) {
+									haschirality=0;
 									break;
 								}
-								else if (chainsM.at(g2).at(g)==chainsM.at(g1).at(g) && g>=chainsM.at(g1).size()-1) {
+								else {
+									for (unsigned int g=0;g<chainsR.at(g1).size();g++) {
+										if (chainsR.at(g2).at(g)-chainsR.at(g1).at(g)) {
+											haschirality=1;
+											break;
+										}
+										else if (chainsR.at(g2).at(g)==chainsR.at(g1).at(g) && g>=chainsR.at(g1).size()-1) {
+											haschirality=0;
+										}
+									}
+								}
+							}
+							else haschirality=1;
+
+							if (!haschirality) break;
+						}
+						if (!haschirality) break;
+					}
+				}
+
+				if (!haschirality) {
+					for (unsigned int g1=0;g1<4;g1++) {
+						for (unsigned int g2=g1+1;g2<4;g2++) {
+							if (branchpos.at(g1).size()==branchpos.at(g2).size()) {
+								if (branchpos.at(g1).size()==0) {
 									haschirality=0;
+									break;
 								}
-							}
-						}
-					}
-					else haschirality=1;
-
-					if (!haschirality) break;
-				}
-				if (!haschirality) break;
-			}
-
-			if (!haschirality) {
-				for (unsigned int g1=0;g1<4;g1++) {
-					for (unsigned int g2=g1+1;g2<4;g2++) {
-						if (chainsR.at(g1).size()==chainsR.at(g2).size()) {
-							if (chainsR.at(g1).size()==0) {
-								haschirality=0;
-								break;
-							}
-							else {
-								for (unsigned int g=0;g<chainsR.at(g1).size();g++) {
-									if (chainsR.at(g2).at(g)-chainsR.at(g1).at(g)) {
-										haschirality=1;
-										break;
-									}
-									else if (chainsR.at(g2).at(g)==chainsR.at(g1).at(g) && g>=chainsR.at(g1).size()-1) {
-										haschirality=0;
+								else {
+									for (unsigned int g=0;g<branchpos.at(g1).size();g++) {
+										if (branchpos.at(g2).at(g)-branchpos.at(g1).at(g)) {
+											haschirality=1;
+											break;
+										}
+										else if (branchpos.at(g2).at(g)==branchpos.at(g1).at(g) && g>=branchpos.at(g1).size()-1) {
+											haschirality=0;
+										}
 									}
 								}
 							}
-						}
-						else haschirality=1;
+							else haschirality=1;
 
+							if (!haschirality) break;
+						}
 						if (!haschirality) break;
 					}
-					if (!haschirality) break;
 				}
 			}
-
-			if (!haschirality) {
-				for (unsigned int g1=0;g1<4;g1++) {
-					for (unsigned int g2=g1+1;g2<4;g2++) {
-						if (branchpos.at(g1).size()==branchpos.at(g2).size()) {
-							if (branchpos.at(g1).size()==0) {
-								haschirality=0;
-								break;
-							}
-							else {
-								for (unsigned int g=0;g<branchpos.at(g1).size();g++) {
-									if (branchpos.at(g2).at(g)-branchpos.at(g1).at(g)) {
-										haschirality=1;
-										break;
-									}
-									else if (branchpos.at(g2).at(g)==branchpos.at(g1).at(g) && g>=branchpos.at(g1).size()-1) {
-										haschirality=0;
-									}
-								}
-							}
-						}
-						else haschirality=1;
-
-						if (!haschirality) break;
-					}
-					if (!haschirality) break;
-				}
-			}
+			else haschirality=1;
 
 
 			if (haschirality && !chi.at(i)) chi.at(i)=chirality;
@@ -3558,15 +3602,21 @@ unsigned int MOLECULE::combination(MOLECULE &B,unsigned int k,unsigned int p,uns
 }
 
 unsigned int MOLECULE::change_chirality(unsigned int pos,unsigned int spec) {
-	bool go=0;
-	if (data->a.at(Mindex.at(pos)).index>=6 && data->a.at(Mindex.at(pos)).nbond!=data->a.at(Mindex.at(pos)).index && chi.at(pos)) go=1;
+    bool go=0;
+    //if (data->a.at(Mindex.at(pos)).index>=6 && data->a.at(Mindex.at(pos)).suffspos!=data->a.at(Mindex.at(pos)).index && chi.at(pos)) go=1;
+    if (data->a.at(Mindex.at(pos)).chigenic && chi.at(pos)) go=1;
     if (go && spec!=chi.at(pos)) {
         if (spec==2 || spec==1) {
-			chi.at(pos)=spec;
+            chi.at(pos)=spec;
 
-			if (!chk_imine_ct(0,Cindex.size()-1)) mds2smi();
-			//chk_imine_ct(0,Cindex.size()-1);
-			//mds2smi();
+            if (!chk_imine_ct(0,Cindex.size()-1)) mds2smi();
+            //chk_imine_ct(0,Cindex.size()-1);
+            //mds2smi();
+        }
+        else if (spec==9) {
+            if (chi.at(pos)==1) chi.at(pos)=2;
+            else if (chi.at(pos)==2) chi.at(pos)=1;
+            else chi.at(pos)=2;
         }
         else return 0;
     }

@@ -2480,3 +2480,146 @@ unsigned int CH4_to_alpha_carotene_path2(MOLECULE &A) {
 
 	return 1;
 }
+
+
+unsigned int Tamiflu_Corey(MOLECULE &A,MOLECULE &B) {
+    ofstream out((para.logdir+"Tamiflu_Corey.txt").c_str());
+    //mark(out);
+
+    A.empty();
+    A.clear();
+    A.smiles = A.molesmi = "C=CC=C";
+    A.input();
+
+    B.empty();
+    B.clear();
+    B.smiles = B.molesmi = "C=CC(=O)OCC(F)(F)F";
+    B.input();
+
+    //A.printmds(out);
+    //B.printmds(out);
+
+    out<<A.molesmi<<"."<<B.molesmi<<" Initialization"<<endl;
+
+    if (B.change_bnd(1,1,1,1)) out << B.molesmi << " B.change_bnd(1,1,1,1)" << endl;
+    if (A.combination(B,0,0,1)) out << A.molesmi << " A.combination(B,0,0,1)" << endl;
+    if (A.change_bnd(1,1,2,1)) out << A.molesmi << " A.change_bnd(1,1,2,1)" << endl;
+    if (A.change_ele(3,1,1,0)) out << A.molesmi << " A.change_ele(3,1,1,0)" << endl;
+    if (A.cyclization(3,5,1)) out << A.molesmi << " A.cyclization(3,5,1)" << endl;
+    if (A.change_bnd(2,2,2,2)) out << A.molesmi << " A.change_bnd(2,2,2,2)" << endl;
+    ////if (A.change_chirality(5,1)) out << A.molesmi << " A.change_chirality(5,1)" << endl;
+    //A.printmds(out);
+
+    out<<A.molesmi<<" 1st step"<<endl;
+
+    if (A.subtraction(13,0)) out << A.molesmi << " A.subtraction(13,0)" << endl;
+    if (A.subtraction(12,0)) out << A.molesmi << " A.subtraction(12,0)" << endl;
+    if (A.subtraction(11,0)) out << A.molesmi << " A.subtraction(11,0)" << endl;
+    if (A.subtraction(10,0)) out << A.molesmi << " A.subtraction(10,0)" << endl;
+    if (A.subtraction(9,0)) out << A.molesmi << " A.subtraction(9,0)" << endl;
+    if (A.change_ele(8,7,1,0)) out << A.molesmi << " A.change_ele(8,7,1,0)" << endl;
+    //A.printmds(out);
+
+    out<<A.molesmi<<" 2nd step"<<endl;
+
+    if (A.change_bnd(2,1,1,1)) out << A.molesmi << " A.change_bnd(2,1,1,1)" << endl;
+    if (A.addition(1,14,1)) out << A.molesmi << " A.addition(1,14,1)" << endl;
+    if (A.cyclization(2,8,1)) out << A.molesmi << " A.cyclization(2,8,1)" << endl;
+    ////if (A.change_chirality(2,1)) out << A.molesmi << " A.change_chirality(2,1)" << endl;
+    //A.printmds(out);
+
+    out<<A.molesmi<<" 3rd step"<<endl;
+
+    if (A.subtraction(9,0)) out << A.molesmi << " A.subtraction(9,0)" << endl;
+    if (A.change_bnd(1,2,2,2)) out << A.molesmi << " A.change_bnd(1,2,2,2)" << endl;
+    if (A.addition(8,2,1)) out << A.molesmi << " A.addition(8,2,1)" << endl;
+    if (A.addition(9,6,2)) out << A.molesmi << " A.addition(9,6,2)" << endl;
+    if (A.addition(9,5,1)) out << A.molesmi << " A.addition(9,5,1)" << endl;
+    if (A.addition(11,1,1)) out << A.molesmi << " A.addition(11,1,1)" << endl;
+    if (A.addition(12,1,1)) out << A.molesmi << " A.addition(12,1,1)" << endl;
+    if (A.addition(12,1,1)) out << A.molesmi << " A.addition(12,1,1)" << endl;
+    if (A.addition(12,1,1)) out << A.molesmi << " A.addition(12,1,1)" << endl;
+    //A.printmds(out);
+
+    out<<A.molesmi<<" 4th step"<<endl;
+
+    if (A.change_bnd(1,2,1,1)) out << A.molesmi << " A.change_bnd(1,2,1,1)" << endl;
+    if (A.addition(1,13,1)) out << A.molesmi << " A.addition(1,13,1)" << endl;
+    if (A.change_bnd(4,2,2,2)) out << A.molesmi << " A.change_bnd(4,2,2,2)" << endl;
+    //A.printmds(out);
+
+    out<<A.molesmi<<" 5th step"<<endl;
+	
+    if (A.subtraction(16,0)) out << A.molesmi << " A.subtraction(16,0)" << endl;
+    if (A.cycbnd_relocate(2)) out << A.molesmi << " A.cycbnd_relocate(2)" << endl;
+    if (A.decyclization(2)) out << A.molesmi << " A.decyclization(2)" << endl;
+    if (A.change_bnd(4,2,2,1)) out << A.molesmi << " A.change_bnd(4,2,2,1)" << endl;
+    if (A.change_bnd(1,2,2,2)) out << A.molesmi << " A.change_bnd(1,2,2,2)" << endl;
+    if (A.change_bnd(5,2,2,2)) out << A.molesmi << " A.change_bnd(5,2,2,2)" << endl;
+    if (A.addition(6,5,1)) out << A.molesmi << " A.addition(6,5,1)" << endl;
+    if (A.addition(16,1,1)) out << A.molesmi << " A.addition(16,1,1)" << endl;
+    if (A.addition(17,1,1)) out << A.molesmi << " A.addition(17,1,1)" << endl;
+    if (A.change_chirality(2,1)) out << A.molesmi << " A.change_chirality(2,1)" << endl;
+    //if (A.change_chirality(2,9)) out << A.molesmi << " A.change_chirality(2,9)" << endl;
+    //A.printmds(out);
+
+    out<<A.molesmi<<" 6th step"<<endl;
+
+    if (A.change_bnd(1,1,1,1)) out << A.molesmi << " A.change_bnd(1,1,1,1)" << endl;
+    if (A.addition(1,13,1)) out << A.molesmi << " A.addition(1,13,1)" << endl;
+    if (A.addition(0,7,1)) out << A.molesmi << " A.addition(0,7,1)" << endl;
+    if (A.addition(20,2,1)) out << A.molesmi << " A.addition(20,2,1)" << endl;
+    if (A.addition(21,6,2)) out << A.molesmi << " A.addition(21,6,2)" << endl;
+    if (A.addition(21,1,1)) out << A.molesmi << " A.addition(21,1,1)" << endl;
+    if (A.change_chirality(1,1)) out << A.molesmi << " A.change_chirality(1,1)" << endl;
+    //if (A.change_chirality(1,9)) out << A.molesmi << " A.change_chirality(1,9)" << endl;
+    //A.printmds(out);
+
+    out<<A.molesmi<<" 7th step"<<endl;
+
+    if (A.subtraction(19,0)) out << A.molesmi << " A.subtraction(19,0)" << endl;
+    if (A.cyclization(1,19,1,0)) out << A.molesmi << " A.cyclization(1,19,1)" << endl;
+    //A.printmds(out);
+
+    out<<A.molesmi<<" 8th step"<<endl;
+
+    if (A.cycbnd_relocate(2)) out << A.molesmi << " A.cycbnd_relocate(2)" << endl;
+    if (A.decyclization(2)) out << A.molesmi << " A.decyclization(2)" << endl;
+    if (A.change_chirality(1,2)) out << A.molesmi << " A.change_chirality(1,2)" << endl;
+    if (A.change_chirality(0,1)) out << A.molesmi << " A.change_chirality(0,1)" << endl;
+    //if (A.change_chirality(1,9)) out << A.molesmi << " A.change_chirality(1,9)" << endl;
+    //if (A.change_chirality(0,9)) out << A.molesmi << " A.change_chirality(0,9)" << endl;
+    if (A.addition(0,5,1)) out << A.molesmi << " A.addition(0,5,1)" << endl;
+    if (A.addition(23,1,1)) out << A.molesmi << " A.addition(23,1,1)" << endl;
+    if (A.addition(24,1,1)) out << A.molesmi << " A.addition(24,1,1)" << endl;
+    if (A.addition(25,1,1)) out << A.molesmi << " A.addition(25,1,1)" << endl;
+    if (A.addition(24,1,1)) out << A.molesmi << " A.addition(24,1,1)" << endl;
+    if (A.addition(27,1,1)) out << A.molesmi << " A.addition(27,1,1)" << endl;
+    //A.printmds(out);
+
+    out<<A.molesmi<<" 9th step"<<endl;
+
+    if (A.subtraction(15,0)) out << A.molesmi << " A.subtraction(15,0)" << endl;
+    if (A.subtraction(14,0)) out << A.molesmi << " A.subtraction(14,0)" << endl;
+    if (A.subtraction(13,0)) out << A.molesmi << " A.subtraction(13,0)" << endl;
+    if (A.subtraction(12,0)) out << A.molesmi << " A.subtraction(12,0)" << endl;
+    if (A.subtraction(11,0)) out << A.molesmi << " A.subtraction(11,0)" << endl;
+    if (A.subtraction(10,0)) out << A.molesmi << " A.subtraction(10,0)" << endl;
+    if (A.subtraction(9,0)) out << A.molesmi << " A.subtraction(9,0)" << endl;
+    /*
+    if (A.change_ele(8,15,1,0)) out << A.molesmi << " A.change_ele(8,15,1,0)" << endl;
+    if (A.addition(8,5,1)) out << A.molesmi << " A.addition(8,5,1)" << endl;
+    if (A.addition(22,32,1)) out << A.molesmi << " A.addition(22,32,1)" << endl;
+    if (A.addition(23,6,1)) out << A.molesmi << " A.addition(23,6,1)" << endl;
+    if (A.addition(23,5,1)) out << A.molesmi << " A.addition(23,5,1)" << endl;
+    if (A.addition(23,5,1)) out << A.molesmi << " A.addition(23,5,1)" << endl;
+    */
+    //A.printmds(out);
+
+    out<<A.molesmi<<" 10th step"<<endl;
+
+    out.close();
+
+    return 1;
+}
+

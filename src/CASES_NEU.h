@@ -42,6 +42,8 @@ unsigned int CH4_to_alpha_carotene_path1(MOLECULE &A);
 unsigned int CH4_to_alpha_carotene_path2(MOLECULE &A);
 unsigned int CH4_to_alpha_carotene_path3(MOLECULE &A);
 
+unsigned int Tamiflu_Corey(MOLECULE &A,MOLECULE &B);
+
 #endif
 
 

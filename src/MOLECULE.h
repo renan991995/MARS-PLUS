@@ -100,7 +100,8 @@ class MOLECULE
 			empty();
 		}
 
-		unsigned int cyclization(unsigned int,unsigned int,unsigned int);
+		unsigned int cycbnd_relocate(unsigned int);
+		unsigned int cyclization(unsigned int,unsigned int,unsigned int,bool del_smallring=1);
         unsigned int subtraction(unsigned int,unsigned int bndfrm=0,bool cistrans=0);
         unsigned int insertion(unsigned int,unsigned int,unsigned int,unsigned int,bool cistrans=0);
         unsigned int addition(unsigned int,unsigned int,unsigned int,bool cistrans=0);
