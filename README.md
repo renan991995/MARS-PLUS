@@ -25,7 +25,7 @@ MARS+ is based on MARS [3], with various improvements:
         1-1. Group-like elements are allowed.
         1-2. Cationic cores and anionic cores are included.
 		1-3. The library is not hard-coded. 
-		     It can be appended easily. (See the instructions in INPUTS/ELEMENT_LISTS/element_list.txt)
+		     It can be appended easily. (See the instructions in inputs/element_lists/element_list.txt)
 
 
 2. **The generalization of MDS**
@@ -106,28 +106,28 @@ Please refer to the repository of [MARS+ Windows version](https://github.com/ren
 
 ## Usage
 
-There are 3 input files for MARS+: (see `INPUTS/`)
+There are 3 input files for MARS+: (see `inputs/`)
         
-    INPUTS/control.in                     : controls the input, output, and calculation options.
-    INPUTS/ELEMENT_LISTS/element_list.txt : a list that defines base element library.
-    INPUTS/INPUT_CHEMICALS/IL4.txt        : the starting chemicals.
+    inputs/control.in                     : controls the input, output, and calculation options.
+    inputs/element_lists/element_list.txt : a list that defines base element library.
+    inputs/INPUT_CHEMICALS/IL4.txt        : the starting chemicals.
     
-Please read the instructions in `INPUTS/control.in` and `INPUTS/ELEMENT_LISTS/element_list.txt`.
+Please read the instructions in `inputs/control.in` and `inputs/element_lists/element_list.txt`.
 Make sure you have properly set the parameters, and then launch the MARS+.
 
 
 ### For Linux users:
 
 	cd src/
-	./MARS-PLUS ../INPUTS/control.in
+	./MARS-PLUS ../inputs/control.in
 
 Alternatively, you may use the PBS scheduler. A PBS template `src/job.sh` is provided.
 
 	cd src/
 	qsub ./job.sh
 
-The results for each of the operations will be outputted to `LOG_FILES/`.
-For instance, the generated chemicals by applying bond change operation to an IL will be written to `LOG_FILES/change_bnd_IL.txt`.
+The results for each of the operations will be outputted to `logs/`.
+For instance, the generated chemicals by applying bond change operation to an IL will be written to `logs/change_bnd_IL.txt`.
 
 
 ### For Windows users:

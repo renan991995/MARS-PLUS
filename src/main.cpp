@@ -466,12 +466,14 @@ int main(int argc, char **argv) {
 
 
 	if (1) {
-		if (gs!=NULL) {
-			delete [] gs;
-			gs=NULL;
-		}
-		gs=new MOLECULE [1];
-		gs[0].data=&data;
+        if (gs!=NULL) {
+            delete [] gs;
+            gs=NULL;
+        }
+        //gs=new MOLECULE [1];
+        //gs[0].data=&data;
+        gs=new MOLECULE [2];
+        gs[1].data=gs[0].data=&data;
 
 		cout<<"Make benzene from methane (path 1)"<<endl;
 		CH4_to_Bz_path1(gs[0]);
@@ -490,6 +492,10 @@ int main(int argc, char **argv) {
 
 		cout<<"Make alpha-carotene from methane (path 3)"<<endl;
 		CH4_to_alpha_carotene_path3(gs[0]);
+
+        cout<<"Tamiflu total synthesis"<<endl;
+        Tamiflu_Corey(gs[0],gs[1]);
+
 
         cout<<"See the result for each txt file. (benzene_path1.txt, benzene_path2.txt, aspirin.txt, carotene_path1.txt, carotene_path2.txt, and carotene_path3.txt)"<<endl;
 

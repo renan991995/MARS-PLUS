@@ -15,21 +15,25 @@
 #include <cstdio>
 #include <cctype>
 #include <sstream>
+#include <unistd.h>
 using namespace std;
 
 
 class PARAMETER {
 	public :
 		PARAMETER () {
-		    system("pwd > pwddir.txt");
-		    ifstream PWD("pwddir.txt");
-		    pwd="";
-		    PWD >> pwd >> ws;
-		    PWD.close();
-			system("rm pwddir.txt 2> /dev/null");
+		    //system("pwd > pwddir.txt");
+		    //ifstream PWD("pwddir.txt");
+		    //pwd="";
+		    //PWD >> pwd >> ws;
+		    //PWD.close();
+			//system("rm pwddir.txt 2> /dev/null");
+			
+			pwd = getcwd( NULL, 0 );
+            //pwd += "/";
 			
 			programdir = pwd+"/";
-			logdir = pwd+"/LOG_FILES/";
+			logdir = pwd+"/logs/";
 			
 			gssize=0;
 			ion=0;		
