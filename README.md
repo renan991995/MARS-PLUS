@@ -63,12 +63,13 @@ MARS+ is based on MARS [3], with various improvements:
 
 ## Development environment
 
-* Linux CentOS 7
-* GNU g++ compiler v9.2.0  (C++11)
-* Open Babel v3.1.0 
-* Eigen v3.3.7
-* Cmake v3.15.5 
-* Make v4.2 
+* Linux CentOS 6.3 (x86_64)
+* Miniconda3 v4.9.2 (x86_64, py39)
+* GNU g++ compiler v9.2.0 (C++11)
+* Open Babel v3.1.0
+* Eigen v3.3.7 
+* Cmake v3.15.5
+* Make v4.2
 
 
 
@@ -83,7 +84,8 @@ The MARS+ source code consists of 7 header files and 7 cpp files: (see `src/` di
 ### For Linux users:
     
 Before compiling MARS+, relevant softwares should be installed. 
-With [Miniconda](https://docs.conda.io/en/latest/miniconda.html) or [Anaconda](https://www.anaconda.com/download), one can directly import `MARS+` environment and required packages from `MARS+_env.yml`.
+With [Miniconda](https://docs.conda.io/en/latest/miniconda.html) or [Anaconda](https://www.anaconda.com/download), one can directly import `MARS+` environment and required packages from `MARS+_env.yml` or `MARS+_env_pipcmake.yml`. 
+(It is found that `conda` may lead to a corrupted installation of `cmake`. Therefore, we provided an alternative `MARS+_env_pipcmake.yml`, which installs `cmake` from `pip`.)
 
     conda env create --file MARS+_env.yml
     
@@ -91,7 +93,7 @@ Now activate `MARS+` environment and compile the source code.
 
     conda activate MARS+
     cd src/
-    rm -r ./cmake_install.cmake ./CMakeFiles ./CMakeCache.txt 2> /dev/null
+    rm -r ./Makefile ./cmake_install.cmake ./CMakeCache.txt ./CMakeFiles 2> /dev/null
     cmake ./CMakeLists.txt
     make -j [N]                 ("-j [N]" is optional. It means parallel compiling with N jobs at once.)
 
