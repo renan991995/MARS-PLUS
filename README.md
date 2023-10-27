@@ -84,11 +84,13 @@ The MARS+ source code consists of 7 header files and 7 cpp files: (see `src/` di
 ### For Linux users:
     
 Before compiling MARS+, relevant softwares should be installed. 
-With [Miniconda](https://docs.conda.io/en/latest/miniconda.html) or [Anaconda](https://www.anaconda.com/download), one can directly import `MARS+` environment and required packages from `MARS+_env.yml` or `MARS+_env_pipcmake.yml`. 
-(It is found that `conda` may lead to a corrupted installation of `cmake`. Therefore, we provided an alternative `MARS+_env_pipcmake.yml`, which installs `cmake` from `pip`.)
+With [Miniconda](https://docs.conda.io/en/latest/miniconda.html) or [Anaconda](https://www.anaconda.com/download), 
+one can directly import `MARS+` environment along with the required packages from `MARS+_env.yml` or `MARS+_env_pipcmake.yml`. 
 
-    conda env create --file MARS+_env.yml
-    
+    conda env create --file MARS+_env_pipcmake.yml
+ 
+(Note: `conda` may lead to a corrupted installation of `cmake`. 
+Therefore, we provided an alternative `MARS+_env_pipcmake.yml`, which installs `cmake` from `pip`.)	
 Now activate `MARS+` environment and compile the source code. 
 
     conda activate MARS+
