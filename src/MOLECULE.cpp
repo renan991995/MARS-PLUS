@@ -4361,7 +4361,7 @@ unsigned int MOLECULE::subtraction(unsigned int n,unsigned int bndfrm,bool cistr
 					for (int k1=0;k1<(int)Cyindex.at(k).size();k1++) {
 						if (Cyindex.at(k).at(k1)==Cyindex.at(n).at(g)) { 
 							Cyindex.at(k).erase(Cyindex.at(k).begin()+k1);
-							k--;
+							//k--;
 							k1--;
 						}
 					}
